@@ -1,6 +1,6 @@
 # meter_app
 
-A new Flutter project.
+## This app provides a expense tracking and 
 
 ## Getting Started
 
