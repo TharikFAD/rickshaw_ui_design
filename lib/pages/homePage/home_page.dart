@@ -15,6 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  var _isStarted = false;
   late GoogleMapController mapController;
 
   final LatLng _center = const LatLng(10.9641042, 76.9562562);
@@ -55,23 +56,80 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 51.0, right: 51.0),
                 child: SearchBarWidget(),
               ),
+              SizedBox(
+                height: size.height * 0.65,
+              ),
+
+              //Visibility thingy
+
+              Visibility(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(
+                      Size(size.width * 0.5, size.height * 0.07),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12))),
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      _isStarted = true;
+                    });
+                  },
+                  child: Text(
+                    'Start Ride',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                visible: !_isStarted,
+              ),
+
+              Visibility(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(
+                      Size(size.width * 0.5, size.height * 0.07),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12))),
+                  ),
+                  onPressed: () {
+                    
+                    setState(() {
+                      _isStarted = false;
+                    });
+                  },
+                  child: Text(
+                    'Complete Ride',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+                visible: _isStarted,
+              ),
             ],
           ),
         ],
       ),
 
       //start button
-      floatingActionButton: FloatingActionButton.extended(
-        isExtended: true,
-        onPressed: () {
-          _dialogBuilder(context);
-        },
-        label: Text(
-          'Start Ride',
-          style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+
+      // floatingActionButton: FloatingActionButton.extended(
+      //   isExtended: true,
+      //   onPressed: () {
+      //     _dialogBuilder(context);
+      //   },
+      //   label: Text(
+      //     'Start Ride',
+      //     style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
