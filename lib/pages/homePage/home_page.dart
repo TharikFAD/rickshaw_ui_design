@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
+import 'package:meter_app/pages/homePage/widgets/completeRide.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/searchBar.dart';
+import 'package:meter_app/routes/route_name.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -72,9 +74,10 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(12))),
                   ),
                   onPressed: () {
-                    setState(() {
-                      _isStarted = true;
-                    });
+                    // setState(() {
+                    //   _isStarted = true;
+                    // });
+                    Navigator.pushNamed(context, completeRideScreenRoute);
                   },
                   child: Text(
                     'Start Ride',
@@ -97,7 +100,6 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(12))),
                   ),
                   onPressed: () {
-                    
                     setState(() {
                       _isStarted = false;
                     });
