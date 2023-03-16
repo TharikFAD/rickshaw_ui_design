@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/pages/fareSettingsPage/widget/fareNameTextField.dart';
 
-class AddFare extends StatelessWidget {
-  const AddFare({super.key});
+class AddFareWidget extends StatelessWidget {
+  const AddFareWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -18,15 +18,6 @@ class AddFare extends StatelessWidget {
       reverse: true,
       child: Column(
         children: [
-          // Row(
-          //   mainAxisAlignment: MainAxisAlignment.end,
-          //   children: [
-          //     IconButton(
-          //       onPressed: () {},
-          //       icon: Icon(Icons.delete_outline),
-          //     ),
-          //   ],
-          // ),
           SizedBox(
             height: size.height * 0.02,
           ),
@@ -52,69 +43,6 @@ class AddFare extends StatelessWidget {
           SizedBox(
             height: size.height * 0.02,
           ),
-
-          //Enter Fare
-          // Row(
-          //   children: [
-          //     Text(
-          //       'Enter Fare',
-          //       style: GoogleFonts.inter(
-          //           fontSize: 15,
-          //           fontWeight: FontWeight.w700,
-          //           color: Colors.black),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: size.height * 0.01,
-          // ),
-          // Container(
-          //   height: size.height * 0.08,
-          //   width: size.width,
-          //   decoration: BoxDecoration(
-          //     borderRadius: BorderRadius.circular(12),
-          //   ),
-          //   child: Center(
-          //     child: FairNameTextFormField(
-          //       controller: _fareController,
-          //       hintText: '₹ Enter Fare',
-          //       typeInput: TextInputType.number,
-          //     ),
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: size.height * 0.02,
-          // ),
-
-          // //Measuring Units
-          // Row(
-          //   children: [
-          //     Text(
-          //       'Measuring Unit',
-          //       style: GoogleFonts.inter(
-          //           fontSize: 15,
-          //           fontWeight: FontWeight.w700,
-          //           color: Colors.black),
-          //     ),
-          //   ],
-          // ),
-          // SizedBox(
-          //   height: size.height * 0.01,
-          // ),
-          // Container(
-          //   height: size.height * 0.075,
-          //   width: size.width,
-          //   decoration: BoxDecoration(
-          //       borderRadius: BorderRadius.circular(18),
-          //       border: Border.all(color: Colors.grey)),
-          //   child: Center(
-          //     child: UnitsDropDownWidget(),
-          //   ),
-          // ),
-          // SizedBox(
-          //   height: size.height * 0.01,
-          // ),
-          // Divider(),
 
           //Min Kms && Base Fare
           Row(

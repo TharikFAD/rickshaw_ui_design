@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field
 
-import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/routes/route_name.dart';
@@ -368,7 +366,7 @@ class RideInfoDetails extends StatelessWidget {
               child: Container(
                 height: size.height * 0.08,
                 width: size.height,
-                decoration: BoxDecoration(color: Colors.amber),
+                //decoration: BoxDecoration(),
                 child: Icon(
                   Icons.home,
                   size: 50,

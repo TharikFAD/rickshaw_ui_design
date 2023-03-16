@@ -6,7 +6,9 @@ import 'package:meter_app/Pages/loginPage/LoginPageCont/username_page.dart';
 import 'package:meter_app/pages/communityPage/communityPage.dart';
 import 'package:meter_app/pages/communityPage/widgets/community_members.dart';
 import 'package:meter_app/pages/complaintPage/compaintPage.dart';
+import 'package:meter_app/pages/fareSettingsPage/addFarePage.dart';
 import 'package:meter_app/pages/fareSettingsPage/fareSettingPage.dart';
+import 'package:meter_app/pages/fareSettingsPage/widget/addFareWidget.dart';
 import 'package:meter_app/pages/historyPage/history_page.dart';
 import 'package:meter_app/pages/homePage/homePageCont/completeRide.dart';
 import 'package:meter_app/pages/homePage/homePageCont/riderInfo.dart';
@@ -53,6 +55,8 @@ class RouteGenerator {
             return const CompleteRidePage();
           case riderInfoScreenRoute:
             return const RiderInfoPage();
+          case addFareScreenRoute:
+            return const AddFarePage();
 
           default:
             return const LoginPage();
