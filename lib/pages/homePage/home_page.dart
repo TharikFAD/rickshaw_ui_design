@@ -63,7 +63,7 @@ class _HomePageState extends State<HomePage> {
                 height: size.height * 0.65,
               ),
 
-              //BUtton thingy
+              //BUtton thingy New Start
               Visibility(
                 child: ElevatedButton(
                   style: ButtonStyle(
@@ -120,7 +120,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      //start button
+      //start button Old
 
       // floatingActionButton: FloatingActionButton.extended(
       //   isExtended: true,
