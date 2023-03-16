@@ -1,7 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field
 
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meter_app/routes/route_name.dart';
 
 class RideInfoDetails extends StatelessWidget {
   const RideInfoDetails({super.key});
@@ -338,24 +341,41 @@ class RideInfoDetails extends StatelessWidget {
             ),
 
             //Calculate Change
+            //   InkWell(
+            //     onTap: () {},
+            //     child: Container(
+            //       height: size.height * 0.06,
+            //       width: size.width * 0.7,
+            //       decoration: BoxDecoration(
+            //         borderRadius: BorderRadius.circular(12),
+            //       ),
+            //       child: Center(
+            //           child: Text(
+            //         'CALCULATE CHANGE',
+            //         style: GoogleFonts.inter(
+            //             fontSize: 20,
+            //             color: Colors.white,
+            //             fontWeight: FontWeight.w700),
+            //       )),
+            //     ),
+            //   ),
+
+            //Home Button
             InkWell(
-              onTap: () {},
+              onTap: () {
+                Navigator.popAndPushNamed(context, homeScreenRoute);
+              },
               child: Container(
-                height: size.height * 0.06,
-                width: size.width * 0.7,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
+                height: size.height * 0.08,
+                width: size.height,
+                decoration: BoxDecoration(color: Colors.amber),
+                child: Icon(
+                  Icons.home,
+                  size: 50,
+                  color: Colors.white,
                 ),
-                child: Center(
-                    child: Text(
-                  'CALCULATE CHANGE',
-                  style: GoogleFonts.inter(
-                      fontSize: 20,
-                      color: Colors.white,
-                      fontWeight: FontWeight.w700),
-                )),
               ),
-            ),
+            )
           ],
         ),
       ),
