@@ -135,14 +135,85 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                     }
                   },
                   child: InkWell(
-                    onTap: () {},
+                    onTap: () {
+                      showModalBottomSheet(
+                          shape: const RoundedRectangleBorder(
+                            // <-- SEE HERE
+                            borderRadius: BorderRadius.vertical(
+                              top: Radius.circular(30.0),
+                            ),
+                          ),
+                          context: context,
+                          builder: (BuildContext context) {
+                            return Container(
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                //Color(0xFFd9d9d9),
+                                borderRadius: BorderRadius.only(
+                                  topLeft: Radius.circular(30.0),
+                                  topRight: Radius.circular(30.0),
+                                ),
+                              ),
+                              height: size.height * 0.4,
+                              child: Center(
+                                child: Column(
+                                  children: [
+                                    SizedBox(
+                                      height: size.height * 0.05,
+                                    ),
+                                    Text(
+                                      'Surge Price',
+                                      style: GoogleFonts.inter(
+                                          fontWeight: FontWeight.w700,
+                                          fontSize: 20),
+                                    ),
+
+                                    SizedBox(
+                                      height: size.height * 0.05,
+                                    ),
+                                    MySlider(),
+                                    SizedBox(
+                                      height: size.height * 0.05,
+                                    ),
+
+                                    //button
+                                    Center(
+                                      child: ElevatedButton(
+                                        style: ButtonStyle(
+                                          fixedSize: MaterialStateProperty.all(
+                                            Size(size.width * 0.5,
+                                                size.height * 0.07),
+                                          ),
+                                          shape: MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          12))),
+                                        ),
+                                        onPressed: () {
+                                          _dialogBuilder(context);
+                                        },
+                                        child: Text(
+                                          'Complete Ride',
+                                          style: GoogleFonts.inter(
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.w700,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          });
+                    },
                     child: Container(
                       height: size.height * 0.172,
                       width: size.width,
                       decoration: BoxDecoration(
-                          color: Colors.white,
-                          border: Border.all(color: Colors.grey),
-                          //Color(0xFFd9d9d9),
+                          color: Color(0xFFd9d9d9),
+                          //border: Border.all(color: Colors.white),
                           borderRadius: BorderRadius.only(
                             topLeft: Radius.circular(30.0),
                             topRight: Radius.circular(30.0),
