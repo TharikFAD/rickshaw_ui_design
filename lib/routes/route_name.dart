@@ -10,3 +10,5 @@ const String settingScreenRoute = '/Settings';
 const String communityScreenRoute = '/Community';
 const String memberScreenRoute = '/Members';
 const String completeRideScreenRoute = '/Complete Ride';
+const String riderInfoScreenRoute = '/RiderInfo';
+

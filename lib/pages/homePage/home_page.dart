@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
-import 'package:meter_app/pages/homePage/widgets/completeRide.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/searchBar.dart';
 import 'package:meter_app/routes/route_name.dart';
@@ -43,6 +42,7 @@ class _HomePageState extends State<HomePage> {
             initialCameraPosition: CameraPosition(target: _center, zoom: 17.0),
           ),
 
+          //Appbar
           Column(
             children: [
               CustomAppBar(),
@@ -54,6 +54,7 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 height: size.height * 0.18,
               ),
+              //SearchBar Widget
               Padding(
                 padding: const EdgeInsets.only(left: 51.0, right: 51.0),
                 child: SearchBarWidget(),
@@ -62,8 +63,7 @@ class _HomePageState extends State<HomePage> {
                 height: size.height * 0.65,
               ),
 
-              //Visibility thingy
-
+              //BUtton thingy
               Visibility(
                 child: ElevatedButton(
                   style: ButtonStyle(
@@ -77,7 +77,8 @@ class _HomePageState extends State<HomePage> {
                     // setState(() {
                     //   _isStarted = true;
                     // });
-                    Navigator.pushNamed(context, completeRideScreenRoute);
+                    // Navigator.pushNamed(context, completeRideScreenRoute);
+                    _dialogBuilder(context);
                   },
                   child: Text(
                     'Start Ride',
@@ -90,30 +91,30 @@ class _HomePageState extends State<HomePage> {
                 visible: !_isStarted,
               ),
 
-              Visibility(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(
-                      Size(size.width * 0.5, size.height * 0.07),
-                    ),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12))),
-                  ),
-                  onPressed: () {
-                    setState(() {
-                      _isStarted = false;
-                    });
-                  },
-                  child: Text(
-                    'Complete Ride',
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  ),
-                ),
-                visible: _isStarted,
-              ),
+              // Visibility(
+              //   child: ElevatedButton(
+              //     style: ButtonStyle(
+              //       fixedSize: MaterialStateProperty.all(
+              //         Size(size.width * 0.5, size.height * 0.07),
+              //       ),
+              //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
+              //           borderRadius: BorderRadius.circular(12))),
+              //     ),
+              //     onPressed: () {
+              //       setState(() {
+              //         _isStarted = false;
+              //       });
+              //     },
+              //     child: Text(
+              //       'Complete Ride',
+              //       style: GoogleFonts.inter(
+              //         fontSize: 20,
+              //         fontWeight: FontWeight.w700,
+              //       ),
+              //     ),
+              //   ),
+              //   visible: _isStarted,
+              // ),
             ],
           ),
         ],
@@ -177,7 +178,7 @@ Future<void> _dialogBuilder(BuildContext context) {
                   color: Color(0xFF000000)),
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.pushNamed(context, completeRideScreenRoute);
             },
           ),
         ],

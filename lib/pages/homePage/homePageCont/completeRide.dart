@@ -106,7 +106,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                         borderRadius: BorderRadius.circular(12))),
                   ),
                   onPressed: () {
-                    Navigator.popAndPushNamed(context, homeScreenRoute);
+                    _dialogBuilder(context);
                   },
                   child: Text(
                     'Complete Ride',
@@ -152,4 +152,54 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
       ),
     );
   }
+}
+
+//Start Ride Dialog Box-------------------------------------------------------->
+Future<void> _dialogBuilder(BuildContext context) {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(
+          'Do you want to stop the ride?',
+          style: GoogleFonts.inter(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              color: Color(0xFF000000)),
+        ),
+        actions: <Widget>[
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: Text(
+              'No',
+              style: GoogleFonts.inter(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF000000)),
+            ),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+          TextButton(
+            style: TextButton.styleFrom(
+              textStyle: Theme.of(context).textTheme.labelLarge,
+            ),
+            child: Text(
+              'Yes',
+              style: GoogleFonts.inter(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Color(0xFF000000)),
+            ),
+            onPressed: () {
+              Navigator.popAndPushNamed(context, riderInfoScreenRoute);
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
