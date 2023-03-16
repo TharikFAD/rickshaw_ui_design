@@ -5,35 +5,32 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
-import 'package:meter_app/pages/homePage/widgets/searchBar.dart';
 import 'package:meter_app/routes/route_name.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+class CompleteRidePage extends StatefulWidget {
+  const CompleteRidePage({super.key});
 
   @override
-  State<HomePage> createState() => _HomePageState();
+  State<CompleteRidePage> createState() => _CompleteRidePageState();
 }
 
-class _HomePageState extends State<HomePage> {
-  var _isStarted = false;
-  late GoogleMapController mapController;
+late GoogleMapController mapController;
 
-  final LatLng _center = const LatLng(10.9641042, 76.9562562);
+final LatLng _center = const LatLng(10.9641042, 76.9562562);
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-  }
+void _onMapCreated(GoogleMapController controller) {
+  mapController = controller;
+}
 
-  final bool _mapStarted = false;
+class _CompleteRidePageState extends State<CompleteRidePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      //Drawer
+      //drawer
       drawer: MyDrawerWidget(),
 
-      //Body
+      //body
       body: Stack(
         children: [
           //GoogleMap
@@ -42,29 +39,64 @@ class _HomePageState extends State<HomePage> {
             initialCameraPosition: CameraPosition(target: _center, zoom: 17.0),
           ),
 
-          //Appbar
+          //Custom AppBar
           Column(
             children: [
               CustomAppBar(),
             ],
           ),
 
+          //On Ride Panel
           Column(
             children: [
               SizedBox(
-                height: size.height * 0.18,
+                height: size.height * 0.848,
               ),
-              //SearchBar Widget
-              Padding(
-                padding: const EdgeInsets.only(left: 51.0, right: 51.0),
-                child: SearchBarWidget(),
+              Center(
+                child: Container(
+                  height: size.height * 0.152,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                      color: Color(0xFFd9d9d9),
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(30.0),
+                        topRight: Radius.circular(30.0),
+                      )),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.02,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          Text(
+                            '1.04 KM',
+                            style: GoogleFonts.inter(
+                                fontSize: 20, fontWeight: FontWeight.w700),
+                          ),
+                          Icon(Icons.keyboard_arrow_up),
+                          Text(
+                            '02:52',
+                            style: GoogleFonts.inter(
+                                fontSize: 20, fontWeight: FontWeight.w700),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
               ),
-              SizedBox(
-                height: size.height * 0.65,
-              ),
+            ],
+          ),
 
-              //BUtton thingy
-              Visibility(
+          //button
+          Column(
+            children: [
+              SizedBox(
+                height: size.height * 0.91,
+              ),
+              Center(
                 child: ElevatedButton(
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
@@ -74,65 +106,50 @@ class _HomePageState extends State<HomePage> {
                         borderRadius: BorderRadius.circular(12))),
                   ),
                   onPressed: () {
-                    // setState(() {
-                    //   _isStarted = true;
-                    // });
-                    // Navigator.pushNamed(context, completeRideScreenRoute);
                     _dialogBuilder(context);
                   },
                   child: Text(
-                    'Start Ride',
+                    'Complete Ride',
                     style: GoogleFonts.inter(
                       fontSize: 20,
                       fontWeight: FontWeight.w700,
                     ),
                   ),
                 ),
-                visible: !_isStarted,
               ),
-
-              // Visibility(
-              //   child: ElevatedButton(
-              //     style: ButtonStyle(
-              //       fixedSize: MaterialStateProperty.all(
-              //         Size(size.width * 0.5, size.height * 0.07),
-              //       ),
-              //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(12))),
-              //     ),
-              //     onPressed: () {
-              //       setState(() {
-              //         _isStarted = false;
-              //       });
-              //     },
-              //     child: Text(
-              //       'Complete Ride',
-              //       style: GoogleFonts.inter(
-              //         fontSize: 20,
-              //         fontWeight: FontWeight.w700,
-              //       ),
-              //     ),
-              //   ),
-              //   visible: _isStarted,
-              // ),
             ],
           ),
+
+          //OnRide Fare Meter
+          Column(
+            children: [
+              SizedBox(
+                height: size.height * 0.2,
+              ),
+              Center(
+                child: Container(
+                  height: size.height * 0.07,
+                  width: size.width * 0.5,
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: BorderRadius.circular(25),
+                    border: Border.all(color: Color(0xFF4885ED), width: 5),
+                  ),
+                  child: Center(
+                      child: Text(
+                    '₹ 99.25',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
+                  )),
+                ),
+              ),
+            ],
+          )
         ],
       ),
-
-      //start button
-
-      // floatingActionButton: FloatingActionButton.extended(
-      //   isExtended: true,
-      //   onPressed: () {
-      //     _dialogBuilder(context);
-      //   },
-      //   label: Text(
-      //     'Start Ride',
-      //     style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -144,7 +161,7 @@ Future<void> _dialogBuilder(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          'Do you want to start the ride?',
+          'Do you want to stop the ride?',
           style: GoogleFonts.inter(
               fontSize: 15,
               fontWeight: FontWeight.w700,
@@ -178,7 +195,7 @@ Future<void> _dialogBuilder(BuildContext context) {
                   color: Color(0xFF000000)),
             ),
             onPressed: () {
-              Navigator.pushNamed(context, completeRideScreenRoute);
+              Navigator.popAndPushNamed(context, riderInfoScreenRoute);
             },
           ),
         ],
