@@ -10,7 +10,7 @@ class MyNavBarWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.59,
+      height: size.height * 0.62,
       width: size.height,
       decoration: BoxDecoration(
         color: Color(0xFF4885ED),

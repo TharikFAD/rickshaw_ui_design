@@ -47,7 +47,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             ],
           ),
 
-          //On Ride Panel
+          //On swipe Panel
           Column(
             children: [
               SizedBox(
@@ -101,12 +101,12 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                       height: size.height * 0.05,
                                     ),
 
-                                    //button
+                                    //Complete button
                                     Center(
                                       child: ElevatedButton(
                                         style: ButtonStyle(
                                           fixedSize: MaterialStateProperty.all(
-                                            Size(size.width * 0.5,
+                                            Size(size.width * 0.8,
                                                 size.height * 0.07),
                                           ),
                                           shape: MaterialStateProperty.all(
@@ -181,7 +181,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                       child: ElevatedButton(
                                         style: ButtonStyle(
                                           fixedSize: MaterialStateProperty.all(
-                                            Size(size.width * 0.5,
+                                            Size(size.width * 0.8,
                                                 size.height * 0.07),
                                           ),
                                           shape: MaterialStateProperty.all(
@@ -212,12 +212,31 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                       height: size.height * 0.172,
                       width: size.width,
                       decoration: BoxDecoration(
-                          color: Color(0xFFd9d9d9),
-                          //border: Border.all(color: Colors.white),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(30.0),
-                            topRight: Radius.circular(30.0),
-                          )),
+                        color: // Colors.white,
+                            Color(0xFFd9d9d9),
+                        //border: Border.all(color: Colors.white),
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30.0),
+                          topRight: Radius.circular(30.0),
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black,
+                            offset: const Offset(
+                              5.0,
+                              5.0,
+                            ),
+                            blurRadius: 10.0,
+                            spreadRadius: 2.0,
+                          ), //BoxShadow
+                          BoxShadow(
+                            color: Colors.white,
+                            offset: const Offset(0.0, 0.0),
+                            blurRadius: 0.0,
+                            spreadRadius: 0.0,
+                          ), //BoxShadow
+                        ],
+                      ),
                       child: Column(
                         children: [
                           SizedBox(
@@ -248,7 +267,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             ],
           ),
 
-          //button
+          //Complete button
           Column(
             children: [
               SizedBox(
@@ -258,7 +277,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
-                      Size(size.width * 0.5, size.height * 0.07),
+                      Size(size.width * 0.8, size.height * 0.07),
                     ),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
