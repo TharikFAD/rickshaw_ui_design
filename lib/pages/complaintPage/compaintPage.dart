@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meter_app/pages/complaintPage/widgets/addComplaint.dart';
 import 'package:meter_app/pages/complaintPage/widgets/complaintsList.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 
@@ -26,20 +25,39 @@ class _ComplaintPageState extends State<ComplaintPage> {
               child: ComplaintsList(),
             ),
             CustomAppBar(),
+            Center(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: size.height * 0.9,
+                  ),
+
+                  //BUtton thingy New Start
+                  ElevatedButton(
+                    style: ButtonStyle(
+                      fixedSize: MaterialStateProperty.all(
+                        Size(size.width * 0.8, size.height * 0.07),
+                      ),
+                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12))),
+                    ),
+                    onPressed: () {
+                      _dialogBuilder(context);
+                    },
+                    child: Text(
+                      'ADD COMPLAINT',
+                      style: GoogleFonts.inter(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        backgroundColor: Color(0xFF4885ED),
-        onPressed: () {
-          _dialogBuilder(context);
-        },
-        label: Text(
-          'Submit',
-          style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -51,7 +69,7 @@ Future<void> _dialogBuilder(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          'Do you want proceed with this complain?',
+          'Do you want add a complain?',
           style: GoogleFonts.inter(
               fontSize: 15,
               fontWeight: FontWeight.w700,

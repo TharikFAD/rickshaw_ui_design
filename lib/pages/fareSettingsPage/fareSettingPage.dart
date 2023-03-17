@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meter_app/pages/fareSettingsPage/widget/farelistPage.dart';
+import 'package:meter_app/pages/fareSettingsPage/widgets/farelistPage.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 
@@ -33,7 +33,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                   ElevatedButton(
                     style: ButtonStyle(
                       fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.5, size.height * 0.07),
+                        Size(size.width * 0.8, size.height * 0.07),
                       ),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),

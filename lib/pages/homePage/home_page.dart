@@ -39,6 +39,8 @@ class _HomePageState extends State<HomePage> {
           //GoogleMap
           GoogleMap(
             onMapCreated: _onMapCreated,
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(target: _center, zoom: 17.0),
           ),
 
@@ -68,7 +70,7 @@ class _HomePageState extends State<HomePage> {
                 child: ElevatedButton(
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
-                      Size(size.width * 0.5, size.height * 0.07),
+                      Size(size.width * 0.8, size.height * 0.07),
                     ),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),

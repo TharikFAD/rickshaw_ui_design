@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meter_app/pages/fareSettingsPage/widget/fareNameTextField.dart';
+import 'package:meter_app/pages/fareSettingsPage/widgets/fareNameTextField.dart';
 
 class AddFareWidget extends StatelessWidget {
   const AddFareWidget({super.key});

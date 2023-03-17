@@ -3,12 +3,12 @@ import 'package:meter_app/Pages/HomePage/home_page.dart';
 import 'package:meter_app/Pages/LoginPage/LoginPageCont/otp_page.dart';
 import 'package:meter_app/Pages/SplashScreenPage/splash_screen.dart';
 import 'package:meter_app/Pages/loginPage/LoginPageCont/username_page.dart';
+import 'package:meter_app/pages/bookingsPage/booking_page.dart';
 import 'package:meter_app/pages/communityPage/communityPage.dart';
 import 'package:meter_app/pages/communityPage/widgets/community_members.dart';
 import 'package:meter_app/pages/complaintPage/compaintPage.dart';
 import 'package:meter_app/pages/fareSettingsPage/addFarePage.dart';
 import 'package:meter_app/pages/fareSettingsPage/fareSettingPage.dart';
-import 'package:meter_app/pages/fareSettingsPage/widget/addFareWidget.dart';
 import 'package:meter_app/pages/historyPage/history_page.dart';
 import 'package:meter_app/pages/homePage/homePageCont/completeRide.dart';
 import 'package:meter_app/pages/homePage/homePageCont/riderInfo.dart';
@@ -57,6 +57,8 @@ class RouteGenerator {
             return const RiderInfoPage();
           case addFareScreenRoute:
             return const AddFarePage();
+          case bookingScreenRoute:
+            return const BookingsPage();
 
           default:
             return const LoginPage();

@@ -9,13 +9,15 @@ class MyDrawerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     var _controller = TextEditingController();
     return Drawer(
+      elevation: 0,
       backgroundColor: Color(0xFF4885ED),
       child: ListView(
         children: [
           SizedBox(
-            height: 110.5,
+            height: size.height * 0.125,
             child: DrawerHeader(
               child: Column(
                 children: [
@@ -59,7 +61,7 @@ class MyDrawerWidget extends StatelessWidget {
 
           //space
           SizedBox(
-            height: 25,
+            height: size.height * 0.01,
           ),
 
           //contents
@@ -82,7 +84,7 @@ class MyDrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, historyScreenRoute);
+              Navigator.popAndPushNamed(context, historyScreenRoute);
             },
             leading: Icon(
               Icons.history,
@@ -99,7 +101,7 @@ class MyDrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, fareSettingScreenRoute);
+              Navigator.popAndPushNamed(context, fareSettingScreenRoute);
             },
             leading: Icon(
               Icons.attach_money_rounded,
@@ -116,7 +118,20 @@ class MyDrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, settingScreenRoute);
+              Navigator.popAndPushNamed(context, bookingScreenRoute);
+            },
+            leading: Image.asset('assets/bx_trip.png'),
+            title: Text(
+              'Bookings',
+              style: GoogleFonts.inter(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
+            ),
+          ),
+          ListTile(
+            onTap: () {
+              Navigator.popAndPushNamed(context, settingScreenRoute);
             },
             leading: Icon(
               Icons.settings,
@@ -133,7 +148,7 @@ class MyDrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.pushNamed(context, communityScreenRoute);
+              Navigator.popAndPushNamed(context, communityScreenRoute);
             },
             leading: Icon(
               Icons.people,
@@ -209,7 +224,7 @@ class MyDrawerWidget extends StatelessWidget {
           ),
 
           SizedBox(
-            height: 35,
+            height: size.height * 0.025,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 18.0),
