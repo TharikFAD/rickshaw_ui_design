@@ -2,66 +2,69 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meter_app/pages/complaintPage/widgets/complaintsList.dart';
+import 'package:meter_app/pages/complaintPage/widgets/addComplaint.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 
-class ComplaintPage extends StatefulWidget {
-  const ComplaintPage({super.key});
+class AddComplaintPage extends StatefulWidget {
+  const AddComplaintPage({super.key});
 
   @override
-  State<ComplaintPage> createState() => _ComplaintPageState();
+  State<AddComplaintPage> createState() => _AddComplaintPageState();
 }
 
-class _ComplaintPageState extends State<ComplaintPage> {
+class _AddComplaintPageState extends State<AddComplaintPage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 120),
-              child: ComplaintsList(),
-            ),
+      body: Stack(
+        children: [
+          //Content
+          Padding(
+            padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 120),
+            child: AddComplaint(),
+          ),
 
-            //AppBar
-            CustomAppBar(),
+          //AppBar
+          Column(
+            children: [
+              CustomAppBar(),
+            ],
+          ),
 
-            //Button Spacing 
-            Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.9,
-                  ),
+          //Submit Button
+          Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.9,
+                ),
 
-                  //BUtton thingy New Start
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.8, size.height * 0.07),
-                      ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
+                //BUtton thingy New Start
+                ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(
+                      Size(size.width * 0.8, size.height * 0.07),
                     ),
-                    onPressed: () {
-                      _dialogBuilder(context);
-                    },
-                    child: Text(
-                      'ADD COMPLAINT',
-                      style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12))),
+                  ),
+                  onPressed: () {
+                    _dialogBuilder(context);
+                  },
+                  child: Text(
+                    'SUBMIT',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -108,7 +111,7 @@ Future<void> _dialogBuilder(BuildContext context) {
                   color: Color(0xFF000000)),
             ),
             onPressed: () {
-              Navigator.popAndPushNamed(context, addCompaintScreenRoute);
+              Navigator.popAndPushNamed(context, complaintScreenRoute);
             },
           ),
         ],

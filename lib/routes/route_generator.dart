@@ -7,6 +7,7 @@ import 'package:meter_app/pages/bookingsPage/booking_page.dart';
 import 'package:meter_app/pages/communityPage/communityPage.dart';
 import 'package:meter_app/pages/communityPage/widgets/community_members.dart';
 import 'package:meter_app/pages/complaintPage/compaintPage.dart';
+import 'package:meter_app/pages/complaintPage/compaintPageCont/addComplaintPage.dart';
 import 'package:meter_app/pages/fareSettingsPage/addFarePage.dart';
 import 'package:meter_app/pages/fareSettingsPage/fareSettingPage.dart';
 import 'package:meter_app/pages/historyPage/history_page.dart';
@@ -59,6 +60,8 @@ class RouteGenerator {
             return const AddFarePage();
           case bookingScreenRoute:
             return const BookingsPage();
+          case addCompaintScreenRoute:
+            return const AddComplaintPage();
 
           default:
             return const LoginPage();

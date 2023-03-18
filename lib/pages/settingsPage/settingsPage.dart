@@ -21,6 +21,7 @@ class _SettingspageState extends State<Settingspage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       //Drawer
       drawer: MyDrawerWidget(),
 
@@ -73,6 +74,7 @@ class _SettingspageState extends State<Settingspage> {
                 SizedBox(
                   height: size.height * 0.02,
                 ),
+                //TextField -m "Enter your Name"
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
@@ -101,6 +103,8 @@ class _SettingspageState extends State<Settingspage> {
                 SizedBox(
                   height: size.height * 0.02,
                 ),
+
+                //TextField -m "Driver ID"
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
@@ -130,6 +134,8 @@ class _SettingspageState extends State<Settingspage> {
                 SizedBox(
                   height: size.height * 0.02,
                 ),
+
+                //TextField -m "Enter Mobile Number"
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
@@ -139,6 +145,8 @@ class _SettingspageState extends State<Settingspage> {
                 SizedBox(
                   height: size.height * 0.02,
                 ),
+
+                //Send OTP Text Button
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: Row(
@@ -163,19 +171,48 @@ class _SettingspageState extends State<Settingspage> {
               ],
             ),
           ),
+          //Save button
+          Column(
+            children: [
+              SizedBox(
+                height: size.height * 0.91,
+              ),
+              Center(
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(
+                      Size(size.width * 0.8, size.height * 0.07),
+                    ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12))),
+                  ),
+                  onPressed: () {
+                    _dialogBuilder(context);
+                  },
+                  child: Text(
+                    'SAVE',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
-      floatingActionButton: FloatingActionButton.extended(
-        isExtended: true,
-        onPressed: () {
-          _dialogBuilder(context);
-        },
-        label: Text(
-          'Save',
-          style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
-        ),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      // floatingActionButton: FloatingActionButton.extended(
+      //   isExtended: true,
+      //   onPressed: () {
+      //     _dialogBuilder(context);
+      //   },
+      //   label: Text(
+      //     'Save',
+      //     style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
+      //   ),
+      // ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
@@ -187,7 +224,7 @@ Future<void> _dialogBuilder(BuildContext context) {
     builder: (BuildContext context) {
       return AlertDialog(
         title: Text(
-          'Keep the changes?',
+          'Save Changes?',
           style: GoogleFonts.inter(
               fontSize: 15,
               fontWeight: FontWeight.w700,
