@@ -13,3 +13,4 @@ const String completeRideScreenRoute = '/Complete Ride';
 const String riderInfoScreenRoute = '/RiderInfo';
 const String addFareScreenRoute = '/AddFare';
 const String bookingScreenRoute = '/Bookings';
+const String addCompaintScreenRoute = '/AddComplaint';

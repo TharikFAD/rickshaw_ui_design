@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:meter_app/pages/bookingsPage/widgets/bookings_card.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 
@@ -14,6 +15,7 @@ class BookingsPage extends StatefulWidget {
 class _BookingsPageState extends State<BookingsPage> {
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.of(context).size;
     return Scaffold(
       //Drawer
       drawer: MyDrawerWidget(),
@@ -26,6 +28,21 @@ class _BookingsPageState extends State<BookingsPage> {
               CustomAppBar(),
             ],
           ),
+
+          //Cards
+          Center(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.2,
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 14.0, right: 14.0),
+                  child: BookingsCard(),
+                ),
+              ],
+            ),
+          )
         ],
       ),
     );

@@ -5,6 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
+import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
 import 'package:meter_app/pages/homePage/widgets/slider.dart';
 import 'package:meter_app/routes/route_name.dart';
 
@@ -96,7 +97,8 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                     SizedBox(
                                       height: size.height * 0.05,
                                     ),
-                                    MySlider(),
+                                    //MySlider(),
+                                    IncDecButtonWidget(),
                                     SizedBox(
                                       height: size.height * 0.05,
                                     ),
