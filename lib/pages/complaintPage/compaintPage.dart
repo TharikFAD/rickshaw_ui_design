@@ -18,6 +18,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
         child: Stack(
           children: [
@@ -29,7 +30,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
             //AppBar
             CustomAppBar(),
 
-            //Button Spacing 
+            //Button Spacing
             Center(
               child: Column(
                 children: [
