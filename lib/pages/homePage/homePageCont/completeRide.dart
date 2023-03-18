@@ -173,7 +173,8 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                     SizedBox(
                                       height: size.height * 0.05,
                                     ),
-                                    MySlider(),
+                                    IncDecButtonWidget(),
+                                    //MySlider(),
                                     SizedBox(
                                       height: size.height * 0.05,
                                     ),
