@@ -1,11 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/buttons.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/index_containers.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/otp_field.dart';
+import 'package:meter_app/api/login_api.dart';
+import 'package:meter_app/model/otp.dart';
 import 'package:meter_app/routes/route_name.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/style.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class OtpPage extends StatefulWidget {
   const OtpPage({super.key});
@@ -15,6 +23,9 @@ class OtpPage extends StatefulWidget {
 }
 
 class _OtpPageState extends State<OtpPage> {
+  var otp;
+  var validateOtpRequestBody = ValidateOtpRequestBody();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -60,7 +71,21 @@ class _OtpPageState extends State<OtpPage> {
                 //Otp Field
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
-                  child: OtpField(),
+                  child: OTPTextField(
+                    length: 6,
+                    width: MediaQuery.of(context).size.width,
+                    fieldWidth: 30,
+                    style: GoogleFonts.inter(
+                        fontSize: 20, fontWeight: FontWeight.w700),
+                    textFieldAlignment: MainAxisAlignment.spaceBetween,
+                    fieldStyle: FieldStyle.underline,
+                    onCompleted: (pin) {
+                      setState(() {
+                        otp = pin;
+                      });
+                      print("Completed: " + pin);
+                    },
+                  ),
                 ),
 
                 SizedBox(
@@ -72,7 +97,33 @@ class _OtpPageState extends State<OtpPage> {
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: ButtonWidget(
                       text: 'Next',
-                      callback: () {
+                      callback: () async {
+                        SharedPreferences pref =
+                            await SharedPreferences.getInstance();
+                        var mobileNo = pref.getInt('mobile_no');
+                        otp = int.parse(otp);
+                        validateOtpRequestBody.phone = mobileNo;
+                        validateOtpRequestBody.otp = otp;
+
+                        LogInAPI()
+                            .validateOtp(validateOtpRequestBody)
+                            .then((value) async {
+                          if (value.statusCode == 200) {
+                            var validateResponse = ValidateOtpResponse.fromJson(
+                                jsonDecode(value.body));
+
+                            SharedPreferences pref = await SharedPreferences.getInstance();
+                            pref.setString("identification_key", validateResponse.result!.data!.identificationKey!);
+                            pref.setString("magik_link", validateResponse.result!.data!.magicLink!);
+
+                            debugPrint("OTP PAGE: ${validateResponse.result?.data?.magicLink}");
+                            Fluttertoast.showToast(msg: validateResponse!.result!.Messsage!);
+                          }else{
+                            Fluttertoast.showToast(msg: "Login Failed");
+                          }
+
+                        });
+
                         Navigator.pushNamed(context, enterUserNameScreenRoute);
                       }),
                 ),

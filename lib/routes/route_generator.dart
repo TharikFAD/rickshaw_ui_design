@@ -33,7 +33,7 @@ class RouteGenerator {
           case splashScreenRoute:
             return const SplashScreen();
           case loginScreenRoute:
-            return const LoginPage();
+            return LoginPage();
           case enterOTPScreenRoute:
             return const OtpPage();
           case homeScreenRoute:
@@ -64,7 +64,7 @@ class RouteGenerator {
             return const AddComplaintPage();
 
           default:
-            return const LoginPage();
+            return  LoginPage();
         }
       },
     );
