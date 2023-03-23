@@ -1,22 +1,22 @@
-// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables
+// ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
 
-class UserNameTextForm extends StatelessWidget {
-  final keyBoardType;
+class CalculateChangeWidget extends StatelessWidget {
   final controller;
-  final String hintText;
-  const UserNameTextForm({
+  final typeInput;
+  final hintText;
+  const CalculateChangeWidget({
     super.key,
     required this.controller,
+    required this.typeInput,
     required this.hintText,
-    this.keyBoardType,
   });
 
   @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: keyBoardType,
+      keyboardType: typeInput,
       controller: controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(
@@ -32,10 +32,12 @@ class UserNameTextForm extends StatelessWidget {
           ),
         ),
         fillColor: Colors.white,
+        
         filled: true,
         hintText: hintText,
       ),
-      minLines: 1,
+      maxLines: 1,
+      //maxLength: 4,
     );
   }
 }

@@ -1,0 +1,30 @@
+const String uatServerBaseUrl = 'http://dev-bee.com:8008/';
+const String liveServerBaseUrl = 'http://43.206.124.140/';
+const String localServerBaseUrl='http://192.168.0.147/';
+
+const String versionName = '1.1.0'; //TODO: NEED TO CHANGE BEFORE BUILD
+
+class ApiBaseUrl {
+  static String baseUrl = //TODO: NEED TO CHANGE BEFORE BUILD
+  uatServerBaseUrl; //UAT
+//liveServerBaseUrl; //LIVE
+//localServerBaseUrl;
+
+}
+
+class BuildVersion {
+  static String versionNameSuffix =
+  ApiBaseUrl.baseUrl == liveServerBaseUrl ? 'L' : 'U';
+  static String buildName = 'V $versionName $versionNameSuffix';
+}
+
+class ApiEndPoint {
+  static String sendOtp='api/v1/auth/send_otp';
+  static String validateOtp='api/v1/auth/validate_otp';
+
+  static String createFare='api/v1/fare/create-fare';
+
+  static String updateProfile='api/v1/user/update-user-details';
+
+}
+

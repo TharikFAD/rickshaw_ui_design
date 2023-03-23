@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
@@ -18,8 +20,52 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   var _isStarted = false;
   late GoogleMapController mapController;
-
   final LatLng _center = const LatLng(10.9641042, 76.9562562);
+  Position? _currentPosition;
+
+  @override
+  void initState() {
+    super.initState();
+    getCurrentLocation();
+  }
+
+  void getCurrentLocation() async {
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
+
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        Geolocator.openLocationSettings();
+        return Future.error('Location services are disabled.');
+      }
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return Future.error('Location permissions are denied');
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+
+
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.low,
+      );
+      debugPrint(" pos: $position");
+      _currentPosition = position;
+
+    } on PlatformException catch (e) {
+      debugPrint("$e");
+      getCurrentLocation();
+    }
+  }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -30,6 +76,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       //Drawer
       drawer: MyDrawerWidget(),
 
@@ -39,6 +86,8 @@ class _HomePageState extends State<HomePage> {
           //GoogleMap
           GoogleMap(
             onMapCreated: _onMapCreated,
+            myLocationButtonEnabled: false,
+            zoomControlsEnabled: false,
             initialCameraPosition: CameraPosition(target: _center, zoom: 17.0),
           ),
 
@@ -63,12 +112,12 @@ class _HomePageState extends State<HomePage> {
                 height: size.height * 0.65,
               ),
 
-              //BUtton thingy
+              //BUtton thingy New Start
               Visibility(
                 child: ElevatedButton(
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
-                      Size(size.width * 0.5, size.height * 0.07),
+                      Size(size.width * 0.8, size.height * 0.07),
                     ),
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
@@ -120,7 +169,7 @@ class _HomePageState extends State<HomePage> {
         ],
       ),
 
-      //start button
+      //start button Old
 
       // floatingActionButton: FloatingActionButton.extended(
       //   isExtended: true,

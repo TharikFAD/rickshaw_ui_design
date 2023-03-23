@@ -3,9 +3,12 @@ import 'package:meter_app/Pages/HomePage/home_page.dart';
 import 'package:meter_app/Pages/LoginPage/LoginPageCont/otp_page.dart';
 import 'package:meter_app/Pages/SplashScreenPage/splash_screen.dart';
 import 'package:meter_app/Pages/loginPage/LoginPageCont/username_page.dart';
+import 'package:meter_app/pages/bookingsPage/booking_page.dart';
 import 'package:meter_app/pages/communityPage/communityPage.dart';
 import 'package:meter_app/pages/communityPage/widgets/community_members.dart';
 import 'package:meter_app/pages/complaintPage/compaintPage.dart';
+import 'package:meter_app/pages/complaintPage/compaintPageCont/addComplaintPage.dart';
+import 'package:meter_app/pages/fareSettingsPage/addFarePage.dart';
 import 'package:meter_app/pages/fareSettingsPage/fareSettingPage.dart';
 import 'package:meter_app/pages/historyPage/history_page.dart';
 import 'package:meter_app/pages/homePage/homePageCont/completeRide.dart';
@@ -30,7 +33,7 @@ class RouteGenerator {
           case splashScreenRoute:
             return const SplashScreen();
           case loginScreenRoute:
-            return const LoginPage();
+            return LoginPage();
           case enterOTPScreenRoute:
             return const OtpPage();
           case homeScreenRoute:
@@ -53,9 +56,15 @@ class RouteGenerator {
             return const CompleteRidePage();
           case riderInfoScreenRoute:
             return const RiderInfoPage();
+          case addFareScreenRoute:
+            return const AddFarePage();
+          case bookingScreenRoute:
+            return const BookingsPage();
+          case addCompaintScreenRoute:
+            return const AddComplaintPage();
 
           default:
-            return const LoginPage();
+            return  LoginPage();
         }
       },
     );
