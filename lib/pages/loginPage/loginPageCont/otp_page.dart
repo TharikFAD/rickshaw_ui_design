@@ -7,7 +7,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/buttons.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/index_containers.dart';
-import 'package:meter_app/Pages/LoginPage/Widgets/otp_field.dart';
+
 import 'package:meter_app/api/login_api.dart';
 import 'package:meter_app/model/otp.dart';
 import 'package:meter_app/routes/route_name.dart';

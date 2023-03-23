@@ -6,7 +6,6 @@ import 'package:flutter/material.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/buttons.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/index_containers.dart';
-import 'package:meter_app/Pages/LoginPage/Widgets/phone_number_field.dart';
 import 'package:meter_app/api/login_api.dart';
 import 'package:meter_app/model/otp.dart';
 import 'package:meter_app/routes/route_name.dart';
