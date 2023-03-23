@@ -1,6 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, prefer_const_declarations, unnecessary_new
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_background_service/flutter_background_service.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
@@ -16,15 +20,102 @@ class CompleteRidePage extends StatefulWidget {
   State<CompleteRidePage> createState() => _CompleteRidePageState();
 }
 
-late GoogleMapController mapController;
+const notificationChannelId = 'my_foreground';
+const notificationId = 888;
 
-final LatLng _center = const LatLng(10.9641042, 76.9562562);
+Future<void> onStart(ServiceInstance serviceInstance) async {
+  late StreamSubscription<Position> _positionStream;
+  late List<Position> _positionHistory;
+  DateTime startTime = DateTime.now();
 
-void _onMapCreated(GoogleMapController controller) {
-  mapController = controller;
+  debugPrint("MANI TIME  ISOLATE $startTime");
+
+  _positionHistory = [];
+  _positionStream = Geolocator.getPositionStream(
+      locationSettings: const LocationSettings(
+          accuracy: LocationAccuracy.high, distanceFilter: 1))
+      .listen((Position position) {
+    _positionHistory.add(position);
+    double travelled_km = 0;
+    for (int i = 0; i < _positionHistory.length - 1; i++) {
+      travelled_km += Geolocator.distanceBetween(
+          _positionHistory[i].latitude,
+          _positionHistory[i].longitude,
+          _positionHistory[i + 1].latitude,
+          _positionHistory[i + 1].longitude);
+    }
+
+    //send data to isolate
+
+    Map<String, dynamic> dataToSend = {};
+    dataToSend['travelled_km'] = travelled_km;
+    serviceInstance.invoke('km', dataToSend);
+
+    Map<String, dynamic> timeToSend = {};
+    timeToSend['time'] = startTime;
+    serviceInstance.invoke('time', timeToSend);
+
+    debugPrint("MANI KM  ISOLATE $dataToSend, $timeToSend");
+  });
+
+  //receivedata to isolate
+  serviceInstance.on("stop").listen((event) {
+    double distance = 0;
+    for (int i = 0; i < _positionHistory.length - 1; i++) {
+      distance += Geolocator.distanceBetween(
+          _positionHistory[i].latitude,
+          _positionHistory[i].longitude,
+          _positionHistory[i + 1].latitude,
+          _positionHistory[i + 1].longitude);
+    }
+
+    if (event!['action'] == 'stopservice') {
+      //senddata from isolate to main
+      Map<String, dynamic> dataToSend = {'count': distance};
+      serviceInstance.invoke('data', dataToSend);
+      print("MANI data to Send $dataToSend");
+    }
+  });
 }
 
+Future<void> initializeService() async {
+  final service = FlutterBackgroundService();
+  await service.configure(
+      androidConfiguration: AndroidConfiguration(
+        onStart: onStart,
+        autoStart: true,
+        isForegroundMode: true,
+      ),
+      iosConfiguration: IosConfiguration());
+}
+
+
 class _CompleteRidePageState extends State<CompleteRidePage> {
+
+  late Position _currentPosition;
+  late StreamSubscription<Position> _positionStream;
+  late GoogleMapController mapController;
+  final LatLng _center = const LatLng(10.9641042, 76.9562562);
+
+  late double count;
+  double travelledKkm = 0;
+  DateTime? startTime;
+  DateTime? endTime;
+  Duration? difference;
+  List<Map<String, dynamic>> timeKm = [];
+
+
+    void _onMapCreated(GoogleMapController controller) {
+      mapController = controller;
+    }
+
+     @override
+      void initState() {
+        super.initState();
+        initializeService();
+      }
+
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
