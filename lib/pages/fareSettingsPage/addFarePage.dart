@@ -1,9 +1,13 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, file_names, sort_child_properties_last, unused_field, prefer_final_fields
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
 import 'package:meter_app/model/create_fare.dart';
+import 'package:meter_app/model/get_fare.dart';
 import 'package:meter_app/pages/fareSettingsPage/widgets/fareNameTextField.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
@@ -16,7 +20,7 @@ class AddFarePage extends StatefulWidget {
 }
 
 class _AddFarePageState extends State<AddFarePage> {
-  var _isStarted = false;
+  bool isLoading=false;
   var _Controller = TextEditingController();
   var _fareController = TextEditingController();
   var _kilometerController = TextEditingController();
@@ -28,6 +32,10 @@ class _AddFarePageState extends State<AddFarePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var fareId=ModalRoute.of(context)!.settings.arguments;
+    if(fareId!=null){
+      getFareById(fareId);
+    }
     return Scaffold(
       body: SingleChildScrollView(
         //Inside This Stack Widget, Whatever written first is placed in Front (or) UP layer
@@ -296,37 +304,68 @@ class _AddFarePageState extends State<AddFarePage> {
                       fontWeight: FontWeight.w700,
                       color: Color(0xFF000000)),
                 ),
-                onPressed: () async {
-                  SharedPreferences pref=await SharedPreferences.getInstance();
-                  var id=pref.getString('identification_key');
-                  var fareName=_Controller.text.trim();
-                  var minKm=_kilometerController.text.trim();
-                  var baseFare=_baseFareController.text.trim();
-                  var additionalFare=_additionalFareController.text.trim();
-                  var costPerMin=_costPerMinuteController.text.trim();
+                onPressed: () {
+                  _makeNetworkCall();
 
-                  createFareRequestBody.identificationKey=id;
-                  createFareRequestBody.fareInfo?.fareName=fareName;
-                  createFareRequestBody.fareInfo?.minKm=double.parse(minKm);
-                  createFareRequestBody.fareInfo?.baseFare=int.parse(baseFare);
-                  createFareRequestBody.fareInfo?.additionalFare=int.parse(additionalFare);
-                  createFareRequestBody.fareInfo?.costPerMinute=double.parse(costPerMin);
-                  debugPrint('ADD FARE PAGE $createFareRequestBody');
-
-                  FareAPI().createFare(createFareRequestBody).then((value) async{
-                    if(value.statuscode==200){
-
-                    }else{
-
-                    }
-
-                  });
-
-                  Navigator.popAndPushNamed(context, fareSettingScreenRoute);
+                  Visibility(
+                    visible: isLoading,
+                    child:  SizedBox(height: 10,width: 10 ,child: CircularProgressIndicator()),
+                  );
+                  Navigator.pushReplacementNamed(context, fareSettingScreenRoute);
                 }),
           ],
         );
       },
     );
+  }
+
+  void _makeNetworkCall() async{
+    setState(() {
+      isLoading = true;
+    });
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    var id=pref.getString('identification_key');
+    var fareName=_Controller.text.trim();
+    var minKm=_kilometerController.text.trim();
+    var baseFare=_baseFareController.text.trim();
+    var additionalFare=_additionalFareController.text.trim();
+    var costPerMin=_costPerMinuteController.text.trim();
+
+    createFareRequestBody.identificationKey=id;
+    createFareRequestBody.fareInfo?.fareName=fareName;
+    createFareRequestBody.fareInfo?.minKm=double.parse(minKm);
+    createFareRequestBody.fareInfo?.baseFare=int.parse(baseFare);
+    createFareRequestBody.fareInfo?.additionalFare=int.parse(additionalFare);
+    createFareRequestBody.fareInfo?.costPerMinute=double.parse(costPerMin);
+    debugPrint('ADD FARE PAGE $createFareRequestBody');
+
+    FareAPI().createFare(createFareRequestBody).then((value) async{
+      if(value.statusCode==200){
+        var res=CreateFareResponse.fromJson(jsonDecode(value.body));
+        Fluttertoast.showToast(msg: res!.result!.Messsage!);
+      }else{
+        Fluttertoast.showToast(msg: 'adding fare failed');
+      }
+
+    });
+
+
+      setState(() {
+        isLoading = false;
+      });
+
+  }
+
+  void getFareById(fareId) async {
+    debugPrint("INSIDE EDITFARE $fareId");
+    FareAPI().getFare(fareId).then((value) {
+      debugPrint("INSIDE EDITFARE ${value}");
+        var res=FareResponse.fromJson(value);
+        _Controller.text=res.result!.data![0]!.fareName!;
+        _kilometerController.text=res.result!.data![0]!.minKm!.toString();
+        _baseFareController.text=res.result!.data![0]!.baseFare!.toString();
+        _costPerMinuteController.text=res.result!.data![0]!.costPerMinute.toString();
+
+    });
   }
 }

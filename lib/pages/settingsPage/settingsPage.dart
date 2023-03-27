@@ -1,10 +1,19 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field
 
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/Pages/loginPage/widgets/user_name_textform.dart';
+import 'package:meter_app/api/user_api.dart';
+import 'package:meter_app/model/otp.dart';
+import 'package:meter_app/model/user_profile.dart';
 import 'package:meter_app/pages/HomePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../api/login_api.dart';
 
 class Settingspage extends StatefulWidget {
   const Settingspage({super.key});
@@ -17,6 +26,10 @@ class _SettingspageState extends State<Settingspage> {
   var UserNameController = TextEditingController();
   var DriverIdController = TextEditingController();
   var MobileNumberController = TextEditingController();
+  var VehicleNumberController=TextEditingController();
+  var otpRequestBody=OtpRequestBody();
+  var otp;
+  var updateProfile=UpdateProfileRequestBody();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -35,7 +48,7 @@ class _SettingspageState extends State<Settingspage> {
                 CustomAppBar(),
 
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: size.height * 0.02,
                 ),
 
                 //Profile Picture
@@ -53,7 +66,7 @@ class _SettingspageState extends State<Settingspage> {
                 ),
 
                 SizedBox(
-                  height: size.height * 0.07,
+                  height: size.height * 0.02,
                 ),
 
                 //Enter your name
@@ -72,7 +85,7 @@ class _SettingspageState extends State<Settingspage> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: size.height * 0.01,
                 ),
                 //TextField -m "Enter your Name"
                 Padding(
@@ -82,7 +95,7 @@ class _SettingspageState extends State<Settingspage> {
                       hintText: 'Enter UserName'),
                 ),
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: size.height * 0.02,
                 ),
 
                 //Driver ID
@@ -101,7 +114,7 @@ class _SettingspageState extends State<Settingspage> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: size.height * 0.01,
                 ),
 
                 //TextField -m "Driver ID"
@@ -114,7 +127,36 @@ class _SettingspageState extends State<Settingspage> {
 
                 //Change Mobile Number
                 SizedBox(
-                  height: size.height * 0.05,
+                  height: size.height * 0.02,
+                ),
+
+                Padding(
+                  padding: const EdgeInsets.only(
+                    left: 51.0,
+                  ),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Enter Vehicle Number',
+                        style: GoogleFonts.inter(
+                            fontWeight: FontWeight.w600, fontSize: 16),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+
+                //TextField -m "Enter Mobile Number"
+                Padding(
+                  padding: const EdgeInsets.only(left: 48.0, right: 48.0),
+                  child: UserNameTextForm(
+                      controller: VehicleNumberController,
+                      hintText: 'Enter Vehicle Number'),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
                 ),
 
                 Padding(
@@ -132,7 +174,7 @@ class _SettingspageState extends State<Settingspage> {
                   ),
                 ),
                 SizedBox(
-                  height: size.height * 0.02,
+                  height: size.height * 0.01,
                 ),
 
                 //TextField -m "Enter Mobile Number"
@@ -146,6 +188,7 @@ class _SettingspageState extends State<Settingspage> {
                   height: size.height * 0.02,
                 ),
 
+
                 //Send OTP Text Button
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
@@ -153,7 +196,14 @@ class _SettingspageState extends State<Settingspage> {
                     mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       InkWell(
-                        onTap: () {},
+                        onTap: () async {
+                          otpRequestBody.phone=int.parse(MobileNumberController.text.trim());
+                          otpRequestBody.countryCode='+91';
+                          debugPrint("SETTINGS PAGE ${otpRequestBody.phone}");
+                          LogInAPI().sendOtp(otpRequestBody);
+
+                          _showOTPDialog(context);
+                        },
                         child: Text(
                           'Send OTP',
                           style: GoogleFonts.inter(
@@ -203,17 +253,6 @@ class _SettingspageState extends State<Settingspage> {
           ),
         ],
       ),
-      // floatingActionButton: FloatingActionButton.extended(
-      //   isExtended: true,
-      //   onPressed: () {
-      //     _dialogBuilder(context);
-      //   },
-      //   label: Text(
-      //     'Save',
-      //     style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 
@@ -258,9 +297,33 @@ class _SettingspageState extends State<Settingspage> {
                     color: Color(0xFF000000)),
               ),
               onPressed: () async {
+                SharedPreferences pref=await SharedPreferences.getInstance();
+                var identificationKey=pref.getString('identification_key');
                 var driverId=DriverIdController.text.trim();
                 var driverName=UserNameController.text.trim();
                 var mobileNo=MobileNumberController.text.trim();
+                var vehicleNumber=VehicleNumberController.text.trim();
+                var Otp=otp;
+
+                updateProfile.identificationKey=identificationKey;
+                updateProfile.driverId=driverId;
+                updateProfile.name=driverName;
+                updateProfile.phone=int.parse(mobileNo);
+                updateProfile.otp=int.parse(Otp);
+                updateProfile.vehicleNumber=vehicleNumber;
+
+                debugPrint("SETTINGS PAGE ${updateProfile}");
+
+                UserAPI().updateProfile(updateProfile).then((value) async{
+
+                    debugPrint("SETTINGS PAGE ${value}");
+
+                  var res=UpdateProfileResponse.fromJson(value);
+                  Fluttertoast.showToast(msg: res.result!.Messsage!);
+
+
+                });
+
 
                 Navigator.of(context).pop();
               },
@@ -270,5 +333,37 @@ class _SettingspageState extends State<Settingspage> {
       },
     );
   }
+
+  Future<void> _showOTPDialog(BuildContext context) async {
+    await showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Enter OTP'),
+          content: TextField(
+            autofocus: true,
+            keyboardType: TextInputType.number,
+            maxLength: 6,
+            onChanged: (value) {
+              otp = value;
+            },
+            decoration: InputDecoration(
+              hintText: 'Enter OTP',
+            ),
+          ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Submit'),
+              onPressed: () {
+                Navigator.of(context).pop();
+                // Do something with the OTP entered
+              },
+            ),
+          ],
+        );
+      },
+    );
+  }
+
 }
 

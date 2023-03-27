@@ -112,7 +112,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
      @override
       void initState() {
         super.initState();
-        initializeService();
+        //initializeService();
       }
 
 
