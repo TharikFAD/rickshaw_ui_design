@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 
 class FareNameTextFormField extends StatelessWidget {
-  final controller;
-  final typeInput;
+  final TextEditingController controller;
+  final TextInputType typeInput;
   final String hintText;
   const FareNameTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
-    this.typeInput,
+    required this.typeInput,
   });
 
   @override

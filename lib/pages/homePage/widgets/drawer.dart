@@ -122,7 +122,7 @@ class MyDrawerWidget extends StatelessWidget {
             },
             leading: Image.asset('assets/bx_trip.png'),
             title: Text(
-              'Bookings',
+              'BOOKINGS',
               style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
@@ -224,34 +224,30 @@ class MyDrawerWidget extends StatelessWidget {
           ),
 
           SizedBox(
-            height: size.height * 0.025,
+            height: size.height * 0.08,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 18.0),
-            child: Expanded(
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  'v1.0.1',
-                  style: GoogleFonts.mina(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-            ),
-          ),
-
-          Expanded(
             child: Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.bottomLeft,
               child: Text(
-                'Made with ❤️ AZEP METER',
+                'v1.0.1',
                 style: GoogleFonts.mina(
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
                     color: Colors.white),
               ),
+            ),
+          ),
+
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              'Made with ❤️ AZEP METER',
+              style: GoogleFonts.mina(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
             ),
           ),
         ],

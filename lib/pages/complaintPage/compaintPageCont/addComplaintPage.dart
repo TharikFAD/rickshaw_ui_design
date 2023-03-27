@@ -18,6 +18,7 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Stack(
         children: [
           //Content

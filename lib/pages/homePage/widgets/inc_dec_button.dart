@@ -3,6 +3,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+class GlobalData {
+  static double _counterValue = 1.0;
+}
+
 class IncDecButtonWidget extends StatefulWidget {
   const IncDecButtonWidget({super.key});
 
@@ -11,24 +15,42 @@ class IncDecButtonWidget extends StatefulWidget {
 }
 
 class _IncDecButtonWidgetState extends State<IncDecButtonWidget> {
-  double _counter = 1.0;
+  double? _counter;
+
+  @override
+  void initState() {
+    _counter = GlobalData._counterValue;
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    GlobalData._counterValue = 1.0;
+    super.dispose();
+  }
 
   //Increment Counter Method
   void _incrementCounter() {
-    setState(() {
-      if (_counter < 3.0) {
-        _counter += 0.5;
-      }
-    });
+    if (_counter! < 3.0) {
+      setState(() {
+        _counter = _counter! + 0.5;
+        GlobalData._counterValue = _counter!;
+      });
+
+      debugPrint("Increased : $_counter");
+    }
   }
 
   //Decrement Counter Method
   void _decrementCounter() {
-    setState(() {
-      if (_counter > 1.0) {
-        _counter -= 0.5;
-      }
-    });
+    if (_counter! > 1.0) {
+      setState(() {
+        _counter = _counter! - 0.5;
+        GlobalData._counterValue = _counter!;
+      });
+
+      debugPrint("Decreased : $_counter");
+    }
   }
 
   @override
@@ -41,7 +63,7 @@ class _IncDecButtonWidgetState extends State<IncDecButtonWidget> {
       children: [
         Center(
             child: Text(
-          '${_counter} X',
+          '$_counter X',
           style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
         )),
         SizedBox(

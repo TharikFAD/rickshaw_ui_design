@@ -2,16 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class FareList extends StatelessWidget {
-  const FareList({super.key});
+  const FareList({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.of(context).size;
     return InkWell(
-      onTap: () {
-        
-      },
+      onTap: () {},
       child: Container(
+        margin: EdgeInsets.only(left: 12, top: 12, right: 12),
         height: size.height * 0.23,
         width: size.width,
         decoration: BoxDecoration(

@@ -19,52 +19,73 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      body: SingleChildScrollView(
-        //Inside This Stack Widget, Whatever written first is placed in Front (or) UP layer
-        child: Stack(
+      //AppBar
+      appBar: AppBar(
+        title: Text(
+          "Auto Kaaran",
+          //community[0],
+          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
+        ), //appbar title
+        backgroundColor: Color(0xFF4885ED), //appbar background color
+
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.popAndPushNamed(context, homeScreenRoute);
+            },
+            child: Icon(
+              Icons.home,
+              size: 32,
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.05,
+          )
+        ],
+      ),
+
+      //Body
+      body: Container(
+        height: size.height,
+        width: size.width,
+        child: Column(
           children: [
-            //Add Button => Top Layer
+            //Contents
+            Expanded(
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: 6,
+                itemBuilder: (context, index) {
+                  return FareList(size: size);
+                },
+              ),
+            ),
+
+            //Button
             Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.9,
-                  ),
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.8, size.height * 0.07),
-                      ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(
+                      Size(size.width * 0.8, size.height * 0.07),
                     ),
-                    onPressed: () {
-                      _dialogBuilder(context);
-                    },
-                    child: Text(
-                      'Add',
-                      style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12))),
+                  ),
+                  onPressed: () {
+                    _dialogBuilder(context);
+                  },
+                  child: Text(
+                    'Add',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                ],
+                ),
               ),
             ),
-
-            //Contents => Middle Layer
-            Padding(
-              padding: const EdgeInsets.only(top: 150, left: 12.0, right: 12.0),
-              child: Column(
-                children: [
-                  FareList(),
-                ],
-              ),
-            ),
-
-            //App Bar => Last Layer
-            CustomAppBar(),
           ],
         ),
       ),

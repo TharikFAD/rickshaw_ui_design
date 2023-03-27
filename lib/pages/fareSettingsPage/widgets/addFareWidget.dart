@@ -39,6 +39,7 @@ class AddFareWidget extends StatelessWidget {
           FareNameTextFormField(
             controller: _Controller,
             hintText: 'Fair Name',
+            typeInput: TextInputType.name,
           ),
           SizedBox(
             height: size.height * 0.02,
@@ -66,8 +67,8 @@ class AddFareWidget extends StatelessWidget {
                 height: size.height * 0.075,
                 width: size.width * 0.4,
                 decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(18),
-                    color: Colors.grey),
+                  borderRadius: BorderRadius.circular(18),
+                ),
                 child: FareNameTextFormField(
                   controller: _kilometerController,
                   hintText: 'Min Kms',
