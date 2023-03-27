@@ -23,8 +23,10 @@ class ApiEndPoint {
   static String validateOtp='api/v1/auth/validate_otp';
 
   static String createFare='api/v1/fare/create-fare';
+  static String getFare='api/v1/fare/get-fare-by-id';
 
   static String updateProfile='api/v1/user/update-user-details';
+
 
 }
 

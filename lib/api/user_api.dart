@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
@@ -16,20 +17,28 @@ class UserAPI{
   Response? response;
   Map<String,dynamic>? data;
 
-  Future<dynamic> updateProfile(UpdateUserProfileRequestBody updateUserProfileRequestBody)async{
-    http.Response responseStatus;
+  Future<dynamic> updateProfile(UpdateProfileRequestBody updateProfileRequestBody)async{
+
+    debugPrint('PROFILE UPDATE REQUEST ${updateProfileRequestBody.toJson()}');
 
     try{
-      final response=await http.post(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.updateProfile),
-          body: json.encode(updateUserProfileRequestBody.toJson()));
+      final response=await http.put(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.updateProfile),
+          body: json.encode(updateProfileRequestBody.toJson()));
 
-      responseStatus=response;
+      if (response.statusCode == 200) {
+        data = jsonDecode(response.body);
+        result = data;
+      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 401) {
+        //TODO
+      }
+      debugPrint('PROFILE UPDATE RESPONSE ${response.body}');
     }on SocketException {
       Fluttertoast.showToast(msg:"No Internet connection. Please Try Again Later!");
       throw FetchDataException('No Internet connection');
     }
 
-    return responseStatus;
+    return result;
   }
   
 }
