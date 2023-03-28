@@ -145,7 +145,7 @@ class HistoryContentWidget extends StatelessWidget {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pushNamed(context, complaintScreenRoute);
+                      Navigator.popAndPushNamed(context, addCompaintScreenRoute);
                     },
                     child: Text('Report'),
                   )
