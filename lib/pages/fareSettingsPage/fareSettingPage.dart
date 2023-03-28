@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/pages/fareSettingsPage/widgets/farelistPage.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 class FareSettingsPage extends StatefulWidget {

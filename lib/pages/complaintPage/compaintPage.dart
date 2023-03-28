@@ -3,7 +3,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/pages/complaintPage/widgets/complaintsList.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 class ComplaintPage extends StatefulWidget {
@@ -19,46 +18,68 @@ class _ComplaintPageState extends State<ComplaintPage> {
     var size = MediaQuery.of(context).size;
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 22.0, right: 22.0, top: 120),
-              child: ComplaintsList(),
-            ),
+      appBar: AppBar(
+        title: Text(
+          'Auto Kaaran',
+          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
+        ), //appbar title
+        backgroundColor: Color(0xFF4885ED), //appbar background color
 
-            //AppBar
-            CustomAppBar(),
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.popAndPushNamed(context, homeScreenRoute);
+            },
+            child: Icon(
+              Icons.home,
+              size: 32,
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.05,
+          )
+        ],
+      ),
+
+      //Body
+      body: Container(
+        height: size.height,
+        width: size.width,
+        child: Column(
+          children: [
+            Expanded(
+              child: ListView.builder(
+                physics: BouncingScrollPhysics(),
+                itemCount: 1,
+                itemBuilder: (context, index) {
+                  return ComplaintsList(size: size);
+                },
+              ),
+            ),
 
             //Button Spacing
             Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.9,
-                  ),
-
-                  //BUtton thingy New Start
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.8, size.height * 0.07),
-                      ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
+              child: Padding(
+                padding: const EdgeInsets.only(bottom: 12.0, top: 12.0),
+                child: ElevatedButton(
+                  style: ButtonStyle(
+                    fixedSize: MaterialStateProperty.all(
+                      Size(size.width * 0.8, size.height * 0.07),
                     ),
-                    onPressed: () {
-                      _dialogBuilder(context);
-                    },
-                    child: Text(
-                      'ADD COMPLAINT',
-                      style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12))),
+                  ),
+                  onPressed: () {
+                    _dialogBuilder(context);
+                  },
+                  child: Text(
+                    'ADD COMPLAINT',
+                    style: GoogleFonts.inter(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w700,
                     ),
                   ),
-                ],
+                ),
               ),
             ),
           ],

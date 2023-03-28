@@ -26,21 +26,25 @@ class HistoryContentWidget extends StatelessWidget {
             ),
             blurRadius: 10.0,
             spreadRadius: 2.0,
-          ), //BoxShadow
+          ),
           BoxShadow(
             color: Colors.white,
             offset: const Offset(0.0, 0.0),
             blurRadius: 0.0,
             spreadRadius: 0.0,
-          ), //BoxShadow
+          ),
         ],
       ),
+
+      //Contents ↓↓↓
       child: Center(
         child: Column(
           children: [
             Padding(
               padding: const EdgeInsets.only(left: 12.0, top: 12),
-              child: Row(
+              child:
+                  //Date of ride
+                  Row(
                 children: [
                   Image.asset('assets/Driving.png'),
                   SizedBox(
@@ -66,6 +70,7 @@ class HistoryContentWidget extends StatelessWidget {
                 ],
               ),
             ),
+            //Pickup Location
             Padding(
               padding: const EdgeInsets.only(left: 12.0, top: 12),
               child: Row(
@@ -100,6 +105,8 @@ class HistoryContentWidget extends StatelessWidget {
                 ],
               ),
             ),
+
+            //Drop Location
             Padding(
               padding: const EdgeInsets.only(left: 12.0, top: 12),
               child: Row(
@@ -134,6 +141,8 @@ class HistoryContentWidget extends StatelessWidget {
                 ],
               ),
             ),
+
+            //Report Button
             Padding(
               padding: const EdgeInsets.only(left: 12.0, top: 12),
               child: Row(

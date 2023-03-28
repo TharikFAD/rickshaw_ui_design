@@ -8,11 +8,12 @@ import 'package:meter_app/pages/complaintPage/widgets/subjectD-Down.dart';
 import 'package:meter_app/pages/complaintPage/widgets/tripID-D-Down.dart';
 
 class AddComplaint extends StatelessWidget {
-  const AddComplaint({super.key});
+  final TextEditingController complaintsTextController =
+      TextEditingController();
+  AddComplaint({super.key});
 
   @override
   Widget build(BuildContext context) {
-    var _complaintsTextController = TextEditingController();
     var size = MediaQuery.of(context).size;
     return SingleChildScrollView(
       child: Column(
@@ -130,7 +131,8 @@ class AddComplaint extends StatelessWidget {
             height: size.height * 0.025,
           ),
           ComplaintsTextField(
-              controller: _complaintsTextController,
+              typeInput: TextInputType.multiline,
+              controller: complaintsTextController,
               hintText: 'Your Complains here'),
 
           SizedBox(

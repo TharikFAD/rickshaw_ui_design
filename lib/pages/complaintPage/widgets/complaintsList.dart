@@ -4,7 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ComplaintsList extends StatelessWidget {
-  const ComplaintsList({super.key});
+  const ComplaintsList({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
 
   @override
   Widget build(BuildContext context) {
@@ -12,330 +17,340 @@ class ComplaintsList extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: size.height * 0.05,
+          height: size.height * 0.025,
         ),
 
         //Pending Card
-        Container(
-          height: size.height * 0.1,
-          width: size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: const Offset(
-                  0.0,
-                  0.0,
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+          child: Container(
+            height: size.height * 0.1,
+            width: size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: const Offset(
+                    0.0,
+                    0.0,
+                  ),
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.015,
                 ),
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-              BoxShadow(
-                color: Colors.white,
-                offset: const Offset(0.0, 0.0),
-                blurRadius: 0.0,
-                spreadRadius: 0.0,
-              ), //BoxShadow
-            ],
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'Trip ID: 2299',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color(0xFF9B9B9B),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'SUBJECT: KM LOW',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color(0xFF000000),
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width * 0.2,
+                    ),
+                    Text(
+                      'PENDING',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * 0.015,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'Trip ID: 2299',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: Color(0xFF9B9B9B),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'SUBJECT: KM LOW',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.2,
-                  ),
-                  Text(
-                    'PENDING',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
-        SizedBox(
-          height: size.height * 0.02,
         ),
 
         //Resolved Card
-        Container(
-          height: size.height * 0.1,
-          width: size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: const Offset(
-                  0.0,
-                  0.0,
-                ),
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-              BoxShadow(
-                color: Colors.white,
-                offset: const Offset(0.0, 0.0),
-                blurRadius: 0.0,
-                spreadRadius: 0.0,
-              ), //BoxShadow
-            ],
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * 0.015,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'Trip ID: 2299',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: Color(0xFF9B9B9B),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'SUBJECT: OTHER',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.2,
-                  ),
-                  Text(
-                    'RESOLVED',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Colors.green,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
         SizedBox(
-          height: size.height * 0.02,
+          height: size.height * 0.025,
         ),
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+          child: Container(
+            height: size.height * 0.1,
+            width: size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: const Offset(
+                    0.0,
+                    0.0,
+                  ),
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.015,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'Trip ID: 2299',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color(0xFF9B9B9B),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'SUBJECT: OTHER',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color(0xFF000000),
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width * 0.2,
+                    ),
+                    Text(
+                      'RESOLVED',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Colors.green,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+
         //Pending Card
-        Container(
-          height: size.height * 0.1,
-          width: size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: const Offset(
-                  0.0,
-                  0.0,
-                ),
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-              BoxShadow(
-                color: Colors.white,
-                offset: const Offset(0.0, 0.0),
-                blurRadius: 0.0,
-                spreadRadius: 0.0,
-              ), //BoxShadow
-            ],
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * 0.015,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'Trip ID: 1499',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: Color(0xFF9B9B9B),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'SUBJECT: FARE LOW',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.15,
-                  ),
-                  Text(
-                    'PENDING',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Colors.red,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
         SizedBox(
-          height: size.height * 0.02,
+          height: size.height * 0.025,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+          child: Container(
+            height: size.height * 0.1,
+            width: size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: const Offset(
+                    0.0,
+                    0.0,
+                  ),
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.015,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'Trip ID: 1499',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color(0xFF9B9B9B),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'SUBJECT: FARE LOW',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color(0xFF000000),
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width * 0.15,
+                    ),
+                    Text(
+                      'PENDING',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
 
         //Processed Card
-        Container(
-          height: size.height * 0.1,
-          width: size.width,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(12),
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey,
-                offset: const Offset(
-                  0.0,
-                  0.0,
-                ),
-                blurRadius: 10.0,
-                spreadRadius: 2.0,
-              ), //BoxShadow
-              BoxShadow(
-                color: Colors.white,
-                offset: const Offset(0.0, 0.0),
-                blurRadius: 0.0,
-                spreadRadius: 0.0,
-              ), //BoxShadow
-            ],
-          ),
-          child: Column(
-            children: [
-              SizedBox(
-                height: size.height * 0.015,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'Trip ID: 3129',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
-                      color: Color(0xFF9B9B9B),
-                    ),
-                  ),
-                ],
-              ),
-              SizedBox(
-                height: size.height * 0.01,
-              ),
-              Row(
-                children: [
-                  SizedBox(
-                    width: size.width * 0.02,
-                  ),
-                  Text(
-                    'SUBJECT: KM LOW',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Color(0xFF000000),
-                    ),
-                  ),
-                  SizedBox(
-                    width: size.width * 0.13,
-                  ),
-                  Text(
-                    'PROCESSED',
-                    style: GoogleFonts.inter(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 18,
-                      color: Colors.orange,
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-        ),
         SizedBox(
-          height: size.height * 0.02,
+          height: size.height * 0.025,
+        ),
+        Padding(
+          padding: const EdgeInsets.only(left: 12.0, right: 12.0),
+          child: Container(
+            height: size.height * 0.1,
+            width: size.width,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey,
+                  offset: const Offset(
+                    0.0,
+                    0.0,
+                  ),
+                  blurRadius: 10.0,
+                  spreadRadius: 2.0,
+                ), //BoxShadow
+                BoxShadow(
+                  color: Colors.white,
+                  offset: const Offset(0.0, 0.0),
+                  blurRadius: 0.0,
+                  spreadRadius: 0.0,
+                ), //BoxShadow
+              ],
+            ),
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.015,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'Trip ID: 3129',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                        color: Color(0xFF9B9B9B),
+                      ),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Row(
+                  children: [
+                    SizedBox(
+                      width: size.width * 0.02,
+                    ),
+                    Text(
+                      'SUBJECT: KM LOW',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Color(0xFF000000),
+                      ),
+                    ),
+                    SizedBox(
+                      width: size.width * 0.13,
+                    ),
+                    Text(
+                      'PROCESSED',
+                      style: GoogleFonts.inter(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 18,
+                        color: Colors.orange,
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
         ),
       ],
     );

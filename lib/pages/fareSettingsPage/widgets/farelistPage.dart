@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class FareList extends StatelessWidget {
   const FareList({
-    Key? key,
+    Key? key, 
     required this.size,
   }) : super(key: key);
 

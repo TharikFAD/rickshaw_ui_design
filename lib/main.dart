@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: SplashScreen(),
-      //initialRoute: loginScreenRoute,
       onGenerateRoute: RouteGenerator.generateRoute,
     );
   }
@@ -40,7 +39,7 @@ class _SplashScreenState extends State<SplashScreen>
   )..repeat(reverse: true);
   late final Animation<double> _animation = CurvedAnimation(
     parent: _controller,
-    curve: Curves.easeIn,
+    curve: Curves.easeInOutQuint,
   );
   startTime() async {
     var duration = const Duration(seconds: 7);
@@ -50,6 +49,10 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> navigationPage() async {
     Navigator.of(context).pushReplacementNamed(loginScreenRoute);
   }
+
+  //Permission Handler ↓↓↓↓. This handles the landing page scenario based on the
+  //user data. Meaning if the user is already logged in homePageScreenRoute will
+  //be launched. But for now. it is commented cuz there is no API on here. ↓↓↓↓↓
 
   // Future<void> navigationPage() async {
   //   SharedPreferences pref = await SharedPreferences.getInstance();

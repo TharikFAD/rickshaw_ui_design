@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 
 class ComplaintsTextField extends StatelessWidget {
-  final controller;
+  final TextEditingController controller;
   final typeInput;
   final String hintText;
   const ComplaintsTextField({
@@ -35,6 +35,7 @@ class ComplaintsTextField extends StatelessWidget {
         filled: true,
         hintText: hintText,
       ),
+      scrollPhysics: BouncingScrollPhysics(),
       minLines: 5,
       maxLines: 10,
     );

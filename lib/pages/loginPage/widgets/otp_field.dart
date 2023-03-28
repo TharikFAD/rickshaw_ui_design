@@ -11,7 +11,7 @@ class OtpField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return OTPTextField(
-      length: 4,
+      length: 6,
       width: MediaQuery.of(context).size.width,
       fieldWidth: 40,
       style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
