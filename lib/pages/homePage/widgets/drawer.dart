@@ -122,7 +122,7 @@ class MyDrawerWidget extends StatelessWidget {
             },
             leading: Image.asset('assets/bx_trip.png'),
             title: Text(
-              'Bookings',
+              'BOOKINGS',
               style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,

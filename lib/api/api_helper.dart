@@ -27,6 +27,8 @@ class ApiEndPoint {
 
   static String updateProfile='api/v1/user/update-user-details';
 
+  static String createComplaint='api/v1/complaint/add-complaint';
+  static String getComplaint='api/v1/complaint/get-complaint';
 
 }
 
