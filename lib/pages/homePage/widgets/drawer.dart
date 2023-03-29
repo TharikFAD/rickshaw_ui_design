@@ -207,7 +207,7 @@ class MyDrawerWidget extends StatelessWidget {
           ),
           ListTile(
             onTap: () {
-              Navigator.pop(context);
+              Navigator.popAndPushNamed(context, complaintScreenRoute);
             },
             leading: Icon(
               Icons.support_agent,

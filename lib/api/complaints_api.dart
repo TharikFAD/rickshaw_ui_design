@@ -7,6 +7,7 @@ import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:meter_app/api/api_helper.dart';
 import 'package:meter_app/model/create_complaint.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import 'custom_exception.dart';
@@ -43,11 +44,13 @@ class ComplaintAPI{
   }
 
   Future<dynamic> getComplaints()async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    var driverId=pref.getString('identification_key');
 
-    debugPrint('GET COMPLAINT REQUEST ');
+    debugPrint('GET COMPLAINT REQUEST $driverId');
 
     try{
-      final response=await http.get(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.getComplaint));
+      final response=await http.get(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.getComplaint).replace(queryParameters: {'DriverKey':driverId}));
 
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
