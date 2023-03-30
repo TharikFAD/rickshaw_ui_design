@@ -40,7 +40,7 @@ class AddComplaint extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Select Language',
+                '',
                 style: GoogleFonts.inter(
                     fontWeight: FontWeight.w600, fontSize: 16),
               ),
@@ -61,20 +61,18 @@ class AddComplaint extends StatelessWidget {
               child: LanguageDropDownWidget(),
             ),
           ),
-          SizedBox(
-            height: size.height * 0.025,
-          ),
+
           Row(
             children: [
               Text(
-                'Select the issue',
+                '',
                 style: GoogleFonts.inter(
                     fontWeight: FontWeight.w600, fontSize: 16),
               ),
             ],
           ),
           SizedBox(
-            height: size.height * 0.025,
+            height: size.height * 0.01,
           ),
           Container(
             height: size.height * 0.07,
@@ -88,20 +86,18 @@ class AddComplaint extends StatelessWidget {
               child: SubjectDropDownWidget(),
             ),
           ),
-          SizedBox(
-            height: size.height * 0.025,
-          ),
+
           Row(
             children: [
               Text(
-                'Select the Trip ID',
+                '',
                 style: GoogleFonts.inter(
                     fontWeight: FontWeight.w600, fontSize: 16),
               ),
             ],
           ),
           SizedBox(
-            height: size.height * 0.025,
+            height: size.height * 0.01,
           ),
           Container(
             height: size.height * 0.07,
@@ -115,20 +111,18 @@ class AddComplaint extends StatelessWidget {
               child: TripIdDropDownWidget(),
             ),
           ),
-          SizedBox(
-            height: size.height * 0.025,
-          ),
+
           Row(
             children: [
               Text(
-                'Enter your complains',
+                '',
                 style: GoogleFonts.inter(
                     fontWeight: FontWeight.w600, fontSize: 16),
               ),
             ],
           ),
           SizedBox(
-            height: size.height * 0.025,
+            height: size.height * 0.01,
           ),
           ComplaintsTextField(
               typeInput: TextInputType.multiline,
@@ -136,7 +130,7 @@ class AddComplaint extends StatelessWidget {
               hintText: 'Your Complains here'),
 
           SizedBox(
-            height: size.height * 0.2,
+            height: size.height * 0.01,
           )
         ],
       ),

@@ -12,7 +12,7 @@ class HistoryContentWidget extends StatelessWidget {
     var size = MediaQuery.of(context).size;
 
     return Container(
-      height: size.height * 0.25,
+      // height: size.height * 0.25,
       width: size.width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
@@ -161,6 +161,10 @@ class HistoryContentWidget extends StatelessWidget {
                 ],
               ),
             ),
+
+            SizedBox(
+              height: size.height * 0.02,
+            )
           ],
         ),
       ),

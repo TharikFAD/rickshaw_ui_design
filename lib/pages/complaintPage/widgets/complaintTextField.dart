@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, prefer_typing_uninitialized_variables
 
 import 'package:flutter/material.dart';
 
@@ -12,6 +12,10 @@ class ComplaintsTextField extends StatelessWidget {
     required this.hintText,
     this.typeInput,
   });
+
+  void dispose() {
+    controller.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

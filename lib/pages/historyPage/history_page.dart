@@ -46,23 +46,19 @@ class _HistoryPageState extends State<HistoryPage> {
       ),
 
       //Body
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(
-                    top: 14.0,
-                    left: 14.0,
-                    right: 14.0,
-                  ),
-                  child: HistoryContentWidget(),
-                ),
-              ],
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(
+                top: 14.0,
+                left: 14.0,
+                right: 14.0,
+              ),
+              child: HistoryContentWidget(),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
