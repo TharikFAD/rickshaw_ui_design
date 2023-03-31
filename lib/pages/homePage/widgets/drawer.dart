@@ -10,12 +10,14 @@ class MyDrawerWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var _controller = TextEditingController();
+    var controller = TextEditingController();
+    String version = 'v1.0.1 Beta';
     return Drawer(
       elevation: 0,
       backgroundColor: Color(0xFF4885ED),
       child: ListView(
         children: [
+          //Profile and title
           SizedBox(
             height: size.height * 0.125,
             child: DrawerHeader(
@@ -64,7 +66,8 @@ class MyDrawerWidget extends StatelessWidget {
             height: size.height * 0.01,
           ),
 
-          //contents
+          //contents ↓
+          //Home Button
           ListTile(
             onTap: () {
               Navigator.pushNamed(context, homeScreenRoute);
@@ -82,6 +85,8 @@ class MyDrawerWidget extends StatelessWidget {
                   color: Colors.white),
             ),
           ),
+
+          //History Button
           ListTile(
             onTap: () {
               Navigator.popAndPushNamed(context, historyScreenRoute);
@@ -99,6 +104,8 @@ class MyDrawerWidget extends StatelessWidget {
                   color: Colors.white),
             ),
           ),
+
+          //Fare Settings
           ListTile(
             onTap: () {
               Navigator.popAndPushNamed(context, fareSettingScreenRoute);
@@ -109,13 +116,15 @@ class MyDrawerWidget extends StatelessWidget {
               color: Colors.white,
             ),
             title: Text(
-              'FAIR SETTINGS',
+              'FARE SETTINGS',
               style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
                   color: Colors.white),
             ),
           ),
+
+          //Bookings Button
           ListTile(
             onTap: () {
               Navigator.popAndPushNamed(context, bookingScreenRoute);
@@ -129,6 +138,8 @@ class MyDrawerWidget extends StatelessWidget {
                   color: Colors.white),
             ),
           ),
+
+          //Settings Button
           ListTile(
             onTap: () {
               Navigator.popAndPushNamed(context, settingScreenRoute);
@@ -146,6 +157,8 @@ class MyDrawerWidget extends StatelessWidget {
                   color: Colors.white),
             ),
           ),
+
+          //Community Button
           ListTile(
             onTap: () {
               Navigator.popAndPushNamed(context, communityScreenRoute);
@@ -163,6 +176,8 @@ class MyDrawerWidget extends StatelessWidget {
                   color: Colors.white),
             ),
           ),
+
+          //Surge Button
           ListTile(
             onTap: () {
               showDialog(
@@ -176,7 +191,7 @@ class MyDrawerWidget extends StatelessWidget {
                       ),
                       content: TextField(
                         onChanged: (value) {},
-                        controller: _controller,
+                        controller: controller,
                         decoration:
                             InputDecoration(hintText: 'e.g, 2x, 3x, 4x...'),
                         keyboardType: TextInputType.number,
@@ -205,6 +220,8 @@ class MyDrawerWidget extends StatelessWidget {
                   color: Colors.white),
             ),
           ),
+
+          //Support Button
           ListTile(
             onTap: () {
               Navigator.popAndPushNamed(context, complaintScreenRoute);
@@ -223,35 +240,36 @@ class MyDrawerWidget extends StatelessWidget {
             ),
           ),
 
+          //space
           SizedBox(
-            height: size.height * 0.025,
-          ),
-          Padding(
-            padding: const EdgeInsets.only(left: 18.0),
-            child: Expanded(
-              child: Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  'v1.0.1',
-                  style: GoogleFonts.mina(
-                      fontSize: 10,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white),
-                ),
-              ),
-            ),
+            height: size.height * 0.05,
           ),
 
-          Expanded(
+          //Version
+          Padding(
+            padding: const EdgeInsets.only(left: 18.0),
             child: Align(
-              alignment: Alignment.bottomCenter,
+              alignment: Alignment.bottomLeft,
               child: Text(
-                'Made with ❤️ AZEP METER',
+                version,
+                // 'v1.0.1',
                 style: GoogleFonts.mina(
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
                     color: Colors.white),
               ),
+            ),
+          ),
+
+          //Greetings
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Text(
+              'Made with ❤️ AZEP METER',
+              style: GoogleFonts.mina(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
             ),
           ),
         ],
