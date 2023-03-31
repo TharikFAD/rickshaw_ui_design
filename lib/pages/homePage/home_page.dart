@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           //GoogleMap
           GoogleMap(
-            padding: EdgeInsets.only(top: 200),
+            padding: EdgeInsets.only(top: 100),
             onMapCreated: _onMapCreated,
             myLocationButtonEnabled: true,
             myLocationEnabled: true,

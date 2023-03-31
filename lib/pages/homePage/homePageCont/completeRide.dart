@@ -26,6 +26,7 @@ const notificationId = 888;
 Future<void> onStart(ServiceInstance serviceInstance) async {
   late StreamSubscription<Position> _positionStream;
   late List<Position> _positionHistory;
+  DateTime startTime=DateTime.now();
 
 
 
@@ -47,7 +48,7 @@ Future<void> onStart(ServiceInstance serviceInstance) async {
     //send data to isolate
 
     Map<String, dynamic> dataToSend = {};
-    dataToSend['travelled_km'] = travelled_km;
+    dataToSend['travelled_km'] = '$travelled_km,$startTime';
     serviceInstance.invoke('km', dataToSend);
     debugPrint("MANI KM  ISOLATE $dataToSend");
   });
@@ -90,49 +91,54 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   late StreamSubscription<Position> _positionStream;
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(10.9641042, 76.9562562);
-
-  late double count;
+  
   double travelledKm = 0;
   DateTime? startTime;
   DateTime? endTime;
   Duration? difference;
-  List<Map<String, dynamic>> timeKm = [];
+  int? totalMinutes;
+  int? remainingSeconds;
 
-  Duration _duration = Duration();
-  Timer? _timer;
-
+  
 
     void _onMapCreated(GoogleMapController controller) {
       mapController = controller;
+      _positionStream=Geolocator.getPositionStream().listen((event) {
+        setState(() {
+          mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(event.longitude,event.longitude),zoom: 17)));
+        });
+
+      });
     }
 
      @override
       void initState() {
         super.initState();
         initializeService();
-        _timer = Timer.periodic(Duration(seconds: 1), (timer) {
-          setState(() {
-            _duration = Duration(seconds: _duration.inSeconds + 1);
-          });
-        });
       }
-
+  
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    debugPrint("MANI widget");
-
+    
     endTime = DateTime.now();
 
     debugPrint("MANI ENDTIME MAIN:$endTime");
     FlutterBackgroundService().on('km').listen((event) {
       if (event!['travelled_km'] != null) {
-        travelledKm = event!['travelled_km'];
+        var value = event!['travelled_km'].toString().split(',');
+        travelledKm=double.parse(value[0]);
+        startTime=DateTime.parse(value[1]);
+        Duration difference = endTime!.difference(startTime!);
+         totalMinutes = difference.inMinutes;
+         remainingSeconds = difference.inSeconds % 60;
+
+        debugPrint("MANI KM MAIN1:${travelledKm},$value");
       }
-      debugPrint("MANI KM MAIN1:${travelledKm}");
+
       setState(() {
-        //travelled_km = (travelled_km == 0) ? 0 : (travelled_km / 1000);
+        travelledKm = (travelledKm == 0) ? 0 : (travelledKm / 1000);
         travelledKm = double.parse(travelledKm.toStringAsFixed(2));
       });
     });
@@ -169,7 +175,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
           children: [
             //GoogleMap
             GoogleMap(
-              padding: EdgeInsets.only(top:200),
+              padding: EdgeInsets.only(top:100),
               zoomControlsEnabled: false,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
@@ -180,7 +186,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.675,
+                  height: size.height * 0.705,
                 ),
                 Center(
                   child: GestureDetector(
@@ -383,7 +389,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                 ),
                                 Icon(Icons.keyboard_arrow_up),
                                 Text(
-                                  '${endTime?.second}',
+                                  '${totalMinutes}:${remainingSeconds}',
                                   style: GoogleFonts.inter(
                                       fontSize: 20, fontWeight: FontWeight.w700),
                                 ),
@@ -402,7 +408,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.75,
+                  height: size.height * 0.78,
                 ),
                 Center(
                   child: ElevatedButton(
