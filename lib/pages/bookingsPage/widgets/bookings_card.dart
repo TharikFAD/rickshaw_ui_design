@@ -15,8 +15,9 @@ class _BookingsCardState extends State<BookingsCard> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Container(
-      height: size.height * 0.23,
       width: double.infinity,
+
+      //Decoration
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
@@ -37,11 +38,15 @@ class _BookingsCardState extends State<BookingsCard> {
           ), //BoxShadow
         ],
       ),
+
+      //Child
       child: Column(
         children: [
           SizedBox(
             height: size.height * 0.02,
           ),
+
+          //User Info
           Row(
             children: [
               SizedBox(
@@ -52,7 +57,7 @@ class _BookingsCardState extends State<BookingsCard> {
                 height: 50,
                 width: 50,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(90),
+                  shape: BoxShape.circle,
                   color: Colors.white,
                 ),
                 child: ClipRRect(
@@ -62,9 +67,12 @@ class _BookingsCardState extends State<BookingsCard> {
                   child: Image.asset('assets/UngaAuto.png'),
                 ),
               ),
+
+              //Spacing
               SizedBox(
                 width: size.width * 0.02,
               ),
+
               //Name and Phone Number
               Column(
                 children: [
@@ -88,6 +96,7 @@ class _BookingsCardState extends State<BookingsCard> {
               ),
             ],
           ),
+
           //Audio Player
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -102,7 +111,7 @@ class _BookingsCardState extends State<BookingsCard> {
                   size: 36,
                 ),
               ),
-              Slider(value: 1, onChanged: (value) {}),
+              Slider(value: 0, onChanged: (value) {}),
               SizedBox(
                 width: size.width * 0.03,
               ),
@@ -142,6 +151,10 @@ class _BookingsCardState extends State<BookingsCard> {
                 ),
               )
             ],
+          ),
+
+          SizedBox(
+            height: size.height * 0.023,
           ),
         ],
       ),
