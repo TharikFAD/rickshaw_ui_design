@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
-import 'package:meter_app/pages/homePage/widgets/searchBar.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 class HomePage extends StatefulWidget {
@@ -53,14 +52,11 @@ class _HomePageState extends State<HomePage> {
             'Location permissions are permanently denied, we cannot request permissions.');
       }
 
-
-
       Position position = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.low,
       );
       debugPrint(" pos: $position");
       _currentPosition = position;
-
     } on PlatformException catch (e) {
       debugPrint("$e");
       getCurrentLocation();
@@ -100,90 +96,42 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
 
-          Column(
-            children: [
-              SizedBox(
-                height: size.height * 0.18,
-              ),
-              //SearchBar Widget
-              Padding(
-                padding: const EdgeInsets.only(left: 51.0, right: 51.0),
-                child: SearchBarWidget(),
-              ),
-              SizedBox(
-                height: size.height * 0.65,
-              ),
-
-              //BUtton thingy New Start
-              Visibility(
-                child: ElevatedButton(
-                  style: ButtonStyle(
-                    fixedSize: MaterialStateProperty.all(
-                      Size(size.width * 0.8, size.height * 0.07),
-                    ),
-                    shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12))),
-                  ),
-                  onPressed: () {
-                    // setState(() {
-                    //   _isStarted = true;
-                    // });
-                    // Navigator.pushNamed(context, completeRideScreenRoute);
-                    _dialogBuilder(context);
-                  },
-                  child: Text(
-                    'Start Ride',
-                    style: GoogleFonts.inter(
-                      fontSize: 20,
-                      fontWeight: FontWeight.w700,
+          //Button thingy New Start
+          Container(
+            height: size.height,
+            width: size.width,
+            child: Column(
+              children: [
+                Spacer(),
+                Center(
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 20.0, top: 2.0),
+                    child: ElevatedButton(
+                      style: ButtonStyle(
+                        fixedSize: MaterialStateProperty.all(
+                          Size(size.width * 0.8, size.height * 0.07),
+                        ),
+                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12))),
+                      ),
+                      onPressed: () {
+                        _dialogBuilder(context);
+                      },
+                      child: Text(
+                        'Start Ride',
+                        style: GoogleFonts.inter(
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
                     ),
                   ),
                 ),
-                visible: !_isStarted,
-              ),
-
-              // Visibility(
-              //   child: ElevatedButton(
-              //     style: ButtonStyle(
-              //       fixedSize: MaterialStateProperty.all(
-              //         Size(size.width * 0.5, size.height * 0.07),
-              //       ),
-              //       shape: MaterialStateProperty.all(RoundedRectangleBorder(
-              //           borderRadius: BorderRadius.circular(12))),
-              //     ),
-              //     onPressed: () {
-              //       setState(() {
-              //         _isStarted = false;
-              //       });
-              //     },
-              //     child: Text(
-              //       'Complete Ride',
-              //       style: GoogleFonts.inter(
-              //         fontSize: 20,
-              //         fontWeight: FontWeight.w700,
-              //       ),
-              //     ),
-              //   ),
-              //   visible: _isStarted,
-              // ),
-            ],
+              ],
+            ),
           ),
         ],
       ),
-
-      //start button Old
-
-      // floatingActionButton: FloatingActionButton.extended(
-      //   isExtended: true,
-      //   onPressed: () {
-      //     _dialogBuilder(context);
-      //   },
-      //   label: Text(
-      //     'Start Ride',
-      //     style: GoogleFonts.inter(fontSize: 20, fontWeight: FontWeight.w700),
-      //   ),
-      // ),
-      // floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
