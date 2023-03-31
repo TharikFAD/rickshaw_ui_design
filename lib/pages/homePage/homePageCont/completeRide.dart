@@ -7,10 +7,8 @@ import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
-import 'package:meter_app/pages/homePage/widgets/slider.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 class CompleteRidePage extends StatefulWidget {
@@ -26,14 +24,12 @@ const notificationId = 888;
 Future<void> onStart(ServiceInstance serviceInstance) async {
   late StreamSubscription<Position> _positionStream;
   late List<Position> _positionHistory;
-  DateTime startTime=DateTime.now();
-
-
+  DateTime startTime = DateTime.now();
 
   _positionHistory = [];
   _positionStream = Geolocator.getPositionStream(
-      locationSettings: const LocationSettings(
-          accuracy: LocationAccuracy.high, distanceFilter: 1))
+          locationSettings: const LocationSettings(
+              accuracy: LocationAccuracy.high, distanceFilter: 1))
       .listen((Position position) {
     _positionHistory.add(position);
     double travelled_km = 0;
@@ -84,14 +80,12 @@ Future<void> initializeService() async {
       iosConfiguration: IosConfiguration());
 }
 
-
 class _CompleteRidePageState extends State<CompleteRidePage> {
-
   late Position _currentPosition;
   late StreamSubscription<Position> _positionStream;
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(10.9641042, 76.9562562);
-  
+
   double travelledKm = 0;
   DateTime? startTime;
   DateTime? endTime;
@@ -99,40 +93,38 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   int? totalMinutes;
   int? remainingSeconds;
 
-  
-
-    void _onMapCreated(GoogleMapController controller) {
-      mapController = controller;
-      _positionStream=Geolocator.getPositionStream().listen((event) {
-        setState(() {
-          mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(event.longitude,event.longitude),zoom: 17)));
-        });
-
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    _positionStream = Geolocator.getPositionStream().listen((event) {
+      setState(() {
+        mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(event.longitude, event.longitude), zoom: 17)));
       });
-    }
+    });
+  }
 
-     @override
-      void initState() {
-        super.initState();
-        initializeService();
-      }
-  
+  @override
+  void initState() {
+    super.initState();
+    initializeService();
+  }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    
+
     endTime = DateTime.now();
 
     debugPrint("MANI ENDTIME MAIN:$endTime");
     FlutterBackgroundService().on('km').listen((event) {
       if (event!['travelled_km'] != null) {
         var value = event!['travelled_km'].toString().split(',');
-        travelledKm=double.parse(value[0]);
-        startTime=DateTime.parse(value[1]);
+        travelledKm = double.parse(value[0]);
+        startTime = DateTime.parse(value[1]);
         Duration difference = endTime!.difference(startTime!);
-         totalMinutes = difference.inMinutes;
-         remainingSeconds = difference.inSeconds % 60;
+        totalMinutes = difference.inMinutes;
+        remainingSeconds = difference.inSeconds % 60;
 
         debugPrint("MANI KM MAIN1:${travelledKm},$value");
       }
@@ -175,19 +167,18 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
           children: [
             //GoogleMap
             GoogleMap(
-              padding: EdgeInsets.only(top:100),
+              padding: EdgeInsets.only(top: 100),
               zoomControlsEnabled: false,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
               onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(target: _center, zoom: 17.0),
+              initialCameraPosition:
+                  CameraPosition(target: _center, zoom: 17.0),
             ),
             //On swipe Panel
             Column(
               children: [
-                SizedBox(
-                  height: size.height * 0.705,
-                ),
+                Spacer(),
                 Center(
                   child: GestureDetector(
                     onVerticalDragUpdate: (details) {
@@ -241,7 +232,8 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                       Center(
                                         child: ElevatedButton(
                                           style: ButtonStyle(
-                                            fixedSize: MaterialStateProperty.all(
+                                            fixedSize:
+                                                MaterialStateProperty.all(
                                               Size(size.width * 0.8,
                                                   size.height * 0.07),
                                             ),
@@ -317,7 +309,8 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                       Center(
                                         child: ElevatedButton(
                                           style: ButtonStyle(
-                                            fixedSize: MaterialStateProperty.all(
+                                            fixedSize:
+                                                MaterialStateProperty.all(
                                               Size(size.width * 0.8,
                                                   size.height * 0.07),
                                             ),
@@ -346,7 +339,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                             });
                       },
                       child: Container(
-                        height: size.height * 0.172,
+                        height: size.height * 0.15,
                         width: size.width,
                         decoration: BoxDecoration(
                           color: // Colors.white,
@@ -385,13 +378,15 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                 Text(
                                   '${travelledKm} KM',
                                   style: GoogleFonts.inter(
-                                      fontSize: 20, fontWeight: FontWeight.w700),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700),
                                 ),
                                 Icon(Icons.keyboard_arrow_up),
                                 Text(
                                   '${totalMinutes}:${remainingSeconds}',
                                   style: GoogleFonts.inter(
-                                      fontSize: 20, fontWeight: FontWeight.w700),
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.w700),
                                 ),
                               ],
                             ),
@@ -408,7 +403,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.78,
+                  height: size.height * 0.756,
                 ),
                 Center(
                   child: ElevatedButton(
@@ -524,8 +519,4 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
       },
     );
   }
-
-
 }
-
-
