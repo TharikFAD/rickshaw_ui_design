@@ -10,6 +10,8 @@ import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../homePage/widgets/drawer.dart';
+
 class ComplaintPage extends StatefulWidget {
   const ComplaintPage({super.key});
 
@@ -29,6 +31,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: MyDrawerWidget(),
       appBar: AppBar(
         title: Text(
           'Complaints',
@@ -55,14 +58,14 @@ class _ComplaintPageState extends State<ComplaintPage> {
         child: Column(
           children: [
             Padding(
-              padding: const EdgeInsets.only(left: 22.0, right: 22.0,top: 20),
+              padding: const EdgeInsets.only(left: 22.0, right: 22.0,top: 20,),
               child: Column(
                 children: [
                   FutureBuilder(
                     future:complaintsApI.getComplaints() ,
                       builder:(context,snapshot){
                       if(!snapshot.hasData && snapshot.connectionState == ConnectionState.waiting){
-                        return CircularProgressIndicator();
+                        return Center(child: CircularProgressIndicator());
                       }else{
                         var response=GetComplaintsResponse.fromJson(snapshot.data);
                         debugPrint('COMPLAINT PAGE ${response.result![0]!.subject}');
@@ -70,126 +73,126 @@ class _ComplaintPageState extends State<ComplaintPage> {
                           shrinkWrap: true,
                             itemCount: response.result!.length,
                             itemBuilder: (context,i){
-                              return Container(
-                                height: size.height * 0.1,
-                                width: size.width,
-                                decoration: BoxDecoration(
-                                  color: Colors.white,
-                                  borderRadius: BorderRadius.circular(12),
-                                  boxShadow: [
-                                    BoxShadow(
-                                      color: Colors.grey,
-                                      offset: const Offset(
-                                        0.0,
-                                        0.0,
+                              return Padding(
+                                
+                                padding: EdgeInsets.only(bottom: 15),
+                                child: Container(
+                                  height: size.height * 0.1,
+                                  width: size.width,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.grey,
+                                        offset: const Offset(
+                                          0.0,
+                                          0.0,
+                                        ),
+                                        blurRadius: 10.0,
+                                        spreadRadius: 2.0,
+                                      ), //BoxShadow
+                                      BoxShadow(
+                                        color: Colors.white,
+                                        offset: const Offset(0.0, 0.0),
+                                        blurRadius: 0.0,
+                                        spreadRadius: 0.0,
+                                      ), //BoxShadow
+                                    ],
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      SizedBox(
+                                        height: size.height * 0.015,
                                       ),
-                                      blurRadius: 10.0,
-                                      spreadRadius: 2.0,
-                                    ), //BoxShadow
-                                    BoxShadow(
-                                      color: Colors.white,
-                                      offset: const Offset(0.0, 0.0),
-                                      blurRadius: 0.0,
-                                      spreadRadius: 0.0,
-                                    ), //BoxShadow
-                                  ],
-                                ),
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: size.height * 0.015,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.02,
-                                        ),
-                                        Text(
-                                          'Trip ID: ${response.result![i]!.tripId}',
-                                          style: GoogleFonts.inter(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 16,
-                                            color: Color(0xFF9B9B9B),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.02,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.01,
-                                    ),
-                                    Row(
-                                      children: [
-                                        SizedBox(
-                                          width: size.width * 0.02,
-                                        ),
-                                        Text(
-                                          'SUBJECT: ${response.result![i]!.complaints}',
-                                          style: GoogleFonts.inter(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18,
-                                            color: Color(0xFF000000),
+                                          Text(
+                                            'Trip ID: ${response.result![i]!.tripId}',
+                                            style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 16,
+                                              color: Color(0xFF9B9B9B),
+                                            ),
                                           ),
-                                        ),
-                                        SizedBox(
-                                          width: size.width * 0.2,
-                                        ),
-                                        Text(
-                                          '${response.result![i]!.status}',
-                                          style: GoogleFonts.inter(
-                                            fontWeight: FontWeight.w700,
-                                            fontSize: 18,
-                                            color: Colors.red,
+                                        ],
+                                      ),
+                                      SizedBox(
+                                        height: size.height * 0.01,
+                                      ),
+                                      Row(
+                                        children: [
+                                          SizedBox(
+                                            width: size.width * 0.02,
                                           ),
-                                        ),
-                                      ],
-                                    ),
-                                  ],
+                                          Text(
+                                            'SUBJECT: ${response.result![i]!.complaints}',
+                                            style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18,
+                                              color: Color(0xFF000000),
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: size.width * 0.2,
+                                          ),
+                                          Text(
+                                            '${response.result![i]!.status}',
+                                            style: GoogleFonts.inter(
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 18,
+                                              color: Colors.red,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               );
                             });
                       }
                       } ),
 
-                  //
-                  // SizedBox(
-                  //   height: size.height * 0.02,
-                  // ),
                 ],
               ),
             ),
 
 
-            //Button Spacing
-            Center(
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.6,
-                  ),
-
-                  //BUtton thingy New Start
-                  ElevatedButton(
-                    style: ButtonStyle(
-                      fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.8, size.height * 0.07),
-                      ),
-                      shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12))),
-                    ),
-                    onPressed: () {
-                      _dialogBuilder(context);
-                    },
-                    child: Text(
-                      'ADD COMPLAINT',
-                      style: GoogleFonts.inter(
-                        fontSize: 20,
-                        fontWeight: FontWeight.w700,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+            //require for future use add complaint button
+            // Center(
+            //   child: Column(
+            //     children: [
+            //       SizedBox(
+            //         height: size.height * 0.6,
+            //       ),
+            //
+            //       //BUtton thingy New Start
+            //       ElevatedButton(
+            //         style: ButtonStyle(
+            //           fixedSize: MaterialStateProperty.all(
+            //             Size(size.width * 0.8, size.height * 0.07),
+            //           ),
+            //           shape: MaterialStateProperty.all(RoundedRectangleBorder(
+            //               borderRadius: BorderRadius.circular(12))),
+            //         ),
+            //         onPressed: () {
+            //           _dialogBuilder(context);
+            //         },
+            //         child: Text(
+            //           'ADD COMPLAINT',
+            //           style: GoogleFonts.inter(
+            //             fontSize: 20,
+            //             fontWeight: FontWeight.w700,
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
           ],
         ),
       ),
