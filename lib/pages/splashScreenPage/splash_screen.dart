@@ -1,6 +1,9 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../routes/route_name.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -22,11 +25,18 @@ class _SplashScreenState extends State<SplashScreen>
 
   startTime() async {
     var duration = const Duration(seconds: 3);
-    return Timer(duration, loginScreenRoute);
+    return Timer(duration, navigationPage);
   }
 
-  void loginScreenRoute() {
-    //Navigator.pushNamed(context, RouteGenerator.loginScreenRoute);
+  Future<void> navigationPage() async {
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var userId = pref.getString("identification_key");
+
+    debugPrint('IN MAIN USER ID: $userId');
+
+    (userId == null)
+        ? Navigator.of(context).pushReplacementNamed(loginScreenRoute)
+        : Navigator.of(context).pushReplacementNamed(homeScreenRoute);
   }
 
   @override
@@ -50,7 +60,7 @@ class _SplashScreenState extends State<SplashScreen>
           opacity: _animation,
           child: Padding(
             padding: const EdgeInsets.all(80),
-            child: Image.asset("assets/images/AutoKaaran-splash.gif"),
+            child: Image.asset("assets/AutoKaaran-splash.gif"),
           ),
         ),
       ),

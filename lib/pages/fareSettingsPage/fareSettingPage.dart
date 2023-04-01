@@ -7,6 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
 import 'package:meter_app/model/get_fare.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
+import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 class FareSettingsPage extends StatefulWidget {
@@ -23,6 +24,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: MyDrawerWidget(),
       appBar: AppBar(
         title: Text(
           'FARE SETTINGS',
@@ -58,7 +60,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                 builder:(context,snapshot){
                   if(!snapshot.hasData&& snapshot.connectionState ==
                       ConnectionState.waiting){
-                    return CircularProgressIndicator();
+                    return Center(child: SizedBox(width:50,height:50,child: CircularProgressIndicator()));
                   }else if(snapshot.hasError){
                     return Text('An error occurred: ${snapshot.error}');
                   }else{

@@ -92,7 +92,7 @@ class _SettingspageState extends State<Settingspage> {
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
                       controller: UserNameController,
-                      hintText: 'Enter UserName'),
+                      hintText: 'UserName'),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
@@ -122,7 +122,7 @@ class _SettingspageState extends State<Settingspage> {
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
                       controller: DriverIdController,
-                      hintText: 'Enter Your Driver ID'),
+                      hintText: 'Driver ID'),
                 ),
 
                 //Change Mobile Number
@@ -153,7 +153,7 @@ class _SettingspageState extends State<Settingspage> {
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
                       controller: VehicleNumberController,
-                      hintText: 'Enter Vehicle Number'),
+                      hintText: 'Vehicle Number ex:TN11AA1111'),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
@@ -182,7 +182,7 @@ class _SettingspageState extends State<Settingspage> {
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
                       controller: MobileNumberController,
-                      hintText: 'Enter Mobile Number'),
+                      hintText: 'Mobile Number'),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
