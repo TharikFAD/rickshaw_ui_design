@@ -45,8 +45,8 @@ class _AddComplaintPageState extends State<AddComplaintPage> {
     var size = MediaQuery.of(context).size;
     var tripId=ModalRoute.of(context)?.settings.arguments;
     if(tripId!=null){
-      // createComplaint.tripId=int.parse(tripId.toString());
-      createComplaint.tripId=1;
+       createComplaint.tripId=int.parse(tripId.toString());
+     // createComplaint.tripId=1;
     }
     return Scaffold(
       body: SingleChildScrollView(
