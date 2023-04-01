@@ -30,5 +30,7 @@ class ApiEndPoint {
   static String createComplaint='api/v1/complaint/add-complaint';
   static String getComplaint='api/v1/complaint/get-complaint';
 
+  static String getTriphistory='api/v1/trip/trip-history';
+
 }
 
