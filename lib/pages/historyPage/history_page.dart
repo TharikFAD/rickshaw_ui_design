@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/trip_api.dart';
 import 'package:meter_app/model/trip_history.dart';
-import 'package:meter_app/pages/historyPage/widgets/history_contents.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 
