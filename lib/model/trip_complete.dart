@@ -4,15 +4,15 @@
 class TripCompleteRequestBodyReadings {
 /*
 {
-  "km_travelled": 8.19,
+  "km_travelled": 9.19,
   "waiting_time": 300,
-  "surge_value": 1
+  "surge_value": 1.5
 }
 */
 
   double? kmTravelled;
   int? waitingTime;
-  int? surgeValue;
+  double? surgeValue;
 
   TripCompleteRequestBodyReadings({
     this.kmTravelled,
@@ -22,7 +22,7 @@ class TripCompleteRequestBodyReadings {
   TripCompleteRequestBodyReadings.fromJson(Map<String, dynamic> json) {
     kmTravelled = json['km_travelled']?.toDouble();
     waitingTime = json['waiting_time']?.toInt();
-    surgeValue = json['surge_value']?.toInt();
+    surgeValue = json['surge_value']?.toDouble();
   }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
@@ -103,9 +103,9 @@ class TripCompleteRequestBody {
     "longitude": "76.961304"
   },
   "readings": {
-    "km_travelled": 8.19,
+    "km_travelled": 9.19,
     "waiting_time": 300,
-    "surge_value": 1
+    "surge_value": 1.5
   }
 }
 */

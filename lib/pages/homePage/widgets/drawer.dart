@@ -158,68 +158,68 @@ class MyDrawerWidget extends StatelessWidget {
             ),
           ),
 
-          //Community Button
-          ListTile(
-            onTap: () {
-              Navigator.popAndPushNamed(context, communityScreenRoute);
-            },
-            leading: Icon(
-              Icons.people,
-              size: 25,
-              color: Colors.white,
-            ),
-            title: Text(
-              'COMMUNITY',
-              style: GoogleFonts.inter(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
-            ),
-          ),
+          //Community Button  required for future use
+          // ListTile(
+          //   onTap: () {
+          //     Navigator.popAndPushNamed(context, communityScreenRoute);
+          //   },
+          //   leading: Icon(
+          //     Icons.people,
+          //     size: 25,
+          //     color: Colors.white,
+          //   ),
+          //   title: Text(
+          //     'COMMUNITY',
+          //     style: GoogleFonts.inter(
+          //         fontSize: 15,
+          //         fontWeight: FontWeight.w700,
+          //         color: Colors.white),
+          //   ),
+          // ),
 
-          //Surge Button
-          ListTile(
-            onTap: () {
-              showDialog(
-                  context: context,
-                  builder: (context) {
-                    return AlertDialog(
-                      title: Text(
-                        'Surge the price',
-                        style: GoogleFonts.inter(
-                            fontSize: 15, fontWeight: FontWeight.w700),
-                      ),
-                      content: TextField(
-                        onChanged: (value) {},
-                        controller: controller,
-                        decoration:
-                            InputDecoration(hintText: 'e.g, 2x, 3x, 4x...'),
-                        keyboardType: TextInputType.number,
-                      ),
-                      actions: <Widget>[
-                        TextButton(
-                          onPressed: () {
-                            Navigator.pop(context);
-                          },
-                          child: Text('OK'),
-                        ),
-                      ],
-                    );
-                  });
-            },
-            leading: Icon(
-              Icons.fireplace_sharp,
-              size: 25,
-              color: Colors.white,
-            ),
-            title: Text(
-              'SURGE PRICING',
-              style: GoogleFonts.inter(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
-            ),
-          ),
+          //Surge Button   required for future use
+          // ListTile(
+          //   onTap: () {
+          //     showDialog(
+          //         context: context,
+          //         builder: (context) {
+          //           return AlertDialog(
+          //             title: Text(
+          //               'Surge the price',
+          //               style: GoogleFonts.inter(
+          //                   fontSize: 15, fontWeight: FontWeight.w700),
+          //             ),
+          //             content: TextField(
+          //               onChanged: (value) {},
+          //               controller: controller,
+          //               decoration:
+          //                   InputDecoration(hintText: 'e.g, 2x, 3x, 4x...'),
+          //               keyboardType: TextInputType.number,
+          //             ),
+          //             actions: <Widget>[
+          //               TextButton(
+          //                 onPressed: () {
+          //                   Navigator.pop(context);
+          //                 },
+          //                 child: Text('OK'),
+          //               ),
+          //             ],
+          //           );
+          //         });
+          //   },
+          //   leading: Icon(
+          //     Icons.fireplace_sharp,
+          //     size: 25,
+          //     color: Colors.white,
+          //   ),
+          //   title: Text(
+          //     'SURGE PRICING',
+          //     style: GoogleFonts.inter(
+          //         fontSize: 15,
+          //         fontWeight: FontWeight.w700,
+          //         color: Colors.white),
+          //   ),
+          // ),
 
           //Support Button
           ListTile(

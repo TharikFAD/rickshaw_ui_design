@@ -13,6 +13,7 @@ import 'package:meter_app/model/trip_complete.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
 import 'package:meter_app/routes/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class CompleteRidePage extends StatefulWidget {
   const CompleteRidePage({super.key});
@@ -524,8 +525,11 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                     color: Color(0xFF000000)),
               ),
               onPressed: () async{
+                SharedPreferences pref=await SharedPreferences.getInstance();
+                var driverId=pref.getString('identification_key');
+                var surgeValue=pref.getDouble('surgePrice');
                 TripCompleteRequestBody tripCompleteRequestBody=TripCompleteRequestBody(
-                  identificationKey: 'azep0001',
+                  identificationKey: driverId,
                   fareId: 1,
                   startTime: startTime.toString(),
                   endTime: endTime.toString(),
@@ -538,9 +542,9 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                       longitude: "76.961304",
                   ),
                   readings: TripCompleteRequestBodyReadings(
-                    kmTravelled: travelledKm,
+                    kmTravelled: (travelledKm*1000),
                     waitingTime: difference?.inSeconds,
-                    surgeValue: 1
+                    surgeValue: surgeValue,
                   )
                 );
 

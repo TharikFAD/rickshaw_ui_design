@@ -9,6 +9,7 @@ import 'package:meter_app/model/get_fare.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/routes/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FareSettingsPage extends StatefulWidget {
   const FareSettingsPage({super.key});
@@ -18,7 +19,14 @@ class FareSettingsPage extends StatefulWidget {
 }
 
 class _FareSettingsPageState extends State<FareSettingsPage> {
-  var _isStarted = false;
+  var driverId;
+  @override
+  void initState() {
+    super.initState();
+    getDriverId();
+
+  }
+  var _isStarted = true;
   var fareAPI=FareAPI();
   @override
   Widget build(BuildContext context) {
@@ -54,13 +62,13 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
           children: [
             //Contents => Middle Layer
             //EdgeInsets.only(top: 150, left: 12.0, right: 12.0),
-            Expanded(
+            (driverId!=null)?Expanded(
               child: FutureBuilder(
-                future: fareAPI.getFare(''),
+                future: fareAPI.getFareByDriverId(driverId),
                 builder:(context,snapshot){
                   if(!snapshot.hasData&& snapshot.connectionState ==
                       ConnectionState.waiting){
-                    return Center(child: SizedBox(width:50,height:50,child: CircularProgressIndicator()));
+                    return Visibility(visible: _isStarted,child: Center(child: SizedBox(width:50,height:50,child: CircularProgressIndicator())));
                   }else if(snapshot.hasError){
                     return Text('An error occurred: ${snapshot.error}');
                   }else{
@@ -82,7 +90,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                         itemBuilder:(context,index){
                         return GestureDetector(
                           onTap: (){
-                            Navigator.popAndPushNamed(context, addFareScreenRoute,arguments: res.result!.data![index]!.id);
+                            Navigator.pushNamed(context, editFareScreenRoute,arguments: res.result!.data![index]!.id);
                           },
                           child: Padding(
                             padding: EdgeInsets.only(top: 10, left: 12.0, right: 12.0),
@@ -253,7 +261,13 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                   }
                 } ,
               ),
-            ),
+            ):
+            Visibility(
+              visible: _isStarted,
+                child: SizedBox(
+                  height:50,
+                  width:50,
+                   child: CircularProgressIndicator(),)),
             Center(
               child: Padding(
                 padding: EdgeInsets.only(top: 10,bottom: 10),
@@ -284,53 +298,65 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
       ),
     );
   }
-}
 
-//Start Ride Dialog Box-------------------------------------------------------->
-Future<void> _dialogBuilder(BuildContext context) {
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          'Do you want to add new fare?',
-          style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF000000)),
-        ),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-            ),
-            child: Text(
-              'No',
-              style: GoogleFonts.inter(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF000000)),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+  void getDriverId()async {
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    driverId= pref.getString('identification_key');
+    debugPrint('FARE SETTING PAGE INIT $driverId');
+
+   setState(() {
+     _isStarted=false;
+   });
+  }
+
+  //Start Ride Dialog Box-------------------------------------------------------->
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Do you want to add new fare?',
+            style: GoogleFonts.inter(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF000000)),
           ),
-          TextButton(
+          actions: <Widget>[
+            TextButton(
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
               child: Text(
-                'Yes',
+                'No',
                 style: GoogleFonts.inter(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF000000)),
               ),
               onPressed: () {
-                Navigator.popAndPushNamed(context, addFareScreenRoute,arguments: null);
-              }),
-        ],
-      );
-    },
-  );
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: Text(
+                  'Yes',
+                  style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF000000)),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, addFareScreenRoute,arguments: null);
+                }),
+          ],
+        );
+      },
+    );
+  }
+
 }
+
