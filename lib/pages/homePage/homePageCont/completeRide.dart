@@ -470,7 +470,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                 //   ),
                 // ),
               ],
-            )
+            ),
           ],
         ),
       ),

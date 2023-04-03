@@ -19,34 +19,201 @@ class AddFarePage extends StatefulWidget {
 }
 
 class _AddFarePageState extends State<AddFarePage> {
-  bool isLoading=false;
+  bool isLoading = false;
   var _Controller = TextEditingController();
   var _fareController = TextEditingController();
   var _kilometerController = TextEditingController();
   var _baseFareController = TextEditingController();
   var _additionalFareController = TextEditingController();
   var _costPerMinuteController = TextEditingController();
-  var createFareRequestBody=CreateFareRequestBody();
+  var createFareRequestBody = CreateFareRequestBody();
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var fareId=ModalRoute.of(context)!.settings.arguments;
-    if(fareId!=null){
+    var fareId = ModalRoute.of(context)!.settings.arguments;
+    if (fareId != null) {
       getFareById(fareId);
     }
     return Scaffold(
-      body: SingleChildScrollView(
-        //Inside This Stack Widget, Whatever written first is placed in Front (or) UP layer
-        child: Stack(
-          children: [
-            //Add Button => Top Layer
-            Center(
+      resizeToAvoidBottomInset: false,
+      appBar: AppBar(
+        title: Text(
+          "Add Fare",
+          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
+        ), //appbar title
+        backgroundColor: Color(0xFF4885ED), //appbar background color
+
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.popAndPushNamed(context, homeScreenRoute);
+            },
+            child: Icon(
+              Icons.home,
+              size: 32,
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.05,
+          )
+        ],
+      ),
+      body: Column(
+        children: [
+          //Contents
+          Padding(
+            padding: const EdgeInsets.only(top: 12, left: 12.0, right: 12.0),
+            child: Column(
+              children: [
+                Row(
+                  children: [
+                    //Fare Name
+                    Text(
+                      'Fare Name',
+                      style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                FareNameTextFormField(
+                  controller: _Controller,
+                  hintText: 'Fair Name',
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Min Kms && Base Fare
+                Row(
+                  children: [
+                    Text(
+                      'Minimum Kilometer and base fare',
+                      style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      height: size.height * 0.075,
+                      width: size.width * 0.4,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(18),
+                          color: Colors.grey),
+                      child: FareNameTextFormField(
+                        controller: _kilometerController,
+                        hintText: 'Min Kms',
+                        typeInput: TextInputType.number,
+                      ),
+                    ),
+                    Container(
+                      height: size.height * 0.075,
+                      width: size.width * 0.45,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      child: FareNameTextFormField(
+                        controller: _baseFareController,
+                        hintText: 'Base Fare',
+                        typeInput: TextInputType.number,
+                      ),
+                    ),
+                  ],
+                ),
+
+                //Aditional Fare per KM
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Additional Fare per KM',
+                      style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Container(
+                  height: size.height * 0.08,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: FareNameTextFormField(
+                      controller: _additionalFareController,
+                      hintText: '₹ Additional Fare',
+                      typeInput: TextInputType.number,
+                    ),
+                  ),
+                ),
+
+                //Cost Per Minute
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Row(
+                  children: [
+                    Text(
+                      'Cost per Minute',
+                      style: GoogleFonts.inter(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+                Container(
+                  height: size.height * 0.08,
+                  width: size.width,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Center(
+                    child: FareNameTextFormField(
+                      controller: _costPerMinuteController,
+                      hintText: 'Cost Per Minute',
+                      typeInput: TextInputType.number,
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.01,
+                ),
+
+                Divider(),
+              ],
+            ),
+          ),
+          Spacer(),
+          //Save Button
+          Padding(
+            padding: const EdgeInsets.only(bottom: 8.0, top: 8.0),
+            child: Center(
               child: Column(
                 children: [
-                  SizedBox(
-                    height: size.height * 0.9,
-                  ),
                   ElevatedButton(
                     style: ButtonStyle(
                       fixedSize: MaterialStateProperty.all(
@@ -69,196 +236,8 @@ class _AddFarePageState extends State<AddFarePage> {
                 ],
               ),
             ),
-
-            //Contents => Middle Layer
-            Padding(
-              padding: const EdgeInsets.only(top: 150, left: 12.0, right: 12.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Row(
-                    children: [
-                      //Fare Name
-                      Text(
-                        'Fare Name',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  FareNameTextFormField(
-                    controller: _Controller,
-                    hintText: 'Fair Name',
-                  ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-
-                  //Min Kms && Base Fare
-                  Row(
-                    children: [
-                      Text(
-                        'Minimum Kilometer and base fare',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: size.height * 0.075,
-                        width: size.width * 0.4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            color: Colors.grey),
-                        child: FareNameTextFormField(
-                          controller: _kilometerController,
-                          hintText: 'Min Kms',
-                          typeInput: TextInputType.number,
-                        ),
-                      ),
-                      Container(
-                        height: size.height * 0.075,
-                        width: size.width * 0.45,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child: FareNameTextFormField(
-                          controller: _baseFareController,
-                          hintText: 'Base Fare',
-                          typeInput: TextInputType.number,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  //Aditional Fare per KM
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Additional Fare per KM',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: FareNameTextFormField(
-                        controller: _additionalFareController,
-                        hintText: '₹ Additional Fare',
-                        typeInput: TextInputType.number,
-                      ),
-                    ),
-                  ),
-
-                  //Cost Per Minute
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Cost per Minute',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: FareNameTextFormField(
-                        controller: _costPerMinuteController,
-                        hintText: 'Cost Per Minute',
-                        typeInput: TextInputType.number,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-
-                  //Waiting Charges
-
-                  // Row(
-                  //   children: [
-                  //     Text(
-                  //       'Waiting Charges',
-                  //       style: GoogleFonts.inter(
-                  //           fontSize: 15,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: Colors.black),
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(
-                  //   height: size.height * 0.01,
-                  // ),
-                  // Container(
-                  //   height: size.height * 0.08,
-                  //   width: size.width,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(12),
-                  //   ),
-                  //   child: Center(
-                  //     child: FairNameTextFormField(
-                  //       controller: _additionalFareController,
-                  //       hintText: 'Waiting Charges per Hour',
-                  //       typeInput: TextInputType.number,
-                  //     ),
-                  //   ),
-                  // ),
-                  Divider(),
-                  SizedBox(
-                    height: size.height * 0.5,
-                  ),
-
-                  Divider(),
-                ],
-              ),
-            ),
-
-            //App Bar => Last Layer
-            CustomAppBar(),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
@@ -308,9 +287,13 @@ class _AddFarePageState extends State<AddFarePage> {
 
                   Visibility(
                     visible: isLoading,
-                    child:  SizedBox(height: 10,width: 10 ,child: CircularProgressIndicator()),
+                    child: SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator()),
                   );
-                  Navigator.pushReplacementNamed(context, fareSettingScreenRoute);
+                  Navigator.pushReplacementNamed(
+                      context, fareSettingScreenRoute);
                 }),
           ],
         );
@@ -318,53 +301,50 @@ class _AddFarePageState extends State<AddFarePage> {
     );
   }
 
-  void _makeNetworkCall() async{
+  void _makeNetworkCall() async {
     setState(() {
       isLoading = true;
     });
-    SharedPreferences pref=await SharedPreferences.getInstance();
-    var id=pref.getString('identification_key');
-    var fareName=_Controller.text.trim();
-    var minKm=_kilometerController.text.trim();
-    var baseFare=_baseFareController.text.trim();
-    var additionalFare=_additionalFareController.text.trim();
-    var costPerMin=_costPerMinuteController.text.trim();
+    SharedPreferences pref = await SharedPreferences.getInstance();
+    var id = pref.getString('identification_key');
+    var fareName = _Controller.text.trim();
+    var minKm = _kilometerController.text.trim();
+    var baseFare = _baseFareController.text.trim();
+    var additionalFare = _additionalFareController.text.trim();
+    var costPerMin = _costPerMinuteController.text.trim();
 
-    createFareRequestBody.identificationKey=id;
-    createFareRequestBody.fareInfo?.fareName=fareName;
-    createFareRequestBody.fareInfo?.minKm=double.parse(minKm);
-    createFareRequestBody.fareInfo?.baseFare=int.parse(baseFare);
-    createFareRequestBody.fareInfo?.additionalFare=int.parse(additionalFare);
-    createFareRequestBody.fareInfo?.costPerMinute=double.parse(costPerMin);
+    createFareRequestBody.identificationKey = id;
+    createFareRequestBody.fareInfo?.fareName = fareName;
+    createFareRequestBody.fareInfo?.minKm = double.parse(minKm);
+    createFareRequestBody.fareInfo?.baseFare = int.parse(baseFare);
+    createFareRequestBody.fareInfo?.additionalFare = int.parse(additionalFare);
+    createFareRequestBody.fareInfo?.costPerMinute = double.parse(costPerMin);
     debugPrint('ADD FARE PAGE $createFareRequestBody');
 
-    FareAPI().createFare(createFareRequestBody).then((value) async{
-      if(value.statusCode==200){
-        var res=CreateFareResponse.fromJson(jsonDecode(value.body));
+    FareAPI().createFare(createFareRequestBody).then((value) async {
+      if (value.statusCode == 200) {
+        var res = CreateFareResponse.fromJson(jsonDecode(value.body));
         Fluttertoast.showToast(msg: res!.result!.Messsage!);
-      }else{
+      } else {
         Fluttertoast.showToast(msg: 'adding fare failed');
       }
-
     });
 
-
-      setState(() {
-        isLoading = false;
-      });
-
+    setState(() {
+      isLoading = false;
+    });
   }
 
   void getFareById(fareId) async {
     debugPrint("INSIDE EDITFARE $fareId");
     FareAPI().getFare(fareId).then((value) {
       debugPrint("INSIDE EDITFARE ${value}");
-        var res=FareResponse.fromJson(value);
-        _Controller.text=res.result!.data![0]!.fareName!;
-        _kilometerController.text=res.result!.data![0]!.minKm!.toString();
-        _baseFareController.text=res.result!.data![0]!.baseFare!.toString();
-        _costPerMinuteController.text=res.result!.data![0]!.costPerMinute.toString();
-
+      var res = FareResponse.fromJson(value);
+      _Controller.text = res.result!.data![0]!.fareName!;
+      _kilometerController.text = res.result!.data![0]!.minKm!.toString();
+      _baseFareController.text = res.result!.data![0]!.baseFare!.toString();
+      _costPerMinuteController.text =
+          res.result!.data![0]!.costPerMinute.toString();
     });
   }
 }

@@ -26,10 +26,10 @@ class _SettingspageState extends State<Settingspage> {
   var UserNameController = TextEditingController();
   var DriverIdController = TextEditingController();
   var MobileNumberController = TextEditingController();
-  var VehicleNumberController=TextEditingController();
-  var otpRequestBody=OtpRequestBody();
+  var VehicleNumberController = TextEditingController();
+  var otpRequestBody = OtpRequestBody();
   var otp;
-  var updateProfile=UpdateProfileRequestBody();
+  var updateProfile = UpdateProfileRequestBody();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -91,8 +91,7 @@ class _SettingspageState extends State<Settingspage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
-                      controller: UserNameController,
-                      hintText: 'UserName'),
+                      controller: UserNameController, hintText: ''),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
@@ -121,8 +120,7 @@ class _SettingspageState extends State<Settingspage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
-                      controller: DriverIdController,
-                      hintText: 'Driver ID'),
+                      controller: DriverIdController, hintText: ''),
                 ),
 
                 //Change Mobile Number
@@ -152,8 +150,7 @@ class _SettingspageState extends State<Settingspage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
-                      controller: VehicleNumberController,
-                      hintText: 'Vehicle Number ex:TN11AA1111'),
+                      controller: VehicleNumberController, hintText: ''),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
@@ -181,13 +178,11 @@ class _SettingspageState extends State<Settingspage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: UserNameTextForm(
-                      controller: MobileNumberController,
-                      hintText: 'Mobile Number'),
+                      controller: MobileNumberController, hintText: ''),
                 ),
                 SizedBox(
                   height: size.height * 0.02,
                 ),
-
 
                 //Send OTP Text Button
                 Padding(
@@ -197,8 +192,9 @@ class _SettingspageState extends State<Settingspage> {
                     children: [
                       InkWell(
                         onTap: () async {
-                          otpRequestBody.phone=int.parse(MobileNumberController.text.trim());
-                          otpRequestBody.countryCode='+91';
+                          otpRequestBody.phone =
+                              int.parse(MobileNumberController.text.trim());
+                          otpRequestBody.countryCode = '+91';
                           debugPrint("SETTINGS PAGE ${otpRequestBody.phone}");
                           LogInAPI().sendOtp(otpRequestBody);
 
@@ -236,9 +232,8 @@ class _SettingspageState extends State<Settingspage> {
                     shape: MaterialStateProperty.all(RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12))),
                   ),
-                  onPressed: () async{
+                  onPressed: () async {
                     _dialogBuilder(context);
-
                   },
                   child: Text(
                     'SAVE',
@@ -255,7 +250,6 @@ class _SettingspageState extends State<Settingspage> {
       ),
     );
   }
-
 
   Future<void> _dialogBuilder(BuildContext context) {
     return showDialog<void>(
@@ -297,33 +291,29 @@ class _SettingspageState extends State<Settingspage> {
                     color: Color(0xFF000000)),
               ),
               onPressed: () async {
-                SharedPreferences pref=await SharedPreferences.getInstance();
-                var identificationKey=pref.getString('identification_key');
-                var driverId=DriverIdController.text.trim();
-                var driverName=UserNameController.text.trim();
-                var mobileNo=MobileNumberController.text.trim();
-                var vehicleNumber=VehicleNumberController.text.trim();
-                var Otp=otp;
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                var identificationKey = pref.getString('identification_key');
+                var driverId = DriverIdController.text.trim();
+                var driverName = UserNameController.text.trim();
+                var mobileNo = MobileNumberController.text.trim();
+                var vehicleNumber = VehicleNumberController.text.trim();
+                var Otp = otp;
 
-                updateProfile.identificationKey=identificationKey;
-                updateProfile.driverId=driverId;
-                updateProfile.name=driverName;
-                updateProfile.phone=int.parse(mobileNo);
-                updateProfile.otp=int.parse(Otp);
-                updateProfile.vehicleNumber=vehicleNumber;
+                updateProfile.identificationKey = identificationKey;
+                updateProfile.driverId = driverId;
+                updateProfile.name = driverName;
+                updateProfile.phone = int.parse(mobileNo);
+                updateProfile.otp = int.parse(Otp);
+                updateProfile.vehicleNumber = vehicleNumber;
 
                 debugPrint("SETTINGS PAGE ${updateProfile}");
 
-                UserAPI().updateProfile(updateProfile).then((value) async{
+                UserAPI().updateProfile(updateProfile).then((value) async {
+                  debugPrint("SETTINGS PAGE ${value}");
 
-                    debugPrint("SETTINGS PAGE ${value}");
-
-                  var res=UpdateProfileResponse.fromJson(value);
+                  var res = UpdateProfileResponse.fromJson(value);
                   Fluttertoast.showToast(msg: res.result!.Messsage!);
-
-
                 });
-
 
                 Navigator.of(context).pop();
               },
@@ -348,7 +338,7 @@ class _SettingspageState extends State<Settingspage> {
               otp = value;
             },
             decoration: InputDecoration(
-              hintText: 'Enter OTP',
+              hintText: '',
             ),
           ),
           actions: <Widget>[
@@ -364,6 +354,4 @@ class _SettingspageState extends State<Settingspage> {
       },
     );
   }
-
 }
-
