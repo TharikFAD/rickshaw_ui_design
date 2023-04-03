@@ -2,10 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/calculate_change.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/rideInfoNavContainer.dart';
+import 'package:meter_app/routes/route_name.dart';
 
 class RiderInfoPage extends StatefulWidget {
   const RiderInfoPage({super.key});
@@ -23,23 +23,37 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
     var _result = "₹" + _myTestFareResult.toString();
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      //AppBar
+      appBar: AppBar(
+        title: Text(
+          "Ride Complete",
+          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
+        ), //appbar title
+        backgroundColor: Color(0xFF4885ED), //appbar background color
+
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.popAndPushNamed(context, homeScreenRoute);
+            },
+            child: Icon(
+              Icons.home,
+              size: 32,
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.05,
+          )
+        ],
+      ),
       //Drawer
       drawer: MyDrawerWidget(),
       //body
       body: Stack(
-        //Appbar
         children: [
-          Column(
-            children: [
-              CustomAppBar(),
-            ],
-          ),
           Center(
             child: Column(
               children: [
-                SizedBox(
-                  height: size.height * 0.15,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -52,7 +66,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                               child: Container(
                                 decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(30)),
-                                height: size.height * 0.48,
+                                height: size.height * 0.51,
                                 child: Column(
                                   children: [
                                     SizedBox(

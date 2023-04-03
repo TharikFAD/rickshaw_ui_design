@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Offset _offset = Offset.zero;
   var _isStarted = false;
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(10.9641042, 76.9562562);
@@ -97,7 +98,7 @@ class _HomePageState extends State<HomePage> {
           ),
 
           //Button thingy New Start
-          Container(
+          SizedBox(
             height: size.height,
             width: size.width,
             child: Column(
@@ -129,6 +130,33 @@ class _HomePageState extends State<HomePage> {
                 ),
               ],
             ),
+          ),
+
+          //Floating Button (chat head)
+          Visibility(
+            child: SafeArea(
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: Draggable(
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      // Handle button press
+                    },
+                    child: Icon(Icons.directions_car),
+                  ),
+                  feedback: FloatingActionButton(
+                    child: Icon(Icons.directions_car),
+                    onPressed: () {},
+                  ),
+                  onDraggableCanceled: (Velocity velocity, Offset offset) {
+                    setState(() {
+                      _offset = offset;
+                    });
+                  },
+                ),
+              ),
+            ),
+            visible: true,
           ),
         ],
       ),
