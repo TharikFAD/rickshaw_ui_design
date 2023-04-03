@@ -19,14 +19,14 @@ class AddFarePage extends StatefulWidget {
 }
 
 class _AddFarePageState extends State<AddFarePage> {
-  bool isLoading=false;
+  bool isLoading = false;
   var _Controller = TextEditingController();
   var _fareController = TextEditingController();
   var _kilometerController = TextEditingController();
   var _baseFareController = TextEditingController();
   var _additionalFareController = TextEditingController();
   var _costPerMinuteController = TextEditingController();
-  var createFareRequestBody=CreateFareRequestBody();
+  var createFareRequestBody = CreateFareRequestBody();
 
   @override
   Widget build(BuildContext context) {
@@ -318,9 +318,13 @@ class _AddFarePageState extends State<AddFarePage> {
 
                   Visibility(
                     visible: isLoading,
-                    child:  SizedBox(height: 10,width: 10 ,child: CircularProgressIndicator()),
+                    child: SizedBox(
+                        height: 10,
+                        width: 10,
+                        child: CircularProgressIndicator()),
                   );
-                  Navigator.pushReplacementNamed(context, fareSettingScreenRoute);
+                  Navigator.pushReplacementNamed(
+                      context, fareSettingScreenRoute);
                 }),
           ],
         );
@@ -355,22 +359,17 @@ class _AddFarePageState extends State<AddFarePage> {
 
 
     debugPrint('ADD FARE PAGE ${createFareRequestBody.toJson()}');
-
-    FareAPI().createFare(createFareRequestBody).then((value) async{
-      if(value.statusCode==200){
-        var res=CreateFareResponse.fromJson(jsonDecode(value.body));
+    FareAPI().createFare(createFareRequestBody).then((value) async {
+      if (value.statusCode == 200) {
+        var res = CreateFareResponse.fromJson(jsonDecode(value.body));
         Fluttertoast.showToast(msg: res!.result!.Messsage!);
-      }else{
+      } else {
         Fluttertoast.showToast(msg: 'adding fare failed');
       }
-
     });
 
-
-      setState(() {
-        isLoading = false;
-      });
-
+    setState(() {
+      isLoading = false;
+    });
   }
-
 }

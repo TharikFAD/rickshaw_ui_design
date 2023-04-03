@@ -1,13 +1,10 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, file_names, sort_child_properties_last, unused_field, prefer_final_fields
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
 import 'package:meter_app/model/get_fare.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
-import 'package:meter_app/pages/homePage/widgets/drawer.dart';
+
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -28,6 +25,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
   }
   var _isStarted = true;
   var fareAPI=FareAPI();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -71,14 +69,13 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                     return Visibility(visible: _isStarted,child: Center(child: SizedBox(width:50,height:50,child: CircularProgressIndicator())));
                   }else if(snapshot.hasError){
                     return Text('An error occurred: ${snapshot.error}');
-                  }else{
-                    var res=FareResponse.fromJson(snapshot.data);
+                  } else {
+                    var res = FareResponse.fromJson(snapshot.data);
                     return RefreshIndicator(
                       backgroundColor: Colors.blueAccent,
                       displacement: 10,
                       onRefresh: () {
-                        return Future.delayed(
-                            const Duration(seconds: 1), () {
+                        return Future.delayed(const Duration(seconds: 1), () {
                           setState(() {});
                         });
                       },
@@ -119,147 +116,177 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                                 color: Color(0xFFFFFFFF),
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
 
-                                    SizedBox(
-                                      height: size.height * 0.01,
-                                    ),
+                                            SizedBox(
+                                              height: size.height * 0.01,
+                                            ),
 
-                                    //Base Fare Numbers
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                             res.result!.data![index]!.baseFare.toString(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            res.result!.data![index]!.minKm.toString(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    //Base Fare const Strings
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Base fare',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            'Minimum KM',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-
-                                    //Cost Per Minute
-
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            res.result!.data![index]!.costPerMinute.toString(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            '18.00',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    //Cost Per Minute const Strings
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Cost Per Minute',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            'Additional KM Fare',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    //Primary
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 18.0),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 12.0),
-                                            child: Text(
-                                              res.result!.data![index]!.fareName.toString(),
-                                              style: GoogleFonts.inter(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xFFFFFFFF),
+                                            //Base Fare Numbers
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    res.result!.data![index]!
+                                                        .baseFare
+                                                        .toString(),
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    res.result!.data![index]!
+                                                        .minKm
+                                                        .toString(),
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                        ],
+
+                                            //Base Fare const Strings
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Base fare',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    'Minimum KM',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            SizedBox(
+                                              height: size.height * 0.02,
+                                            ),
+
+                                            //Cost Per Minute
+
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    res.result!.data![index]!
+                                                        .costPerMinute
+                                                        .toString(),
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    '18.00',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            //Cost Per Minute const Strings
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Cost Per Minute',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    'Additional KM Fare',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            //Primary
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 18.0),
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 12.0),
+                                                    child: Text(
+                                                      res.result!.data![index]!
+                                                          .fareName
+                                                          .toString(),
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color:
+                                                            Color(0xFFFFFFFF),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: size.height * 0.02,
+                                            ),
+                                          ],
+                                        ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ),
-                          ),
-                        );
-                        } ),
+                                  ),
+                                );
+                              }),
                     );
-
-
                   }
-                } ,
+                },
               ),
             ):
             Visibility(
@@ -270,7 +297,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                    child: CircularProgressIndicator(),)),
             Center(
               child: Padding(
-                padding: EdgeInsets.only(top: 10,bottom: 10),
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
@@ -292,7 +319,6 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
@@ -357,6 +383,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
       },
     );
   }
+
 
 }
 
