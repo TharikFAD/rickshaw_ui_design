@@ -2,6 +2,7 @@ const String splashScreenRoute = '/';
 const String loginScreenRoute = '/Login';
 const String enterOTPScreenRoute = '/Otp';
 const String enterUserNameScreenRoute = '/UserName';
+
 const String homeScreenRoute = '/Home';
 const String historyScreenRoute = '/History';
 const String fareSettingScreenRoute = '/FairSetting';
@@ -14,3 +15,4 @@ const String riderInfoScreenRoute = '/RiderInfo';
 const String addFareScreenRoute = '/AddFare';
 const String bookingScreenRoute = '/Bookings';
 const String addCompaintScreenRoute = '/AddComplaint';
+const String editFareScreenRoute = '/EditFare';

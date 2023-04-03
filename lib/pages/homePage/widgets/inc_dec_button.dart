@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class IncDecButtonWidget extends StatefulWidget {
   const IncDecButtonWidget({super.key});
@@ -14,21 +15,26 @@ class _IncDecButtonWidgetState extends State<IncDecButtonWidget> {
   double _counter = 1.0;
 
   //Increment Counter Method
-  void _incrementCounter() {
+  void _incrementCounter()async {
     setState(() {
       if (_counter < 3.0) {
         _counter += 0.5;
       }
     });
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    pref.setDouble('surgePrice', _counter);
   }
 
   //Decrement Counter Method
-  void _decrementCounter() {
+  void _decrementCounter() async{
+
     setState(() {
       if (_counter > 1.0) {
         _counter -= 0.5;
       }
     });
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    pref.setDouble('surgePrice', _counter);
   }
 
   @override
