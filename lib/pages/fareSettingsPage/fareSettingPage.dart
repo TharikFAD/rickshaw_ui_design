@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
 import 'package:meter_app/model/get_fare.dart';
+
 import 'package:meter_app/routes/route_name.dart';
 
 class FareSettingsPage extends StatefulWidget {
@@ -20,6 +21,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      drawer: MyDrawerWidget(),
       appBar: AppBar(
         title: Text(
           'FARE SETTINGS',
@@ -55,6 +57,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                       snapshot.connectionState == ConnectionState.waiting) {
                     return Center(child: CircularProgressIndicator());
                   } else if (snapshot.hasError) {
+
                     return Text('An error occurred: ${snapshot.error}');
                   } else {
                     var res = FareResponse.fromJson(snapshot.data);

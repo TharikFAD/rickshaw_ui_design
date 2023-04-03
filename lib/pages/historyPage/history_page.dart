@@ -47,7 +47,6 @@ class _HistoryPageState extends State<HistoryPage> {
 
       //Drawer
       drawer: MyDrawerWidget(),
-
       //Body
       body: FutureBuilder(
         future: tripAPI.getTripHistory(),
@@ -220,6 +219,7 @@ class _HistoryPageState extends State<HistoryPage> {
             );
           }
         },
+
       ),
     );
   }
