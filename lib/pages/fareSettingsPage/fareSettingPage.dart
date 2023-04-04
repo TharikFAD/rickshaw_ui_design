@@ -19,6 +19,7 @@ class FareSettingsPage extends StatefulWidget {
 
 class _FareSettingsPageState extends State<FareSettingsPage> {
   var driverId;
+  bool _toggleValue = false;
   @override
   void initState() {
     super.initState();
@@ -106,7 +107,8 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                     Padding(
                                       padding: const EdgeInsets.only(top: 18.0),
                                       child: Column(
-                                        children: [ Row(
+                                        children: [
+                                          Row(
                                           children: [
                                             Padding(
                                               padding: const EdgeInsets.only(left: 12.0),
@@ -118,8 +120,19 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                                   color: Color(0xFFFFFFFF),
                                                 ),
                                               ),),
+                                            Spacer(),
+
+                                            Switch(
+                                              value: _toggleValue,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _toggleValue = value;
+                                                });
+                                              },
+                                            ),
                                           ],
                                         ),
+
 
 
                                             SizedBox(
