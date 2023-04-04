@@ -404,4 +404,16 @@ class _EditFarePage extends State<EditFarePage> {
 
 
   }
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    _controller1.dispose();
+    _fareController1.dispose();
+    _kilometerController1.dispose();
+    _baseFareController1.dispose();
+    _additionalFareController1.dispose();
+    _costPerMinuteController1.dispose();
+  }
 }

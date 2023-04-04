@@ -233,7 +233,7 @@ class _AddFarePageState extends State<AddFarePage> {
                   // ),
                   Divider(),
                   SizedBox(
-                    height: size.height * 0.5,
+                    height: size.height * 0.2,
                   ),
 
                   Divider(),
