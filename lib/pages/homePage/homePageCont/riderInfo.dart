@@ -327,7 +327,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse?.result?.tripDuration?.duration}',
+                        '${tripCompleteResponse?.result?.tripDuration?.duration} s',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -366,7 +366,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse?.result?.reading?.kmTravelled} KM',
+                        '${tripCompleteResponse?.result?.reading?.kmTravelled} Meters',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -395,7 +395,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse?.result?.reading?.waitingTime}',
+                        '${tripCompleteResponse?.result?.reading?.waitingTime} s',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -521,7 +521,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '₹ ${tripCompleteResponse?.result?.fare?.surgePrice}',
+                        '${tripCompleteResponse?.result?.fare?.surgePrice} x',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
