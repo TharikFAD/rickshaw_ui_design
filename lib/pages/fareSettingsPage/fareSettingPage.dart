@@ -8,6 +8,8 @@ import 'package:meter_app/model/get_fare.dart';
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../homePage/widgets/drawer.dart';
+
 class FareSettingsPage extends StatefulWidget {
   const FareSettingsPage({super.key});
 
@@ -92,7 +94,6 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                           child: Padding(
                             padding: EdgeInsets.only(top: 10, left: 12.0, right: 12.0),
                             child: Container(
-                              height: size.height * 0.23,
                               width: size.width,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
@@ -104,18 +105,22 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                     //Default
                                     Padding(
                                       padding: const EdgeInsets.only(top: 18.0),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 12.0),
-                                            child: Text(
-                                              'Default',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xFFFFFFFF),
-                                              ),
-                                            ),
+                                      child: Column(
+                                        children: [ Row(
+                                          children: [
+                                            Padding(
+                                              padding: const EdgeInsets.only(left: 12.0),
+                                              child: Text(
+                                                'Default',
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color(0xFFFFFFFF),
+                                                ),
+                                              ),),
+                                          ],
+                                        ),
+
 
                                             SizedBox(
                                               height: size.height * 0.01,
@@ -280,10 +285,10 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                           ],
                                         ),
                                       ),
-                                    ),
+                                    ]),
                                   ),
-                                );
-                              }),
+                                ),
+                          ),);}),
                     );
                   }
                 },
