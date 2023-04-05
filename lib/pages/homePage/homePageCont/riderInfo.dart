@@ -22,10 +22,26 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
   Widget build(BuildContext context) {
     TripCompleteResponse? tripCompleteResponse=ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
     var totalController = TextEditingController();
+    var balanceController = TextEditingController();
 
 
     var result = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
     var size = MediaQuery.of(context).size;
+    //double balanceAmount = 0.0;
+    void dispose() {
+      super.dispose();
+      totalController.dispose();
+    }
+
+    totalController.addListener(() {
+      double balanceAmount = 0.0;
+      double cashReceived = double.tryParse(totalController.text) ?? 0.0;
+      balanceAmount = cashReceived - _myTestFareResult;
+      setState(() {
+        balanceController.text = balanceAmount.toString();
+      }); // update the UI with the new balance amount
+    });
+
     return Scaffold(
       //AppBar
       appBar: AppBar(
@@ -63,48 +79,28 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                   children: [
                     InkWell(
                       onTap: () {
-                        showDialog(
+                        showGeneralDialog(
+                          barrierLabel: "showMenuPopUp",
+                          barrierDismissible: true,
+                          barrierColor: Colors.black.withOpacity(0.7),
+                          transitionDuration: const Duration(milliseconds: 200),
                           context: context,
-                          builder: (context) {
-                            return Dialog(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30)),
-                                height: size.height * 0.51,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    Text(
-                                      'Calculate Change',
-                                      style: GoogleFonts.inter(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black),
-                                    ),
-
-                                    //Total Amount
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 16.0,
-                                        right: 16.0,
-                                        top: 18.0,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text('Total Amount'),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18.0, right: 18.0, top: 8.0),
+                          pageBuilder: (dialogContext, anim1, anim2) {
+                            return Material(
+                              color: Colors.transparent,
+                              child: StatefulBuilder(
+                                builder: (BuildContext dialogContext,
+                                    void Function(void Function())
+                                        setDialogState) {
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: Center(
                                       child: Container(
-                                        height: size.height * 0.08,
-                                        width: size.width,
+                                        margin: EdgeInsets.all(18),
                                         decoration: BoxDecoration(
+
+                                            color: Colors.white,
+
                                           borderRadius:
                                               BorderRadius.circular(18),
                                           //color: Colors.grey,
@@ -166,39 +162,149 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                                               color: Colors.grey,
                                             ),
                                             //color: Color(0xFF4885ED),
+
                                             borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: TextButton(
-                                            style: TextButton.styleFrom(
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .labelLarge,
+                                                BorderRadius.circular(30)),
+                                        height: size.height * 0.51,
+                                        child: SingleChildScrollView(
+                                          child: Column(children: [
+                                            SizedBox(
+                                              height: size.height * 0.02,
                                             ),
-                                            child: Text(
-                                              'OK',
+                                            Text(
+                                              'Calculate Change',
                                               style: GoogleFonts.inter(
-                                                  fontSize: 15,
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w700,
-                                                  color: Color(0xFF000000)),
+                                                  color: Colors.black),
                                             ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
+
+                                            //somethin'
+                                            //Total Amount
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 16.0,
+                                                right: 16.0,
+                                                top: 18.0,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text('Total Amount'),
+                                                ],
+                                              ),
+                                            ),
+
+                                            //somethin' else
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0,
+                                                  right: 18.0,
+                                                  top: 8.0),
+                                              child: Container(
+                                                height: size.height * 0.08,
+                                                width: size.width,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
+                                                  //color: Colors.grey,
+                                                  border: Border.all(
+                                                      color: Colors.black),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    '₹ ${_myTestFareResult}',
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0,
+                                                  right: 18.0,
+                                                  top: 16.0),
+                                              child: CalculateChangeWidget(
+                                                  controller: totalController,
+                                                  hintText: "Recieved",
+                                                  typeInput:
+                                                      TextInputType.number),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0,
+                                                  right: 18.0,
+                                                  top: 16.0),
+                                              child: CalculateChangeWidget(
+                                                  controller: balanceController,
+                                                  hintText: "Balance",
+                                                  typeInput:
+                                                      TextInputType.number),
+                                            ),
+                                            SizedBox(
+                                              height: size.height * 0.02,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                    ),
+                                                    //color: Color(0xFF4885ED),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      textStyle:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .labelLarge,
+                                                    ),
+                                                    child: Text(
+                                                      'OK',
+                                                      style: GoogleFonts.inter(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Color(
+                                                              0xFF000000)),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: size.width * 0.02,
+                                                ),
+                                              ],
+                                            ),
+                                            //Your Pop up design
+                                          ]),
                                         ),
-                                        SizedBox(
-                                          width: size.width * 0.02,
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  );
+                                },
                               ),
                             );
                           },
+                          transitionBuilder: (context, anim1, anim2, child) {
+                            return ScaleTransition(scale: anim1, child: child);
+                          },
                         );
                       },
+
+                      //Image
                       child: SizedBox(
                         height: size.height * 0.07,
                         width: size.width * 0.1,
