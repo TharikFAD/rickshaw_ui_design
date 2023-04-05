@@ -31,6 +31,8 @@ class ApiEndPoint {
   static String getComplaint='api/v1/complaint/get-complaint';
 
   static String getTriphistory='api/v1/trip/trip-history';
+  static String tripComplete='api/v1/trip/trip-complete';
+  static String updateFare='api/v1/fare/update-fare';
 
 }
 

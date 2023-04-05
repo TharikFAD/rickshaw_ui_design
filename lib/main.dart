@@ -4,6 +4,7 @@ import 'package:meter_app/routes/route_generator.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 

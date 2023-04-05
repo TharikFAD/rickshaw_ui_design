@@ -12,7 +12,6 @@ import 'package:meter_app/model/user_profile.dart';
 import 'package:meter_app/pages/HomePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../api/login_api.dart';
 
 class Settingspage extends StatefulWidget {

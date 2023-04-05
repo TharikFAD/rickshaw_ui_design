@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/index_containers.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/user_name_textform.dart';
 import 'package:meter_app/routes/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import '../Widgets/buttons.dart';
 
@@ -82,7 +83,10 @@ class _EnterUserNamePageState extends State<EnterUserNamePage> {
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: ButtonWidget(
                     text: 'Next',
-                    callback: () {
+                    callback: () async{
+                      SharedPreferences pref=await SharedPreferences.getInstance();
+                      pref.setString('userName',UserNameController.text.toString() );
+                      
                       Navigator.pushNamed(context, homeScreenRoute);
                     },
                   ),

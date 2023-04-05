@@ -2,11 +2,11 @@
 
 import 'package:flutter/material.dart';
 
-class FareNameTextFormField extends StatefulWidget {
+class FareEditTextFormField extends StatefulWidget {
   final controller;
   final typeInput;
   final String hintText;
-  const FareNameTextFormField({
+  const FareEditTextFormField({
     super.key,
     required this.controller,
     required this.hintText,
@@ -14,10 +14,11 @@ class FareNameTextFormField extends StatefulWidget {
   });
 
   @override
-  State<FareNameTextFormField> createState() => _FareNameTextFormFieldState();
+  State<FareEditTextFormField> createState() => _FareEditTextFormField();
 }
 
-class _FareNameTextFormFieldState extends State<FareNameTextFormField> {
+
+class _FareEditTextFormField extends State<FareEditTextFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
