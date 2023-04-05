@@ -5,3 +5,9 @@ const String _fareController = '/EnterFare';
 const String _kiloMeterController = '/MinKms';
 const String _baseFareController = '/BaseFare';
 const String _additionalFareController = '/AdditionalFare';
+
+const String _controllerEdit = '/FareNameEdit';
+const String _fareControllerEdit = '/EnterFareEdit';
+const String _kiloMeterControllerEdit = '/MinKmsEdit';
+const String _baseFareControllerEdit = '/BaseFareEdit';
+const String _additionalFareControllerEdit = '/AdditionalFareEdit';

@@ -7,6 +7,9 @@ import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/rideInfoNavContainer.dart';
 import 'package:meter_app/routes/route_name.dart';
 
+import '../../../model/trip_complete.dart';
+import '../../../routes/route_name.dart';
+
 class RiderInfoPage extends StatefulWidget {
   const RiderInfoPage({super.key});
 
@@ -17,11 +20,13 @@ class RiderInfoPage extends StatefulWidget {
 class _RiderInfoPageState extends State<RiderInfoPage> {
   @override
   Widget build(BuildContext context) {
+    TripCompleteResponse? tripCompleteResponse =
+        ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
     var totalController = TextEditingController();
     var balanceController = TextEditingController();
 
+    var result = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
     double _myTestFareResult = 154.56;
-    var _result = "₹" + _myTestFareResult.toString();
     var size = MediaQuery.of(context).size;
     //double balanceAmount = 0.0;
     void dispose() {
@@ -92,14 +97,16 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                                     alignment: Alignment.center,
                                     child: Center(
                                       child: Container(
-                                        margin: EdgeInsets.all(18),
                                         decoration: BoxDecoration(
+                                            border: Border.all(
+                                              color: Colors.grey,
+                                            ),
                                             color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(30)),
                                         height: size.height * 0.51,
-                                        child: SingleChildScrollView(
-                                          child: Column(children: [
+                                        child: Column(
+                                          children: [
                                             SizedBox(
                                               height: size.height * 0.02,
                                             ),
@@ -216,12 +223,12 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: size.width * 0.02,
+                                                  width: size.width * 0.04,
                                                 ),
                                               ],
                                             ),
                                             //Your Pop up design
-                                          ]),
+                                          ],
                                         ),
                                       ),
                                     ),
@@ -264,8 +271,9 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                 SizedBox(
                   height: size.height * 0.03,
                 ),
+                //fare
                 Text(
-                  _result,
+                  result,
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700, fontSize: 25 * 2),
                 ),
@@ -274,7 +282,364 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
           )
         ],
       ),
-      bottomNavigationBar: MyNavBarWidget(),
+      bottomNavigationBar: Container(
+        height: size.height * 0.62,
+        width: size.height,
+        decoration: BoxDecoration(
+          color: Color(0xFF4885ED),
+          borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+        ),
+        //Ride Info Data
+        child: Center(
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Start
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Start',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        'Fri, Dec 2, 2022 09:57:30',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //End
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'End',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        'Fri, Dec 2, 2022 12:00:30',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Trip Duration
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Trip Duration',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '${tripCompleteResponse?.result?.tripDuration?.duration} s',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Divider
+                Container(
+                  width: size.width,
+                  height: 2,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Distance
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Distance',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '${tripCompleteResponse?.result?.reading?.kmTravelled} Meters',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Waiting Time
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Waiting Time',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '${tripCompleteResponse?.result?.reading?.waitingTime} s',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Divider
+                Container(
+                  width: size.width,
+                  height: 2,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Base Fare
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Base Fare',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '₹${tripCompleteResponse?.result?.fare?.baseFare}',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Distance Fare
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Distance Fare',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '₹${tripCompleteResponse?.result?.fare?.distanceFare}',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Waiting Fare
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Waiting Fare',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '₹${tripCompleteResponse?.result?.fare?.waitingFare} ',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Surge Pricing
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Surge Pricing',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '${tripCompleteResponse?.result?.fare?.surgePrice} x',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Additional Fare
+                Padding(
+                  padding: const EdgeInsets.only(left: 24.0, right: 24.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        'Additional Fare',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                      Text(
+                        '₹ ${tripCompleteResponse?.result?.fare?.additionalFare}',
+                        style: GoogleFonts.inter(
+                          color: Colors.white,
+                          fontSize: 15,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //divider
+                Container(
+                  width: size.width,
+                  height: 2,
+                  color: Colors.white,
+                ),
+                SizedBox(
+                  height: size.height * 0.02,
+                ),
+
+                //Home Button
+                InkWell(
+                  onTap: () {
+                    Navigator.popAndPushNamed(context, homeScreenRoute);
+                  },
+                  child: Container(
+                    height: size.height * 0.08,
+                    width: size.height,
+                    //decoration: BoxDecoration(),
+                    child: Icon(
+                      Icons.home,
+                      size: 50,
+                      color: Colors.white,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+        ),
+      ),
     );
   }
 }

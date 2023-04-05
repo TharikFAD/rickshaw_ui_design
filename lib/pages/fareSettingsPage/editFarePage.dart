@@ -7,34 +7,39 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
 import 'package:meter_app/model/create_fare.dart';
 import 'package:meter_app/model/get_fare.dart';
+import 'package:meter_app/model/update_fare.dart';
+import 'package:meter_app/pages/fareSettingsPage/widgets/fareEditTextField.dart';
 import 'package:meter_app/pages/fareSettingsPage/widgets/fareNameTextField.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class AddFarePage extends StatefulWidget {
-  const AddFarePage({super.key});
+class EditFarePage extends StatefulWidget {
+  const EditFarePage({super.key});
   @override
-  State<AddFarePage> createState() => _AddFarePageState();
+  State<EditFarePage> createState() => _EditFarePage();
 }
 
-class _AddFarePageState extends State<AddFarePage> {
-  bool isLoading = false;
-  var _Controller = TextEditingController();
-  var _fareController = TextEditingController();
-  var _kilometerController = TextEditingController();
-  var _baseFareController = TextEditingController();
-  var _additionalFareController = TextEditingController();
-  var _costPerMinuteController = TextEditingController();
-  var createFareRequestBody = CreateFareRequestBody();
+class _EditFarePage extends State<EditFarePage> {
+  bool isLoading=true;
+  TextEditingController _controller1 = TextEditingController();
+  TextEditingController _fareController1 = TextEditingController();
+  TextEditingController _kilometerController1 = TextEditingController();
+  TextEditingController _baseFareController1 = TextEditingController();
+  TextEditingController _additionalFareController1 = TextEditingController();
+  TextEditingController _costPerMinuteController1 = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+    var fareId=ModalRoute.of(context)!.settings.arguments;
+    if(fareId!=null){
+      getFareById(fareId);
+    }
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          'Add Fare Page',
+          'Edit Fare Page',
           style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
         ), //appbar title
         backgroundColor: Color(0xFF4885ED), //appbar background color
@@ -55,8 +60,14 @@ class _AddFarePageState extends State<AddFarePage> {
         ],
       ),
       body: SingleChildScrollView(
+        //Inside This Stack Widget, Whatever written first is placed in Front (or) UP layer
         child: Column(
           children: [
+            Visibility(
+              visible: isLoading,
+              child: SizedBox(width: 50,height: 50,
+                  child: CircularProgressIndicator()),
+            ),
             //Contents => Middle Layer
             Padding(
               padding: const EdgeInsets.only(top: 10, left: 12.0, right: 12.0),
@@ -80,10 +91,28 @@ class _AddFarePageState extends State<AddFarePage> {
                   SizedBox(
                     height: size.height * 0.01,
                   ),
-                  FareNameTextFormField(
-                    controller: _Controller,
-                    hintText: 'Fair Name',
+              TextFormField(
+                keyboardType: TextInputType.text,
+                controller: _controller1,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.black38,
+                    ),
+                    borderRadius: BorderRadius.circular(18),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide(
+                      color: Color(0xFF4885ED),
+                    ),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: 'Fare Name',
+                ),
+                minLines: 1,
+              ),
                   SizedBox(
                     height: size.height * 0.02,
                   ),
@@ -112,10 +141,27 @@ class _AddFarePageState extends State<AddFarePage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
                             color: Colors.grey),
-                        child: FareNameTextFormField(
-                          controller: _kilometerController,
-                          hintText: 'Min Kms',
-                          typeInput: TextInputType.number,
+                        child: TextFormField(
+                          keyboardType: TextInputType.text,
+                          controller: _kilometerController1,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black38,
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide(
+                                color: Color(0xFF4885ED),
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Minimum km',
+                          ),
+                          minLines: 1,
                         ),
                       ),
                       Container(
@@ -124,14 +170,32 @@ class _AddFarePageState extends State<AddFarePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: FareNameTextFormField(
-                          controller: _baseFareController,
-                          hintText: 'Base Fare',
-                          typeInput: TextInputType.number,
+                        child:TextFormField(
+                          keyboardType: TextInputType.text,
+                          controller: _baseFareController1,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black38,
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide(
+                                color: Color(0xFF4885ED),
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Base Fare',
+                          ),
+                          minLines: 1,
                         ),
                       ),
                     ],
                   ),
+
                   //Aditional Fare per KM
                   SizedBox(
                     height: size.height * 0.01,
@@ -157,10 +221,27 @@ class _AddFarePageState extends State<AddFarePage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
-                      child: FareNameTextFormField(
-                        controller: _additionalFareController,
-                        hintText: '₹ Additional Fare',
-                        typeInput: TextInputType.number,
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: _additionalFareController1,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black38,
+                            ),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide(
+                              color: Color(0xFF4885ED),
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Additional Fare',
+                        ),
+                        minLines: 1,
                       ),
                     ),
                   ),
@@ -190,10 +271,27 @@ class _AddFarePageState extends State<AddFarePage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
-                      child: FareNameTextFormField(
-                        controller: _costPerMinuteController,
-                        hintText: 'Cost Per Minute',
-                        typeInput: TextInputType.number,
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
+                        controller: _costPerMinuteController1,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black38,
+                            ),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide(
+                              color: Color(0xFF4885ED),
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Cost per min',
+                        ),
+                        minLines: 1,
                       ),
                     ),
                   ),
@@ -201,7 +299,7 @@ class _AddFarePageState extends State<AddFarePage> {
                     height: size.height * 0.01,
                   ),
 
-                  //Waiting Charges optional for future
+                  //Waiting Charges
 
                   // Row(
                   //   children: [
@@ -232,19 +330,17 @@ class _AddFarePageState extends State<AddFarePage> {
                   //   ),
                   // ),
                   Divider(),
-                  SizedBox(
-                    height: size.height * 0.2,
-                  ),
-
-                  Divider(),
                 ],
               ),
             ),
 
-            //save button
+            //Add Button => Top Layer
             Center(
               child: Column(
                 children: [
+                  SizedBox(
+                    height: size.height * 0.2,
+                  ),
                   ElevatedButton(
                     style: ButtonStyle(
                       fixedSize: MaterialStateProperty.all(
@@ -314,17 +410,13 @@ class _AddFarePageState extends State<AddFarePage> {
                       color: Color(0xFF000000)),
                 ),
                 onPressed: () {
-                  createFareRequest();
+                  updateFareRequest();
 
                   Visibility(
                     visible: isLoading,
-                    child: SizedBox(
-                        height: 10,
-                        width: 10,
-                        child: CircularProgressIndicator()),
+                    child:  SizedBox(height: 10,width: 10 ,child: CircularProgressIndicator()),
                   );
-                  Navigator.pushReplacementNamed(
-                      context, fareSettingScreenRoute);
+                  Navigator.pushReplacementNamed(context, fareSettingScreenRoute);
                 }),
           ],
         );
@@ -332,25 +424,25 @@ class _AddFarePageState extends State<AddFarePage> {
     );
   }
 
-  void createFareRequest() async{
+  void updateFareRequest() async{
     setState(() {
       isLoading = true;
     });
     SharedPreferences pref=await SharedPreferences.getInstance();
     var id=pref.getString('identification_key');
-    var fareName=_Controller.text.trim();
-    var minKm=_kilometerController.text.trim();
-    var baseFare=_baseFareController.text.trim();
-    var additionalFare=_additionalFareController.text.trim();
-    var costPerMin=_costPerMinuteController.text.trim();
-    CreateFareRequestBody createFareRequestBody=CreateFareRequestBody(
-        identificationKey: id,
-        fareInfo: CreateFareRequestBodyFareInfo(
+    var fareName=_controller1.text.trim();
+    var minKm=_kilometerController1.text.trim();
+    var baseFare=_baseFareController1.text.trim();
+    var additionalFare=_additionalFareController1.text.trim();
+    var costPerMin=_costPerMinuteController1.text.trim();
+    UpdateFareRequestBody updateFareRequestBody=UpdateFareRequestBody(
+        driverKey: id,
+        fareInfo: UpdateFareRequestBodyFareInfo(
           fareName:fareName,
           currencyId: 1,
           fractionDigit: 2,
           measureUnit: 'KM',
-        baseFare:int.parse(baseFare),
+          baseFare:int.parse(baseFare),
           minKm: double.parse(minKm),
           costPerMinute: double.parse(costPerMin),
           additionalFare: int.parse(additionalFare),
@@ -358,18 +450,50 @@ class _AddFarePageState extends State<AddFarePage> {
         ));
 
 
-    debugPrint('ADD FARE PAGE ${createFareRequestBody.toJson()}');
-    FareAPI().createFare(createFareRequestBody).then((value) async {
-      if (value.statusCode == 200) {
-        var res = CreateFareResponse.fromJson(jsonDecode(value.body));
+    debugPrint('ADD FARE PAGE ${updateFareRequestBody.toJson()}');
+
+    FareAPI().updateFare(updateFareRequestBody).then((value) async{
+      if(value.statusCode==200){
+        var res=CreateFareResponse.fromJson(jsonDecode(value.body));
         Fluttertoast.showToast(msg: res!.result!.Messsage!);
-      } else {
-        Fluttertoast.showToast(msg: 'adding fare failed');
+      }else{
+        Fluttertoast.showToast(msg: 'Updating Fare Failed');
       }
+
     });
+
 
     setState(() {
       isLoading = false;
     });
+
+  }
+
+  void getFareById(fareId) async {
+
+          debugPrint("INSIDE EDITFARE $fareId");
+          FareAPI().getFareByFareId(fareId).then((value) {
+            debugPrint("INSIDE EDITFARE ${value}");
+            var res=GetFareResponse.fromJson(value);
+
+            _controller1.text=res.result!.data![0]!.fareName!;
+              _kilometerController1.text=res.result!.data![0]!.minKm!.toString();
+              _baseFareController1.text=res.result!.data![0]!.baseFare!.toString();
+              _costPerMinuteController1.text=res.result!.data![0]!.costPerMinute.toString();
+
+
+
+          });
+          setState(() {
+            isLoading=false;
+          });
+
+
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+
   }
 }
