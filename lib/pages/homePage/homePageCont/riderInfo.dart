@@ -20,12 +20,13 @@ class RiderInfoPage extends StatefulWidget {
 class _RiderInfoPageState extends State<RiderInfoPage> {
   @override
   Widget build(BuildContext context) {
-    TripCompleteResponse? tripCompleteResponse=ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
+    TripCompleteResponse? tripCompleteResponse =
+        ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
     var totalController = TextEditingController();
     var balanceController = TextEditingController();
 
-
     var result = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
+    double _myTestFareResult = 154.56;
     var size = MediaQuery.of(context).size;
     //double balanceAmount = 0.0;
     void dispose() {
@@ -96,78 +97,16 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                                     alignment: Alignment.center,
                                     child: Center(
                                       child: Container(
-                                        margin: EdgeInsets.all(18),
                                         decoration: BoxDecoration(
-
-                                            color: Colors.white,
-
-                                          borderRadius:
-                                              BorderRadius.circular(18),
-                                          //color: Colors.grey,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '₹ ${result}',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18.0, right: 18.0, top: 16.0),
-                                      child: CalculateChangeWidget(
-                                          controller: totalController,
-                                          hintText: "Recieved",
-                                          typeInput: TextInputType.number),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18.0, right: 18.0, top: 16.0),
-                                      child: Container(
-                                        height: size.height * 0.08,
-                                        width: size.width,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(18),
-                                          //color: Colors.grey,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '₹ ${result}',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
                                             border: Border.all(
                                               color: Colors.grey,
                                             ),
-                                            //color: Color(0xFF4885ED),
-
+                                            color: Colors.white,
                                             borderRadius:
                                                 BorderRadius.circular(30)),
                                         height: size.height * 0.51,
-                                        child: SingleChildScrollView(
-                                          child: Column(children: [
+                                        child: Column(
+                                          children: [
                                             SizedBox(
                                               height: size.height * 0.02,
                                             ),
@@ -284,12 +223,12 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                                                   ),
                                                 ),
                                                 SizedBox(
-                                                  width: size.width * 0.02,
+                                                  width: size.width * 0.04,
                                                 ),
                                               ],
                                             ),
                                             //Your Pop up design
-                                          ]),
+                                          ],
                                         ),
                                       ),
                                     ),
