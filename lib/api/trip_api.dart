@@ -27,7 +27,7 @@ class TripAPI{
     debugPrint("GET TRIP HISTORY REQUEST ");
     try{
 
-      final response = await http.post(Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.getTriphistory).replace(queryParameters: {'DriverKey':'$driverId'}));
+      final response = await http.post(Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.getTripHistory).replace(queryParameters: {'DriverKey':'$driverId'}));
 
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
