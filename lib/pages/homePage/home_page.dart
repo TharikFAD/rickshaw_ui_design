@@ -135,31 +135,36 @@ class _HomePageState extends State<HomePage> {
           ),
 
           //chat_head.dart
-          SizedBox(
-            width: size.width,
-            height: size.height,
-            child: Stack(
-              key: _parentKey,
-              children: [
-                Container(color: Colors.transparent),
-                DraggableFloatingActionButton(
-                  child: Container(
-                    width: 60,
-                    height: 60,
-                    decoration: BoxDecoration(
-                        shape: BoxShape.circle, color: Colors.transparent),
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(90),
-                        child: Image.asset(
-                          "assets/ic_launcher.png",
-                          fit: BoxFit.fill,
-                        )),
-                  ),
-                  initialOffset: const Offset(120, 70),
-                  parentKey: _parentKey,
-                  onPressed: () {},
-                )
-              ],
+          //I've used Visiblity for showing the icon on the system home screen
+          // we should apply the system alert window's property as the parameter
+          Visibility(
+            visible: false,
+            child: SizedBox(
+              width: size.width,
+              height: size.height,
+              child: Stack(
+                key: _parentKey,
+                children: [
+                  Container(color: Colors.transparent),
+                  DraggableFloatingActionButton(
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.transparent),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(90),
+                          child: Image.asset(
+                            "assets/ic_launcher.png",
+                            fit: BoxFit.fill,
+                          )),
+                    ),
+                    initialOffset: const Offset(120, 70),
+                    parentKey: _parentKey,
+                    onPressed: () {},
+                  )
+                ],
+              ),
             ),
           ),
         ],
