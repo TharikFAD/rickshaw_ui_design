@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
+import 'package:meter_app/pages/homePage/widgets/chat_head.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/routes/route_name.dart';
 
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   final bool _mapStarted = false;
+  final GlobalKey _parentKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -132,31 +134,33 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
 
-          //Floating Button (chat head)
-          Visibility(
-            child: SafeArea(
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Draggable(
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      // Handle button press
-                    },
-                    child: Icon(Icons.directions_car),
+          //chat_head.dart
+          SizedBox(
+            width: size.width,
+            height: size.height,
+            child: Stack(
+              key: _parentKey,
+              children: [
+                Container(color: Colors.transparent),
+                DraggableFloatingActionButton(
+                  child: Container(
+                    width: 60,
+                    height: 60,
+                    decoration: BoxDecoration(
+                        shape: BoxShape.circle, color: Colors.transparent),
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(90),
+                        child: Image.asset(
+                          "assets/ic_launcher.png",
+                          fit: BoxFit.fill,
+                        )),
                   ),
-                  feedback: FloatingActionButton(
-                    child: Icon(Icons.directions_car),
-                    onPressed: () {},
-                  ),
-                  onDraggableCanceled: (Velocity velocity, Offset offset) {
-                    setState(() {
-                      _offset = offset;
-                    });
-                  },
-                ),
-              ),
+                  initialOffset: const Offset(120, 70),
+                  parentKey: _parentKey,
+                  onPressed: () {},
+                )
+              ],
             ),
-            visible: true,
           ),
         ],
       ),
