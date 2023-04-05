@@ -40,5 +40,27 @@ class UserAPI{
 
     return result;
   }
+
+  Future<dynamic> getProfile()async{
+    debugPrint('GET PROFILE REQUEST ');
+
+    try{
+      final response=await http.get(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.updateProfile),);
+
+      if (response.statusCode == 200) {
+        data = jsonDecode(response.body);
+        result = data;
+      } else if (response.statusCode == 400) {
+      } else if (response.statusCode == 401) {
+        //TODO
+      }
+      debugPrint('GET PROFILE RESPONSE ${response.body}');
+    }on SocketException {
+      Fluttertoast.showToast(msg:"No Internet connection. Please Try Again Later!");
+      throw FetchDataException('No Internet connection');
+    }
+
+    return result;
+  }
   
 }

@@ -91,10 +91,28 @@ class _EditFarePage extends State<EditFarePage> {
                   SizedBox(
                     height: size.height * 0.01,
                   ),
-                  FareEditTextFormField(
-                    controller: _controller1,
-                    hintText: 'Fair Name',
+              TextFormField(
+                keyboardType: TextInputType.text,
+                controller: _controller1,
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderSide: BorderSide(
+                      color: Colors.black38,
+                    ),
+                    borderRadius: BorderRadius.circular(18),
                   ),
+                  focusedBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(18),
+                    borderSide: BorderSide(
+                      color: Color(0xFF4885ED),
+                    ),
+                  ),
+                  fillColor: Colors.white,
+                  filled: true,
+                  hintText: 'Fare Name',
+                ),
+                minLines: 1,
+              ),
                   SizedBox(
                     height: size.height * 0.02,
                   ),
@@ -123,10 +141,27 @@ class _EditFarePage extends State<EditFarePage> {
                         decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(18),
                             color: Colors.grey),
-                        child: FareEditTextFormField(
+                        child: TextFormField(
+                          keyboardType: TextInputType.text,
                           controller: _kilometerController1,
-                          hintText: 'Min Kms',
-                          typeInput: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black38,
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide(
+                                color: Color(0xFF4885ED),
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Minimum km',
+                          ),
+                          minLines: 1,
                         ),
                       ),
                       Container(
@@ -135,10 +170,27 @@ class _EditFarePage extends State<EditFarePage> {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(18),
                         ),
-                        child: FareEditTextFormField(
+                        child:TextFormField(
+                          keyboardType: TextInputType.text,
                           controller: _baseFareController1,
-                          hintText: 'Base Fare',
-                          typeInput: TextInputType.number,
+                          decoration: InputDecoration(
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: Colors.black38,
+                              ),
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(18),
+                              borderSide: BorderSide(
+                                color: Color(0xFF4885ED),
+                              ),
+                            ),
+                            fillColor: Colors.white,
+                            filled: true,
+                            hintText: 'Base Fare',
+                          ),
+                          minLines: 1,
                         ),
                       ),
                     ],
@@ -169,10 +221,27 @@ class _EditFarePage extends State<EditFarePage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
-                      child: FareEditTextFormField(
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
                         controller: _additionalFareController1,
-                        hintText: '₹ Additional Fare',
-                        typeInput: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black38,
+                            ),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide(
+                              color: Color(0xFF4885ED),
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Additional Fare',
+                        ),
+                        minLines: 1,
                       ),
                     ),
                   ),
@@ -202,10 +271,27 @@ class _EditFarePage extends State<EditFarePage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Center(
-                      child: FareEditTextFormField(
+                      child: TextFormField(
+                        keyboardType: TextInputType.text,
                         controller: _costPerMinuteController1,
-                        hintText: 'Cost Per Minute',
-                        typeInput: TextInputType.number,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black38,
+                            ),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide(
+                              color: Color(0xFF4885ED),
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Cost per min',
+                        ),
+                        minLines: 1,
                       ),
                     ),
                   ),
@@ -388,7 +474,7 @@ class _EditFarePage extends State<EditFarePage> {
           debugPrint("INSIDE EDITFARE $fareId");
           FareAPI().getFareByFareId(fareId).then((value) {
             debugPrint("INSIDE EDITFARE ${value}");
-            var res=FareResponse.fromJson(value);
+            var res=GetFareResponse.fromJson(value);
 
             _controller1.text=res.result!.data![0]!.fareName!;
               _kilometerController1.text=res.result!.data![0]!.minKm!.toString();
@@ -409,11 +495,5 @@ class _EditFarePage extends State<EditFarePage> {
   void dispose() {
     super.dispose();
 
-    _controller1.dispose();
-    _fareController1.dispose();
-    _kilometerController1.dispose();
-    _baseFareController1.dispose();
-    _additionalFareController1.dispose();
-    _costPerMinuteController1.dispose();
   }
 }

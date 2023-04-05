@@ -73,7 +73,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                   }else if(snapshot.hasError){
                     return Text('An error occurred: ${snapshot.error}');
                   } else {
-                    var res = FareResponse.fromJson(snapshot.data);
+                    var res = GetFareResponse.fromJson(snapshot.data);
                     return RefreshIndicator(
                       backgroundColor: Colors.blueAccent,
                       displacement: 10,
@@ -226,7 +226,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                                         color: Colors.white),
                                                   ),
                                                   Text(
-                                                    '18.00',
+                                                    '${res.result?.data![index]?.additionalFare}',
                                                     style: GoogleFonts.inter(
                                                         fontSize: 13,
                                                         fontWeight:
