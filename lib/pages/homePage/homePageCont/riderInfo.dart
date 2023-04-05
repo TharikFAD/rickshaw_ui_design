@@ -23,17 +23,16 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
     double _myTestFareResult = 154.56;
     var _result = "₹" + _myTestFareResult.toString();
     var size = MediaQuery.of(context).size;
-    double balanceAmount = 0.0;
+    //double balanceAmount = 0.0;
     void dispose() {
       super.dispose();
       totalController.dispose();
     }
 
     totalController.addListener(() {
+      double balanceAmount = 0.0;
       double cashReceived = double.tryParse(totalController.text) ?? 0.0;
-      balanceAmount = cashReceived >= _myTestFareResult
-          ? cashReceived - _myTestFareResult
-          : 0.0;
+      balanceAmount = cashReceived - _myTestFareResult;
       setState(() {
         balanceController.text = balanceAmount.toString();
       }); // update the UI with the new balance amount
@@ -76,144 +75,6 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                   children: [
                     InkWell(
                       onTap: () {
-                        // showDialog(
-                        //   context: context,
-                        //   builder: (context) {
-                        //     return Dialog(
-                        //       child: Container(
-                        //         decoration: BoxDecoration(
-                        //             borderRadius: BorderRadius.circular(30)),
-                        //         height: size.height * 0.51,
-                        //         child: Column(
-                        //           children: [
-                        //             SizedBox(
-                        //               height: size.height * 0.02,
-                        //             ),
-                        //             Text(
-                        //               'Calculate Change',
-                        //               style: GoogleFonts.inter(
-                        //                   fontSize: 20,
-                        //                   fontWeight: FontWeight.w700,
-                        //                   color: Colors.black),
-                        //             ),
-
-                        //             //Total Amount
-                        //             Padding(
-                        //               padding: const EdgeInsets.only(
-                        //                 left: 16.0,
-                        //                 right: 16.0,
-                        //                 top: 18.0,
-                        //               ),
-                        //               child: Row(
-                        //                 children: [
-                        //                   Text('Total Amount'),
-                        //                 ],
-                        //               ),
-                        //             ),
-
-                        //             Padding(
-                        //               padding: const EdgeInsets.only(
-                        //                   left: 18.0, right: 18.0, top: 8.0),
-                        //               child: Container(
-                        //                 height: size.height * 0.08,
-                        //                 width: size.width,
-                        //                 decoration: BoxDecoration(
-                        //                   borderRadius:
-                        //                       BorderRadius.circular(18),
-                        //                   //color: Colors.grey,
-                        //                   border:
-                        //                       Border.all(color: Colors.black),
-                        //                 ),
-                        //                 child: Center(
-                        //                   child: Text(
-                        //                     '₹ ${_myTestFareResult}',
-                        //                     style: GoogleFonts.inter(
-                        //                       fontSize: 24,
-                        //                       fontWeight: FontWeight.w700,
-                        //                     ),
-                        //                   ),
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //             Padding(
-                        //               padding: const EdgeInsets.only(
-                        //                   left: 18.0, right: 18.0, top: 16.0),
-                        //               child: CalculateChangeWidget(
-                        //                   controller: totalController,
-                        //                   hintText: "Recieved",
-                        //                   typeInput: TextInputType.number),
-                        //             ),
-                        //             Padding(
-                        //               padding: const EdgeInsets.only(
-                        //                   left: 18.0, right: 18.0, top: 16.0),
-                        //               child: Container(
-                        //                 height: size.height * 0.08,
-                        //                 width: size.width,
-                        //                 decoration: BoxDecoration(
-                        //                   borderRadius:
-                        //                       BorderRadius.circular(18),
-                        //                   //color: Colors.grey,
-                        //                   border:
-                        //                       Border.all(color: Colors.black),
-                        //                 ),
-                        //                 child: Center(
-                        //                   child: Text(
-                        //                     balanceAmount > 0.0
-                        //                         ? '₹ $balanceAmount'
-                        //                         : '',
-                        //                     style: GoogleFonts.inter(
-                        //                       fontSize: 24,
-                        //                       fontWeight: FontWeight.w700,
-                        //                     ),
-                        //                   ),
-                        //                 ),
-                        //               ),
-                        //             ),
-                        //             SizedBox(
-                        //               height: size.height * 0.02,
-                        //             ),
-                        //             Row(
-                        //               mainAxisAlignment: MainAxisAlignment.end,
-                        //               children: [
-                        //                 Container(
-                        //                   decoration: BoxDecoration(
-                        //                     border: Border.all(
-                        //                       color: Colors.grey,
-                        //                     ),
-                        //                     //color: Color(0xFF4885ED),
-                        //                     borderRadius:
-                        //                         BorderRadius.circular(12),
-                        //                   ),
-                        //                   child: TextButton(
-                        //                     style: TextButton.styleFrom(
-                        //                       textStyle: Theme.of(context)
-                        //                           .textTheme
-                        //                           .labelLarge,
-                        //                     ),
-                        //                     child: Text(
-                        //                       'OK',
-                        //                       style: GoogleFonts.inter(
-                        //                           fontSize: 15,
-                        //                           fontWeight: FontWeight.w700,
-                        //                           color: Color(0xFF000000)),
-                        //                     ),
-                        //                     onPressed: () {
-                        //                       Navigator.of(context).pop();
-                        //                     },
-                        //                   ),
-                        //                 ),
-                        //                 SizedBox(
-                        //                   width: size.width * 0.02,
-                        //                 ),
-                        //               ],
-                        //             ),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     );
-                        //   },
-                        // );
-
                         showGeneralDialog(
                           barrierLabel: "showMenuPopUp",
                           barrierDismissible: true,
