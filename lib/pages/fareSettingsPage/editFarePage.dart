@@ -22,20 +22,20 @@ class EditFarePage extends StatefulWidget {
 
 class _EditFarePage extends State<EditFarePage> {
   bool isLoading=true;
-  TextEditingController _controller1 = TextEditingController();
-  TextEditingController _fareController1 = TextEditingController();
-  TextEditingController _kilometerController1 = TextEditingController();
-  TextEditingController _baseFareController1 = TextEditingController();
-  TextEditingController _additionalFareController1 = TextEditingController();
-  TextEditingController _costPerMinuteController1 = TextEditingController();
+  var fareAPI=FareAPI();
+
+  var fareId;
+  String? fareName;
+  double? kiloMeter;
+  int? baseFare;
+  int? additionalFare;
+  double? costPerMinute;
+
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    var fareId=ModalRoute.of(context)!.settings.arguments;
-    if(fareId!=null){
-      getFareById(fareId);
-    }
+    fareId=ModalRoute.of(context)!.settings.arguments;
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -63,276 +63,286 @@ class _EditFarePage extends State<EditFarePage> {
         //Inside This Stack Widget, Whatever written first is placed in Front (or) UP layer
         child: Column(
           children: [
-            Visibility(
-              visible: isLoading,
-              child: SizedBox(width: 50,height: 50,
-                  child: CircularProgressIndicator()),
-            ),
+
+            FutureBuilder(
+              future: fareAPI.getFareByFareId(fareId),
+                builder:(context,snapshot){
+              var res=GetFareResponse.fromJson(snapshot.data);
+              if(!snapshot.hasData && snapshot.connectionState==ConnectionState.waiting){
+                return SizedBox(width: 50,height: 50,child: CircularProgressIndicator());
+              }else{
+               return Padding(
+                  padding: const EdgeInsets.only(
+                      top: 10, left: 12.0, right: 12.0),
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: size.height * 0.02,
+                      ),
+                      Row(
+                        children: [
+                          //Fare Name
+                          Text(
+                            'Fare Name',
+                            style: GoogleFonts.inter(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      TextFormField(
+                        initialValue: res.result?.data![0]?.fareName,
+                        keyboardType: TextInputType.text,
+                        onChanged: (value){
+                          setState(() {
+                            fareName=value;
+                          });
+
+                          print('fareName $value');
+                        },
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Colors.black38,
+                            ),
+                            borderRadius: BorderRadius.circular(18),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(18),
+                            borderSide: BorderSide(
+                              color: Color(0xFF4885ED),
+                            ),
+                          ),
+                          fillColor: Colors.white,
+                          filled: true,
+                          hintText: 'Fare Name',
+                        ),
+                        minLines: 1,
+                      ),
+                      SizedBox(
+                        height: size.height * 0.02,
+                      ),
+
+                      //Min Kms && Base Fare
+                      Row(
+                        children: [
+                          Text(
+                            'Minimum Kilometer and base fare',
+                            style: GoogleFonts.inter(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            height: size.height * 0.075,
+                            width: size.width * 0.4,
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(18),
+                                color: Colors.grey),
+                            child: TextFormField(
+                              keyboardType: TextInputType.text,
+                             initialValue: res.result?.data![0]?.minKm.toString(),
+                              onChanged: (value){
+                                setState(() {
+                                  kiloMeter=double.parse(value);
+                                });
+                                print('kiloMeter $value');
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black38,
+                                  ),
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                  borderSide: BorderSide(
+                                    color: Color(0xFF4885ED),
+                                  ),
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
+                                hintText: 'Minimum km',
+                              ),
+                              minLines: 1,
+                            ),
+                          ),
+                          Container(
+                            height: size.height * 0.075,
+                            width: size.width * 0.45,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(18),
+                            ),
+                            child: TextFormField(
+                              keyboardType: TextInputType.text,
+                             initialValue: res.result?.data![0]?.baseFare.toString(),
+                              onChanged: (value){
+                                setState(() {
+                                  baseFare=int.parse(value);
+                                });
+                              },
+                              decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                  borderSide: BorderSide(
+                                    color: Colors.black38,
+                                  ),
+                                  borderRadius: BorderRadius.circular(18),
+                                ),
+                                focusedBorder: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(18),
+                                  borderSide: BorderSide(
+                                    color: Color(0xFF4885ED),
+                                  ),
+                                ),
+                                fillColor: Colors.white,
+                                filled: true,
+                                hintText: 'Base Fare',
+                              ),
+                              minLines: 1,
+                            ),
+                          ),
+                        ],
+                      ),
+
+                      //Aditional Fare per KM
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Additional Fare per KM',
+                            style: GoogleFonts.inter(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Container(
+                        height: size.height * 0.08,
+                        width: size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            initialValue: res.result?.data![0]?.additionalFare.toString(),
+                            onChanged: (value){
+                              setState(() {
+                                additionalFare=int.parse(value);
+                              });
+                              print('additionalFare $value');
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black38,
+                                ),
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide: BorderSide(
+                                  color: Color(0xFF4885ED),
+                                ),
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'Additional Fare',
+                            ),
+                            minLines: 1,
+                          ),
+                        ),
+                      ),
+
+                      //Cost Per Minute
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            'Cost per Minute',
+                            style: GoogleFonts.inter(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+                      Container(
+                        height: size.height * 0.08,
+                        width: size.width,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Center(
+                          child: TextFormField(
+                            keyboardType: TextInputType.text,
+                            initialValue: res.result?.data![0]?.costPerMinute.toString(),
+                            onChanged: (value){
+                              setState(() {
+                                costPerMinute=double.parse(value);
+                              });
+
+                              print('costPerMinute $value');
+                            },
+                            decoration: InputDecoration(
+                              border: OutlineInputBorder(
+                                borderSide: BorderSide(
+                                  color: Colors.black38,
+                                ),
+                                borderRadius: BorderRadius.circular(18),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(18),
+                                borderSide: BorderSide(
+                                  color: Color(0xFF4885ED),
+                                ),
+                              ),
+                              fillColor: Colors.white,
+                              filled: true,
+                              hintText: 'Cost per min',
+                            ),
+                            minLines: 1,
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        height: size.height * 0.01,
+                      ),
+
+                      Divider(),
+                    ],
+                  ),
+                );
+              }
+            }),
+
+
             //Contents => Middle Layer
-            Padding(
-              padding: const EdgeInsets.only(top: 10, left: 12.0, right: 12.0),
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
-                  Row(
-                    children: [
-                      //Fare Name
-                      Text(
-                        'Fare Name',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-              TextFormField(
-                keyboardType: TextInputType.text,
-                controller: _controller1,
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderSide: BorderSide(
-                      color: Colors.black38,
-                    ),
-                    borderRadius: BorderRadius.circular(18),
-                  ),
-                  focusedBorder: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(18),
-                    borderSide: BorderSide(
-                      color: Color(0xFF4885ED),
-                    ),
-                  ),
-                  fillColor: Colors.white,
-                  filled: true,
-                  hintText: 'Fare Name',
-                ),
-                minLines: 1,
-              ),
-                  SizedBox(
-                    height: size.height * 0.02,
-                  ),
 
-                  //Min Kms && Base Fare
-                  Row(
-                    children: [
-                      Text(
-                        'Minimum Kilometer and base fare',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        height: size.height * 0.075,
-                        width: size.width * 0.4,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(18),
-                            color: Colors.grey),
-                        child: TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: _kilometerController1,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black38,
-                              ),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide(
-                                color: Color(0xFF4885ED),
-                              ),
-                            ),
-                            fillColor: Colors.white,
-                            filled: true,
-                            hintText: 'Minimum km',
-                          ),
-                          minLines: 1,
-                        ),
-                      ),
-                      Container(
-                        height: size.height * 0.075,
-                        width: size.width * 0.45,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        child:TextFormField(
-                          keyboardType: TextInputType.text,
-                          controller: _baseFareController1,
-                          decoration: InputDecoration(
-                            border: OutlineInputBorder(
-                              borderSide: BorderSide(
-                                color: Colors.black38,
-                              ),
-                              borderRadius: BorderRadius.circular(18),
-                            ),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide(
-                                color: Color(0xFF4885ED),
-                              ),
-                            ),
-                            fillColor: Colors.white,
-                            filled: true,
-                            hintText: 'Base Fare',
-                          ),
-                          minLines: 1,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  //Aditional Fare per KM
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Additional Fare per KM',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: _additionalFareController1,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.black38,
-                            ),
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            borderSide: BorderSide(
-                              color: Color(0xFF4885ED),
-                            ),
-                          ),
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintText: 'Additional Fare',
-                        ),
-                        minLines: 1,
-                      ),
-                    ),
-                  ),
-
-                  //Cost Per Minute
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Row(
-                    children: [
-                      Text(
-                        'Cost per Minute',
-                        style: GoogleFonts.inter(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w700,
-                            color: Colors.black),
-                      ),
-                    ],
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-                  Container(
-                    height: size.height * 0.08,
-                    width: size.width,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Center(
-                      child: TextFormField(
-                        keyboardType: TextInputType.text,
-                        controller: _costPerMinuteController1,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Colors.black38,
-                            ),
-                            borderRadius: BorderRadius.circular(18),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(18),
-                            borderSide: BorderSide(
-                              color: Color(0xFF4885ED),
-                            ),
-                          ),
-                          fillColor: Colors.white,
-                          filled: true,
-                          hintText: 'Cost per min',
-                        ),
-                        minLines: 1,
-                      ),
-                    ),
-                  ),
-                  SizedBox(
-                    height: size.height * 0.01,
-                  ),
-
-                  //Waiting Charges
-
-                  // Row(
-                  //   children: [
-                  //     Text(
-                  //       'Waiting Charges',
-                  //       style: GoogleFonts.inter(
-                  //           fontSize: 15,
-                  //           fontWeight: FontWeight.w700,
-                  //           color: Colors.black),
-                  //     ),
-                  //   ],
-                  // ),
-                  // SizedBox(
-                  //   height: size.height * 0.01,
-                  // ),
-                  // Container(
-                  //   height: size.height * 0.08,
-                  //   width: size.width,
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(12),
-                  //   ),
-                  //   child: Center(
-                  //     child: FairNameTextFormField(
-                  //       controller: _additionalFareController,
-                  //       hintText: 'Waiting Charges per Hour',
-                  //       typeInput: TextInputType.number,
-                  //     ),
-                  //   ),
-                  // ),
-                  Divider(),
-                ],
-              ),
-            ),
 
             //Add Button => Top Layer
             Center(
@@ -367,7 +377,9 @@ class _EditFarePage extends State<EditFarePage> {
         ),
       ),
     );
+
   }
+
 
   //Start Ride Dialog Box-------------------------------------------------------->
   Future<void> _dialogBuilder(BuildContext context) {
@@ -430,11 +442,8 @@ class _EditFarePage extends State<EditFarePage> {
     });
     SharedPreferences pref=await SharedPreferences.getInstance();
     var id=pref.getString('identification_key');
-    var fareName=_controller1.text.trim();
-    var minKm=_kilometerController1.text.trim();
-    var baseFare=_baseFareController1.text.trim();
-    var additionalFare=_additionalFareController1.text.trim();
-    var costPerMin=_costPerMinuteController1.text.trim();
+
+
     UpdateFareRequestBody updateFareRequestBody=UpdateFareRequestBody(
         driverKey: id,
         fareInfo: UpdateFareRequestBodyFareInfo(
@@ -442,15 +451,15 @@ class _EditFarePage extends State<EditFarePage> {
           currencyId: 1,
           fractionDigit: 2,
           measureUnit: 'KM',
-          baseFare:int.parse(baseFare),
-          minKm: double.parse(minKm),
-          costPerMinute: double.parse(costPerMin),
-          additionalFare: int.parse(additionalFare),
+          baseFare:baseFare,
+          minKm: kiloMeter,
+          costPerMinute: costPerMinute,
+          additionalFare: additionalFare,
           costPerUnit: 18,
         ));
 
 
-    debugPrint('ADD FARE PAGE ${updateFareRequestBody.toJson()}');
+    debugPrint('UPDATE FARE PAGE ${updateFareRequestBody.toJson()}');
 
     FareAPI().updateFare(updateFareRequestBody).then((value) async{
       if(value.statusCode==200){
@@ -463,37 +472,17 @@ class _EditFarePage extends State<EditFarePage> {
     });
 
 
-    setState(() {
-      isLoading = false;
-    });
-
-  }
-
-  void getFareById(fareId) async {
-
-          debugPrint("INSIDE EDITFARE $fareId");
-          FareAPI().getFareByFareId(fareId).then((value) {
-            debugPrint("INSIDE EDITFARE ${value}");
-            var res=GetFareResponse.fromJson(value);
-
-            _controller1.text=res.result!.data![0]!.fareName!;
-              _kilometerController1.text=res.result!.data![0]!.minKm!.toString();
-              _baseFareController1.text=res.result!.data![0]!.baseFare!.toString();
-              _costPerMinuteController1.text=res.result!.data![0]!.costPerMinute.toString();
-
-
-
-          });
           setState(() {
-            isLoading=false;
+            isLoading = false;
           });
 
+  }
+
+
+
 
   }
 
-  @override
-  void dispose() {
-    super.dispose();
 
-  }
-}
+
+
