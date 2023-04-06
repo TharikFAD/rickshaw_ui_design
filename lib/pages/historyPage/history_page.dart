@@ -3,9 +3,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/trip_api.dart';
-import 'package:meter_app/model/trip_history.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 
+import '../../model/trip/trip_history_response.dart';
 import '../../routes/route_name.dart';
 
 class HistoryPage extends StatefulWidget {
@@ -215,11 +215,12 @@ class _HistoryPageState extends State<HistoryPage> {
                               ],
                             ),
                           ),
+                    
                           SizedBox(
                             height: size.height * 0.03,
                           ),
 
-//Headings
+                     //Headings
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -231,6 +232,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                   "Time",
                                   style: GoogleFonts.inter(
                                       fontSize: 16,
+
                                       fontWeight: FontWeight.w700,
                                       color: Colors.grey.shade600),
                                 ),
@@ -246,6 +248,20 @@ class _HistoryPageState extends State<HistoryPage> {
                                       fontWeight: FontWeight.w700,
                                       color: Colors.grey.shade600),
                                 ),
+
+                                // Flexible(
+                                //   child: Text(
+                                //     res.result![index]!.dropAddress!,
+                                //     overflow: TextOverflow.fade,
+                                //     style: GoogleFonts.inter(
+                                //       fontSize: 14,
+                                //       fontWeight: FontWeight.w700,
+                                //     ),
+                                //   ),
+                                // ),
+                              ],
+                            ),
+
                               ),
                               SizedBox(
                                 width: size.width * 0.02,
@@ -302,6 +318,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                 width: size.width * 0.02,
                               ),
                             ],
+
                           ),
                           Divider(),
 //Report Button

@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
-import 'package:meter_app/model/create_fare.dart';
-import 'package:meter_app/model/get_fare.dart';
-import 'package:meter_app/model/update_fare.dart';
+import 'package:meter_app/model/fare/create_fare.dart';
+import 'package:meter_app/model/fare/get_fare_response.dart';
+import 'package:meter_app/model/fare/update_fare_request.dart';
 import 'package:meter_app/pages/fareSettingsPage/widgets/fareEditTextField.dart';
 import 'package:meter_app/pages/fareSettingsPage/widgets/fareNameTextField.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
@@ -445,18 +445,19 @@ class _EditFarePage extends State<EditFarePage> {
 
 
     UpdateFareRequestBody updateFareRequestBody=UpdateFareRequestBody(
-        driverKey: id,
-        fareInfo: UpdateFareRequestBodyFareInfo(
-          fareName:fareName,
-          currencyId: 1,
-          fractionDigit: 2,
-          measureUnit: 'KM',
-          baseFare:baseFare,
-          minKm: kiloMeter,
-          costPerMinute: costPerMinute,
-          additionalFare: additionalFare,
-          costPerUnit: 18,
-        ));
+        identificationKey: id,
+        fareId:fareId,
+    fareInfo: UpdateFareRequestBodyFareInfo(
+      fareName: fareName,
+      minKm: kiloMeter,
+      baseFare: baseFare,
+      additionalFare: additionalFare,
+      costPerMinute: costPerMinute,
+      currencyId: 1,
+      fractionDigit: 2,
+      measureUnit: 'KM',
+      costPerUnit: 18,
+    ));
 
 
     debugPrint('UPDATE FARE PAGE ${updateFareRequestBody.toJson()}');

@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
-import 'package:meter_app/model/trip_complete.dart';
+import 'package:meter_app/model/trip/trip_complete_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_helper.dart';

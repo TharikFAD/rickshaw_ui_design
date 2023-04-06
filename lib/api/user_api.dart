@@ -6,8 +6,9 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:meter_app/api/api_helper.dart';
-import 'package:meter_app/model/user_profile.dart';
 
+
+import '../model/user/update_user_request.dart';
 import 'custom_exception.dart';
 
 
@@ -40,6 +41,8 @@ class UserAPI{
 
     return result;
   }
+
+
 
   Future<dynamic> getProfile()async{
     debugPrint('GET PROFILE REQUEST ');

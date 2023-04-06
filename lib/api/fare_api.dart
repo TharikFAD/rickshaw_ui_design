@@ -7,10 +7,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/http.dart';
-import 'package:meter_app/model/create_fare.dart';
-import 'package:meter_app/model/update_fare.dart';
+import 'package:meter_app/model/fare/create_fare.dart';
+import 'package:meter_app/model/fare/update_fare_request.dart';
 
-import '../model/get_fare.dart';
+import '../model/fare/get_fare_response.dart';
 import 'api_helper.dart';
 import 'custom_exception.dart';
 

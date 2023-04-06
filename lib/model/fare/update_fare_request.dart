@@ -4,7 +4,7 @@
 class UpdateFareRequestBodyFareInfo {
 /*
 {
-  "fare_name": "Fare-Standard",
+  "fare_name": "Fare-Standard111",
   "currency_id": 1,
   "fraction_digit": 2,
   "measure_unit": "KM",
@@ -66,10 +66,10 @@ class UpdateFareRequestBodyFareInfo {
 class UpdateFareRequestBody {
 /*
 {
-  "fare_id": 10,
-  "driver_key": "azep0037",
+  "fare_id": 9,
+  "identification_key": "azep9879",
   "fare_info": {
-    "fare_name": "Fare-Standard",
+    "fare_name": "Fare-Standard111",
     "currency_id": 1,
     "fraction_digit": 2,
     "measure_unit": "KM",
@@ -83,23 +83,23 @@ class UpdateFareRequestBody {
 */
 
   int? fareId;
-  String? driverKey;
+  String? identificationKey;
   UpdateFareRequestBodyFareInfo? fareInfo;
 
   UpdateFareRequestBody({
     this.fareId,
-    this.driverKey,
+    this.identificationKey,
     this.fareInfo,
   });
   UpdateFareRequestBody.fromJson(Map<String, dynamic> json) {
     fareId = json['fare_id']?.toInt();
-    driverKey = json['driver_key']?.toString();
+    identificationKey = json['identification_key']?.toString();
     fareInfo = (json['fare_info'] != null) ? UpdateFareRequestBodyFareInfo.fromJson(json['fare_info']) : null;
   }
   Map<String, dynamic> toJson() {
     final data = <String, dynamic>{};
     data['fare_id'] = fareId;
-    data['driver_key'] = driverKey;
+    data['identification_key'] = identificationKey;
     if (fareInfo != null) {
       data['fare_info'] = fareInfo!.toJson();
     }
