@@ -3,10 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/trip_api.dart';
-import 'package:meter_app/main.dart';
 import 'package:meter_app/model/trip_history.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
-import 'package:system_alert_window/system_alert_window.dart';
 
 import '../../routes/route_name.dart';
 
@@ -35,7 +33,6 @@ class _HistoryPageState extends State<HistoryPage> {
           style: GoogleFonts.bungee(
             fontSize: 22,
             fontWeight: FontWeight.w700,
-            //fontWeight: FontWeight.BOLD,
           ),
         ), //appbar title
         backgroundColor: Color(0xFF4885ED), //appbar background color
@@ -211,7 +208,9 @@ class _HistoryPageState extends State<HistoryPage> {
                               children: [
                                 Text(
                                   tripDate,
-                                  style: GoogleFonts.inter(fontSize: 18),
+                                  style: GoogleFonts.inter(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.w700),
                                 )
                               ],
                             ),
@@ -232,6 +231,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                   "Time",
                                   style: GoogleFonts.inter(
                                       fontSize: 16,
+                                      fontWeight: FontWeight.w700,
                                       color: Colors.grey.shade600),
                                 ),
                               ),
@@ -243,6 +243,7 @@ class _HistoryPageState extends State<HistoryPage> {
                                   "distance",
                                   style: GoogleFonts.inter(
                                       fontSize: 16,
+                                      fontWeight: FontWeight.w700,
                                       color: Colors.grey.shade600),
                                 ),
                               ),
@@ -253,7 +254,9 @@ class _HistoryPageState extends State<HistoryPage> {
                                 child: Text(
                                   "Total",
                                   style: GoogleFonts.inter(
-                                      fontSize: 16, color: Colors.grey.shade600
+                                      fontWeight: FontWeight.w700,
+                                      fontSize: 16,
+                                      color: Colors.grey.shade600
 
                                       //fontWeight: FontWeight.w700),
                                       ),
@@ -276,25 +279,24 @@ class _HistoryPageState extends State<HistoryPage> {
                               ),
                               Text(
                                 time,
-                                style: GoogleFonts.inter(fontSize: 22),
+                                style: GoogleFonts.inter(
+                                    fontSize: 22, fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 width: size.width * 0.08,
                               ),
                               Text(
                                 "$distance KM",
-                                style: GoogleFonts.inter(fontSize: 22),
+                                style: GoogleFonts.inter(
+                                    fontSize: 22, fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
-                                width: size.width * 0.1,
+                                width: size.width * 0.05,
                               ),
                               Text(
-                                total,
+                                " ₹ $total",
                                 style: GoogleFonts.inter(
-                                  fontSize: 22,
-
-                                  //fontWeight: FontWeight.w700),
-                                ),
+                                    fontSize: 22, fontWeight: FontWeight.w700),
                               ),
                               SizedBox(
                                 width: size.width * 0.02,
