@@ -34,6 +34,7 @@ class _HistoryPageState extends State<HistoryPage> {
           'TRIP HISTORY',
           style: GoogleFonts.bungee(
             fontSize: 22,
+            fontWeight: FontWeight.w700,
             //fontWeight: FontWeight.BOLD,
           ),
         ), //appbar title
