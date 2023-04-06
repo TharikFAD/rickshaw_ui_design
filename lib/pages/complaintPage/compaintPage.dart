@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/complaints_api.dart';
-import 'package:meter_app/model/get_complaints.dart';
+import 'package:meter_app/model/complaint/get_complaints_response.dart';
 import 'package:meter_app/pages/complaintPage/widgets/complaintsList.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';

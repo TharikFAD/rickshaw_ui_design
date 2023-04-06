@@ -4,11 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/complaints_api.dart';
-import 'package:meter_app/model/create_complaint.dart';
+import 'package:meter_app/model/complaint/create_complaint_request.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../model/complaint/create_complaint_response.dart';
 import '../widgets/complaintTextField.dart';
 
 

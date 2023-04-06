@@ -7,7 +7,7 @@ import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/rideInfoNavContainer.dart';
 import 'package:meter_app/routes/route_name.dart';
 
-import '../../../model/trip_complete.dart';
+import '../../../model/trip/trip_complete_request.dart';
 import '../../../routes/route_name.dart';
 
 class RiderInfoPage extends StatefulWidget {

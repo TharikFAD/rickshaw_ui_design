@@ -9,7 +9,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/api/trip_api.dart';
-import 'package:meter_app/model/trip_complete.dart';
+import 'package:meter_app/model/trip/trip_complete_request.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
 import 'package:meter_app/routes/route_name.dart';

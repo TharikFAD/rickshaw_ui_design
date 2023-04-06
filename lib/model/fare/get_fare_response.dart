@@ -4,10 +4,10 @@
 class GetFareResponseResultData {
 /*
 {
-  "id": 1,
-  "identification_key": "Default",
+  "id": 5,
+  "identification_key": "azep9879",
   "fare_name": "Fare-Standard",
-  "fare_template_id": 1,
+  "fare_template_id": 5,
   "currency_id": 1,
   "fraction_digit": 2,
   "measure_unit": "KM",
@@ -16,9 +16,9 @@ class GetFareResponseResultData {
   "cost_per_minute": 0.15000000596046448,
   "cost_per_unit": 18,
   "additional_fare": 20,
-  "is_default": 0,
-  "created_at": "2023-03-31 15:10:37",
-  "updated_at": "2023-03-31 15:10:37"
+  "is_default": 1,
+  "created_at": "2023-04-03 15:01:17",
+  "updated_at": "2023-04-03 15:01:17"
 }
 */
 
@@ -98,10 +98,10 @@ class GetFareResponseResult {
 {
   "data": [
     {
-      "id": 1,
-      "identification_key": "Default",
+      "id": 5,
+      "identification_key": "azep9879",
       "fare_name": "Fare-Standard",
-      "fare_template_id": 1,
+      "fare_template_id": 5,
       "currency_id": 1,
       "fraction_digit": 2,
       "measure_unit": "KM",
@@ -110,9 +110,9 @@ class GetFareResponseResult {
       "cost_per_minute": 0.15000000596046448,
       "cost_per_unit": 18,
       "additional_fare": 20,
-      "is_default": 0,
-      "created_at": "2023-03-31 15:10:37",
-      "updated_at": "2023-03-31 15:10:37"
+      "is_default": 1,
+      "created_at": "2023-04-03 15:01:17",
+      "updated_at": "2023-04-03 15:01:17"
     }
   ],
   "Messsage": ""
@@ -158,10 +158,10 @@ class GetFareResponse {
   "result": {
     "data": [
       {
-        "id": 1,
-        "identification_key": "Default",
+        "id": 5,
+        "identification_key": "azep9879",
         "fare_name": "Fare-Standard",
-        "fare_template_id": 1,
+        "fare_template_id": 5,
         "currency_id": 1,
         "fraction_digit": 2,
         "measure_unit": "KM",
@@ -170,9 +170,9 @@ class GetFareResponse {
         "cost_per_minute": 0.15000000596046448,
         "cost_per_unit": 18,
         "additional_fare": 20,
-        "is_default": 0,
-        "created_at": "2023-03-31 15:10:37",
-        "updated_at": "2023-03-31 15:10:37"
+        "is_default": 1,
+        "created_at": "2023-04-03 15:01:17",
+        "updated_at": "2023-04-03 15:01:17"
       }
     ],
     "Messsage": ""

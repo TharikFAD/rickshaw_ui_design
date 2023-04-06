@@ -8,11 +8,13 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/Pages/loginPage/widgets/user_name_textform.dart';
 import 'package:meter_app/api/user_api.dart';
 import 'package:meter_app/model/otp.dart';
-import 'package:meter_app/model/user_profile.dart';
 import 'package:meter_app/pages/HomePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../api/login_api.dart';
+import '../../model/user/update_user_request.dart';
+import '../../model/user/update_user_response.dart';
+
 
 class Settingspage extends StatefulWidget {
   const Settingspage({super.key});
@@ -25,7 +27,6 @@ class _SettingspageState extends State<Settingspage> {
   var UserNameController = TextEditingController();
   var DriverIdController = TextEditingController();
   var MobileNumberController = TextEditingController();
-  var VehicleNumberController = TextEditingController();
   var otpRequestBody = OtpRequestBody();
   var otp;
   var updateProfile = UpdateProfileRequestBody();
@@ -123,34 +124,6 @@ class _SettingspageState extends State<Settingspage> {
                 ),
 
                 //Change Mobile Number
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(
-                    left: 51.0,
-                  ),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Enter Vehicle Number',
-                        style: GoogleFonts.inter(
-                            fontWeight: FontWeight.w600, fontSize: 16),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(
-                  height: size.height * 0.01,
-                ),
-
-                //TextField -m "Enter Mobile Number"
-                Padding(
-                  padding: const EdgeInsets.only(left: 48.0, right: 48.0),
-                  child: UserNameTextForm(
-                      controller: VehicleNumberController, hintText: ''),
-                ),
                 SizedBox(
                   height: size.height * 0.02,
                 ),
@@ -295,15 +268,12 @@ class _SettingspageState extends State<Settingspage> {
                 var driverId = DriverIdController.text.trim();
                 var driverName = UserNameController.text.trim();
                 var mobileNo = MobileNumberController.text.trim();
-                var vehicleNumber = VehicleNumberController.text.trim();
                 var Otp = otp;
 
-                updateProfile.identificationKey = identificationKey;
                 updateProfile.driverId = driverId;
                 updateProfile.name = driverName;
-                updateProfile.phone = int.parse(mobileNo);
-                updateProfile.otp = int.parse(Otp);
-                updateProfile.vehicleNumber = vehicleNumber;
+
+
 
                 debugPrint("SETTINGS PAGE ${updateProfile}");
 

@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
-import 'package:meter_app/model/get_fare.dart';
+import 'package:meter_app/model/fare/get_fare_response.dart';
 
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
