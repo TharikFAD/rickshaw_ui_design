@@ -67,10 +67,10 @@ class _EditFarePage extends State<EditFarePage> {
             FutureBuilder(
               future: fareAPI.getFareByFareId(fareId),
                 builder:(context,snapshot){
-              var res=GetFareResponse.fromJson(snapshot.data);
               if(!snapshot.hasData && snapshot.connectionState==ConnectionState.waiting){
                 return SizedBox(width: 50,height: 50,child: CircularProgressIndicator());
               }else{
+                var res=GetFareResponse.fromJson(snapshot.data);
                return Padding(
                   padding: const EdgeInsets.only(
                       top: 10, left: 12.0, right: 12.0),
@@ -153,7 +153,7 @@ class _EditFarePage extends State<EditFarePage> {
                                 color: Colors.grey),
                             child: TextFormField(
                               keyboardType: TextInputType.text,
-                             initialValue: res.result?.data![0]?.minKm.toString(),
+                             initialValue: res.result?.data![0]?.minKm?.toStringAsFixed(2),
                               onChanged: (value){
                                 setState(() {
                                   kiloMeter=double.parse(value);
@@ -300,7 +300,7 @@ class _EditFarePage extends State<EditFarePage> {
                         child: Center(
                           child: TextFormField(
                             keyboardType: TextInputType.text,
-                            initialValue: res.result?.data![0]?.costPerMinute.toString(),
+                            initialValue: res.result?.data![0]?.costPerMinute?.toStringAsFixed(2),
                             onChanged: (value){
                               setState(() {
                                 costPerMinute=double.parse(value);
@@ -339,7 +339,6 @@ class _EditFarePage extends State<EditFarePage> {
                 );
               }
             }),
-
 
             //Contents => Middle Layer
 

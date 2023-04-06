@@ -21,7 +21,7 @@ class _HistoryPageState extends State<HistoryPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    String tripDate = "Tue, Apr 4, 2023 17:38:16";
+
     String time = "00:40:55";
     String distance = "16.80";
     String total = "175.78";
@@ -52,7 +52,6 @@ class _HistoryPageState extends State<HistoryPage> {
           )
         ],
       ),
-
       //Drawer
       drawer: MyDrawerWidget(),
       //Body
@@ -101,113 +100,13 @@ class _HistoryPageState extends State<HistoryPage> {
                     child: Center(
                       child: Column(
                         children: [
-//Old contents
-
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 12.0, top: 12),
-                          //   child: Row(
-                          //     children: [
-                          //       Image.asset('assets/Driving.png'),
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       Text(
-                          //         'Date :',
-                          //         style: GoogleFonts.inter(
-                          //           fontSize: 16,
-                          //           fontWeight: FontWeight.w700,
-                          //         ),
-                          //       ),
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       Text(
-                          //         res.result![index]!.tripDate!,
-                          //         style: GoogleFonts.inter(
-                          //           fontSize: 14,
-                          //           fontWeight: FontWeight.w700,
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 12.0, top: 12),
-                          //   child: Row(
-                          //     children: [
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       Image.asset('assets/reddot.png'),
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       Text(
-                          //         'Pickup :',
-                          //         style: GoogleFonts.inter(
-                          //           fontSize: 14,
-                          //           fontWeight: FontWeight.w700,
-                          //         ),
-                          //       ),
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       Flexible(
-                          //         child: Text(
-                          //           res.result![index]!.pickupAddress!,
-                          //           overflow: TextOverflow.fade,
-                          //           style: GoogleFonts.inter(
-                          //             fontSize: 14,
-                          //             fontWeight: FontWeight.w700,
-                          //           ),
-                          //         ),
-                          //       ),
-                          //     ],
-                          //   ),
-                          // ),
-                          // Padding(
-                          //   padding: const EdgeInsets.only(left: 12.0, top: 12),
-                          //   child: Row(
-                          //     children: [
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       Image.asset('assets/greendot.png'),
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       Text(
-                          //         'Drop :',
-                          //         style: GoogleFonts.inter(
-                          //           fontSize: 14,
-                          //           //fontWeight: FontWeight.w700,
-                          //         ),
-                          //       ),
-                          //       SizedBox(
-                          //         width: size.width * 0.02,
-                          //       ),
-                          //       // Flexible(
-                          //       //   child: Text(
-                          //       //     res.result![index]!.dropAddress!,
-                          //       //     overflow: TextOverflow.fade,
-                          //       //     style: GoogleFonts.inter(
-                          //       //       fontSize: 14,
-                          //       //       fontWeight: FontWeight.w700,
-                          //       //     ),
-                          //       //   ),
-                          //       // ),
-                          //     ],
-                          //   ),
-                          // ),
-
 //New Contents starts from here!
-
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Row(
                               children: [
                                 Text(
-                                  tripDate,
+                                  '${res.result![index]?.tripDate}',
                                   style: GoogleFonts.inter(
                                       fontSize: 18,
                                       fontWeight: FontWeight.w700),
@@ -215,113 +114,85 @@ class _HistoryPageState extends State<HistoryPage> {
                               ],
                             ),
                           ),
-                    
                           SizedBox(
                             height: size.height * 0.03,
                           ),
-
                      //Headings
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.02,
-                              ),
-                              Container(
-                                child: Text(
-                                  "Time",
-                                  style: GoogleFonts.inter(
-                                      fontSize: 16,
+                          Padding(
+                            padding: const EdgeInsets.only(left:12.0,right: 12.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                //time
+                                Container(
+                                  child: Text(
+                                    "Time",
+                                    style: GoogleFonts.inter(
+                                        fontSize: 16,
 
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.grey.shade600),
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.grey.shade600),
+                                  ),
                                 ),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.02,
-                              ),
-                              Container(
-                                child: Text(
-                                  "distance",
-                                  style: GoogleFonts.inter(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w700,
-                                      color: Colors.grey.shade600),
+                                //distance
+                                Container(
+                                  child: Text(
+                                    "distance",
+                                    style: GoogleFonts.inter(
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w700,
+                                        color: Colors.grey.shade600),
+                                  ),
+
                                 ),
-
-                                // Flexible(
-                                //   child: Text(
-                                //     res.result![index]!.dropAddress!,
-                                //     overflow: TextOverflow.fade,
-                                //     style: GoogleFonts.inter(
-                                //       fontSize: 14,
-                                //       fontWeight: FontWeight.w700,
-                                //     ),
-                                //   ),
-                                // ),
-                              ],
-                            ),
-
-                              ),
-                              SizedBox(
-                                width: size.width * 0.02,
-                              ),
-                              Container(
-                                child: Text(
-                                  "Total",
-                                  style: GoogleFonts.inter(
-                                      fontWeight: FontWeight.w700,
-                                      fontSize: 16,
-                                      color: Colors.grey.shade600
+                                //total
+                                Container(
+                                  child: Text(
+                                    "Total",
+                                    style: GoogleFonts.inter(
+                                        fontWeight: FontWeight.w700,
+                                        fontSize: 16,
+                                        color: Colors.grey.shade600
 
                                       //fontWeight: FontWeight.w700),
-                                      ),
+                                    ),
+                                  ),
+                                ),],
+                              ),
+                          ),
+               //Contents
+                          Padding(
+                            padding: const EdgeInsets.only(right: 12, left: 12),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+
+                                Text(
+                                  '${res.result![index]?.duration}',
+                                  style: GoogleFonts.inter(
+                                      fontSize: 22, fontWeight: FontWeight.w700),
                                 ),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.02,
-                              ),
-                            ],
-                          ),
-                          SizedBox(
-                            height: size.height * 0.02,
-                          ),
 
-//Contents
-                          Row(
-                            children: [
-                              SizedBox(
-                                width: size.width * 0.05,
-                              ),
-                              Text(
-                                time,
-                                style: GoogleFonts.inter(
-                                    fontSize: 22, fontWeight: FontWeight.w700),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.08,
-                              ),
-                              Text(
-                                "$distance KM",
-                                style: GoogleFonts.inter(
-                                    fontSize: 22, fontWeight: FontWeight.w700),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.05,
-                              ),
-                              Text(
-                                " ₹ $total",
-                                style: GoogleFonts.inter(
-                                    fontSize: 22, fontWeight: FontWeight.w700),
-                              ),
-                              SizedBox(
-                                width: size.width * 0.02,
-                              ),
-                            ],
+                                Text(
+                                  "${res.result![index]?.distances?.toStringAsFixed(2)} KM",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 22, fontWeight: FontWeight.w700),
+                                ),
 
+                                Text(
+                                  " ₹ ${res.result![index]?.totalFare?.toStringAsFixed(2)}",
+                                  style: GoogleFonts.inter(
+                                      fontSize: 22, fontWeight: FontWeight.w700),
+                                ),
+
+                              ],
+
+                            ),
                           ),
                           Divider(),
-//Report Button
+
+
+                          //Report Button
                           Padding(
                             padding: const EdgeInsets.only(left: 12.0, top: 12),
                             child: Row(
@@ -342,14 +213,11 @@ class _HistoryPageState extends State<HistoryPage> {
                               ],
                             ),
                           ),
-                          SizedBox(
-                            height: size.height * 0.02,
-                          ),
-                        ],
+
+                      ]),
                       ),
-                    ),
-                  ),
-                );
+                  ),);
+
               },
             );
           }

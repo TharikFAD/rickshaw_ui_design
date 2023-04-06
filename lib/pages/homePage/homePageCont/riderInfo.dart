@@ -8,6 +8,7 @@ import 'package:meter_app/pages/homePage/widgets/rideInfoNavContainer.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 import '../../../model/trip/trip_complete_request.dart';
+import '../../../model/trip/trip_complete_response.dart';
 import '../../../routes/route_name.dart';
 
 class RiderInfoPage extends StatefulWidget {
@@ -25,10 +26,11 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
     var totalController = TextEditingController();
     var balanceController = TextEditingController();
 
+
     var result = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
-    double _myTestFareResult = 154.56;
+    double _myTestFareResult = double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
     var size = MediaQuery.of(context).size;
-    //double balanceAmount = 0.0;
+
     void dispose() {
       super.dispose();
       totalController.dispose();
@@ -314,7 +316,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        'Fri, Dec 2, 2022 09:57:30',
+                        '${tripCompleteResponse.result?.startTime}',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -343,7 +345,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        'Fri, Dec 2, 2022 12:00:30',
+                        '${tripCompleteResponse.result?.endTime}',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,

@@ -90,6 +90,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                         itemBuilder:(context,index){
                         return GestureDetector(
                           onTap: (){
+                            debugPrint('UPDATE FARE ID ${res.result!.data![index]!.id}');
                             Navigator.pushNamed(context, editFareScreenRoute,arguments: res.result!.data![index]!.id);
                           },
                           child: Padding(
@@ -110,7 +111,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                         children: [
                                           Row(
                                           children: [
-                                            Padding(
+                                            (res.result?.data![index]?.isDefault ==1) ?Padding(
                                               padding: const EdgeInsets.only(left: 12.0),
                                               child: Text(
                                                 'Default',
@@ -119,11 +120,19 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                                   fontWeight: FontWeight.w700,
                                                   color: Color(0xFFFFFFFF),
                                                 ),
+                                              ),):Padding(
+                                              padding: const EdgeInsets.only(left: 12.0),
+                                              child: Text(
+                                                'Not Default',
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color(0xFFFFFFFF),
+                                                ),
                                               ),),
                                             Spacer(),
-
                                             Switch(
-                                              value: _toggleValue,
+                                              value: res.result?.data![index]?.isDefault !=0?true:false,
                                               onChanged: (value) {
                                                 setState(() {
                                                   _toggleValue = value;

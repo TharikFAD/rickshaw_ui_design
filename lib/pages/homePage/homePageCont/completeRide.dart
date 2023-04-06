@@ -15,6 +15,8 @@ import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../model/trip/trip_complete_response.dart';
+
 class CompleteRidePage extends StatefulWidget {
   const CompleteRidePage({super.key});
 
@@ -410,9 +412,6 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               children: [
                 SizedBox(
                   height: size.height * 0.77,
-
-                 
-
                 ),
                 Center(
                   child: ElevatedButton(
@@ -523,6 +522,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                 SharedPreferences pref=await SharedPreferences.getInstance();
                 var driverId=pref.getString('identification_key');
                 var surgeValue=pref.getDouble('surgePrice');
+                surgeValue ??= 1;
                 TripCompleteRequestBody tripCompleteRequestBody=TripCompleteRequestBody(
                   identificationKey: driverId,
                   fareId: 1,

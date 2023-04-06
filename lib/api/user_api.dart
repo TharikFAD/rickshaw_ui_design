@@ -6,6 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:meter_app/api/api_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 import '../model/user/update_user_request.dart';
@@ -45,10 +46,14 @@ class UserAPI{
 
 
   Future<dynamic> getProfile()async{
-    debugPrint('GET PROFILE REQUEST ');
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    var driverId=pref.getString('identification_key');
+    debugPrint('GET PROFILE REQUEST $driverId');
 
     try{
-      final response=await http.get(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.updateProfile),);
+      final response=await http.get(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.getProfile).replace(queryParameters: {
+        "identification_key":driverId
+      }),);
 
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);
