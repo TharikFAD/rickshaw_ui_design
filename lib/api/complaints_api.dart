@@ -6,7 +6,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
 import 'package:http/http.dart' as http;
 import 'package:meter_app/api/api_helper.dart';
-import 'package:meter_app/model/create_complaint.dart';
+import 'package:meter_app/model/complaint/create_complaint_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 

@@ -2,7 +2,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 class CommunityPage extends StatefulWidget {
@@ -17,12 +16,38 @@ class _CommunityPageState extends State<CommunityPage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
+      //AppBar
+      appBar: AppBar(
+        title: Text(
+          "Community",
+          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
+        ), //appbar title
+        backgroundColor: Color(0xFF4885ED), //appbar background color
+
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.popAndPushNamed(context, homeScreenRoute);
+            },
+            child: Icon(
+              Icons.home,
+              size: 32,
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.05,
+          )
+        ],
+      ),
+
+      //Body
       body: Column(
         children: [
-          CustomAppBar(),
           SizedBox(
             height: size.height * 0.05,
           ),
+
+          //Greetings(Text)
           Text(
             'Join The Community',
             style: GoogleFonts.inter(
@@ -33,6 +58,7 @@ class _CommunityPageState extends State<CommunityPage> {
           SizedBox(
             height: size.height * 0.05,
           ),
+
           //SearchBar Widget
           Padding(
             padding: const EdgeInsets.only(left: 48.0, right: 48.0),
@@ -76,7 +102,6 @@ class _CommunityPageState extends State<CommunityPage> {
                   Navigator.pushNamed(context, memberScreenRoute);
                 },
                 child: Container(
-                  height: size.height * 0.12,
                   width: size.width * 0.25,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -91,7 +116,6 @@ class _CommunityPageState extends State<CommunityPage> {
               InkWell(
                 onTap: () {},
                 child: Container(
-                  height: size.height * 0.12,
                   width: size.width * 0.25,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -102,7 +126,7 @@ class _CommunityPageState extends State<CommunityPage> {
             ],
           ),
 
-          //Community Name => 1st Row
+          //Community Name(Text) => 1st Row
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -145,7 +169,6 @@ class _CommunityPageState extends State<CommunityPage> {
               InkWell(
                 onTap: () {},
                 child: Container(
-                  height: size.height * 0.12,
                   width: size.width * 0.25,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -159,7 +182,6 @@ class _CommunityPageState extends State<CommunityPage> {
               InkWell(
                 onTap: () {},
                 child: Container(
-                  height: size.height * 0.12,
                   width: size.width * 0.25,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
@@ -170,7 +192,7 @@ class _CommunityPageState extends State<CommunityPage> {
             ],
           ),
 
-          //Community Name => 2nd Row
+          //Community Name(Text) => 2nd Row
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [

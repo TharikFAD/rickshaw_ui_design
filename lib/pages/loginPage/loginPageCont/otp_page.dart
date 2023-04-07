@@ -98,8 +98,7 @@ class _OtpPageState extends State<OtpPage> {
                   child: ButtonWidget(
                       text: 'Next',
                       callback: () async {
-                        SharedPreferences pref =
-                            await SharedPreferences.getInstance();
+                        SharedPreferences pref = await SharedPreferences.getInstance();
                         var mobileNo = pref.getInt('mobile_no');
                         otp = int.parse(otp);
                         validateOtpRequestBody.phone = mobileNo;
@@ -118,13 +117,14 @@ class _OtpPageState extends State<OtpPage> {
 
                             debugPrint("OTP PAGE: ${validateResponse.result?.data?.magicLink}");
                             Fluttertoast.showToast(msg: validateResponse!.result!.Messsage!);
+                            Navigator.pushNamed(context, enterUserNameScreenRoute);
                           }else{
                             Fluttertoast.showToast(msg: "Login Failed");
                           }
 
                         });
 
-                        Navigator.pushNamed(context, enterUserNameScreenRoute);
+
                       }),
                 ),
               ],

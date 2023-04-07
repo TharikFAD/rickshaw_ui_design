@@ -29,6 +29,7 @@ class LogInAPI{
       );
       debugPrint('LOGIN API RESPONSE : ${response.body}');
       responseStatus = response;
+      Fluttertoast.showToast(msg: '${response.body}');
 
     } on SocketException {
       Fluttertoast.showToast(msg:"No Internet connection. Please Try Again Later!");

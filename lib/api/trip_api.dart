@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart';
-import 'package:meter_app/model/trip_complete.dart';
+import 'package:meter_app/model/trip/trip_complete_request.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'api_helper.dart';
@@ -27,7 +27,7 @@ class TripAPI{
     debugPrint("GET TRIP HISTORY REQUEST ");
     try{
 
-      final response = await http.post(Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.getTriphistory).replace(queryParameters: {'DriverKey':'$driverId'}));
+      final response = await http.post(Uri.parse(ApiBaseUrl.baseUrl + ApiEndPoint.getTripHistory).replace(queryParameters: {'DriverKey':'$driverId'}));
 
       if (response.statusCode == 200) {
         data = jsonDecode(response.body);

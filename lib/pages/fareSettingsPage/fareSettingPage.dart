@@ -1,14 +1,14 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, file_names, sort_child_properties_last, unused_field, prefer_final_fields
 
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:meter_app/api/fare_api.dart';
-import 'package:meter_app/model/get_fare.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
-import 'package:meter_app/pages/homePage/widgets/drawer.dart';
+import 'package:meter_app/model/fare/get_fare_response.dart';
+
 import 'package:meter_app/routes/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../homePage/widgets/drawer.dart';
 
 class FareSettingsPage extends StatefulWidget {
   const FareSettingsPage({super.key});
@@ -18,8 +18,17 @@ class FareSettingsPage extends StatefulWidget {
 }
 
 class _FareSettingsPageState extends State<FareSettingsPage> {
-  var _isStarted = false;
+  var driverId;
+  bool _toggleValue = false;
+  @override
+  void initState() {
+    super.initState();
+    getDriverId();
+
+  }
+  var _isStarted = true;
   var fareAPI=FareAPI();
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -54,23 +63,22 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
           children: [
             //Contents => Middle Layer
             //EdgeInsets.only(top: 150, left: 12.0, right: 12.0),
-            Expanded(
+            (driverId!=null)?Expanded(
               child: FutureBuilder(
-                future: fareAPI.getFare(''),
+                future: fareAPI.getFareByDriverId(driverId),
                 builder:(context,snapshot){
                   if(!snapshot.hasData&& snapshot.connectionState ==
                       ConnectionState.waiting){
-                    return Center(child: SizedBox(width:50,height:50,child: CircularProgressIndicator()));
+                    return Visibility(visible: _isStarted,child: Center(child: SizedBox(width:50,height:50,child: CircularProgressIndicator())));
                   }else if(snapshot.hasError){
                     return Text('An error occurred: ${snapshot.error}');
-                  }else{
-                    var res=FareResponse.fromJson(snapshot.data);
+                  } else {
+                    var res = GetFareResponse.fromJson(snapshot.data);
                     return RefreshIndicator(
                       backgroundColor: Colors.blueAccent,
                       displacement: 10,
                       onRefresh: () {
-                        return Future.delayed(
-                            const Duration(seconds: 1), () {
+                        return Future.delayed(const Duration(seconds: 1), () {
                           setState(() {});
                         });
                       },
@@ -82,12 +90,12 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                         itemBuilder:(context,index){
                         return GestureDetector(
                           onTap: (){
-                            Navigator.popAndPushNamed(context, addFareScreenRoute,arguments: res.result!.data![index]!.id);
+                            debugPrint('UPDATE FARE ID ${res.result!.data![index]!.id}');
+                            Navigator.pushNamed(context, editFareScreenRoute,arguments: res.result!.data![index]!.id);
                           },
                           child: Padding(
                             padding: EdgeInsets.only(top: 10, left: 12.0, right: 12.0),
                             child: Container(
-                              height: size.height * 0.23,
                               width: size.width,
                               decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(12),
@@ -99,164 +107,224 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                     //Default
                                     Padding(
                                       padding: const EdgeInsets.only(top: 18.0),
-                                      child: Row(
+                                      child: Column(
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 12.0),
-                                            child: Text(
-                                              'Default',
-                                              style: GoogleFonts.inter(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xFFFFFFFF),
+                                          Row(
+                                          children: [
+                                            (res.result?.data![index]?.isDefault ==1) ?Padding(
+                                              padding: const EdgeInsets.only(left: 12.0),
+                                              child: Text(
+                                                'Default',
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color(0xFFFFFFFF),
+                                                ),
+                                              ),):Padding(
+                                              padding: const EdgeInsets.only(left: 12.0),
+                                              child: Text(
+                                                'Not Default',
+                                                style: GoogleFonts.inter(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.w700,
+                                                  color: Color(0xFFFFFFFF),
+                                                ),
+                                              ),),
+                                            Spacer(),
+                                            Switch(
+                                              value: res.result?.data![index]?.isDefault !=0?true:false,
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  _toggleValue = value;
+                                                });
+                                              },
+                                            ),
+                                          ],
+                                        ),
+
+
+
+                                            SizedBox(
+                                              height: size.height * 0.01,
+                                            ),
+
+                                            //Base Fare Numbers
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    res.result!.data![index]!
+                                                        .baseFare
+                                                        .toString(),
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    res.result!.data![index]!
+                                                        .minKm
+                                                        .toString(),
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                        ],
-                                      ),
-                                    ),
 
-                                    SizedBox(
-                                      height: size.height * 0.01,
-                                    ),
-
-                                    //Base Fare Numbers
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                             res.result!.data![index]!.baseFare.toString(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            res.result!.data![index]!.minKm.toString(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    //Base Fare const Strings
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Base fare',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            'Minimum KM',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-
-                                    //Cost Per Minute
-
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            res.result!.data![index]!.costPerMinute.toString(),
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            '18.00',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    //Cost Per Minute const Strings
-                                    Padding(
-                                      padding: const EdgeInsets.only(left: 12.0, right: 12.0),
-                                      child: Row(
-                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Text(
-                                            'Cost Per Minute',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          ),
-                                          Text(
-                                            'Additional KM Fare',
-                                            style: GoogleFonts.inter(
-                                                fontSize: 12,
-                                                fontWeight: FontWeight.w700,
-                                                color: Colors.white),
-                                          )
-                                        ],
-                                      ),
-                                    ),
-
-                                    //Primary
-                                    Padding(
-                                      padding: const EdgeInsets.only(top: 18.0),
-                                      child: Row(
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.only(left: 12.0),
-                                            child: Text(
-                                              res.result!.data![index]!.fareName.toString(),
-                                              style: GoogleFonts.inter(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w700,
-                                                color: Color(0xFFFFFFFF),
+                                            //Base Fare const Strings
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Base fare',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    'Minimum KM',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
                                               ),
                                             ),
-                                          ),
-                                        ],
+
+                                            SizedBox(
+                                              height: size.height * 0.02,
+                                            ),
+
+                                            //Cost Per Minute
+
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    res.result!.data![index]!
+                                                        .costPerMinute
+                                                        .toString(),
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    '${res.result?.data![index]?.additionalFare}',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 13,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            //Cost Per Minute const Strings
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, right: 12.0),
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: [
+                                                  Text(
+                                                    'Cost Per Minute',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  ),
+                                                  Text(
+                                                    'Additional KM Fare',
+                                                    style: GoogleFonts.inter(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color: Colors.white),
+                                                  )
+                                                ],
+                                              ),
+                                            ),
+
+                                            //Primary
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 18.0),
+                                              child: Row(
+                                                children: [
+                                                  Padding(
+                                                    padding:
+                                                        const EdgeInsets.only(
+                                                            left: 12.0),
+                                                    child: Text(
+                                                      res.result!.data![index]!
+                                                          .fareName
+                                                          .toString(),
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                        color:
+                                                            Color(0xFFFFFFFF),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                            SizedBox(
+                                              height: size.height * 0.02,
+                                            ),
+                                          ],
+                                        ),
                                       ),
-                                    ),
-                                  ],
+                                    ]),
+                                  ),
                                 ),
-                              ),
-                            ),
-                          ),
-                        );
-                        } ),
+                          ),);}),
                     );
-
-
                   }
-                } ,
+                },
               ),
-            ),
+            ):
+            Visibility(
+              visible: _isStarted,
+                child: SizedBox(
+                  height:50,
+                  width:50,
+                   child: CircularProgressIndicator(),)),
             Center(
               child: Padding(
-                padding: EdgeInsets.only(top: 10,bottom: 10),
+                padding: EdgeInsets.only(top: 10, bottom: 10),
                 child: ElevatedButton(
                   style: ButtonStyle(
                     fixedSize: MaterialStateProperty.all(
@@ -278,59 +346,71 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                 ),
               ),
             ),
-
           ],
         ),
       ),
     );
   }
-}
 
-//Start Ride Dialog Box-------------------------------------------------------->
-Future<void> _dialogBuilder(BuildContext context) {
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          'Do you want to add new fare?',
-          style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF000000)),
-        ),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-            ),
-            child: Text(
-              'No',
-              style: GoogleFonts.inter(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF000000)),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+  void getDriverId()async {
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    driverId= pref.getString('identification_key');
+    debugPrint('FARE SETTING PAGE INIT $driverId');
+
+   setState(() {
+     _isStarted=false;
+   });
+  }
+
+  //Start Ride Dialog Box-------------------------------------------------------->
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Do you want to add new fare?',
+            style: GoogleFonts.inter(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF000000)),
           ),
-          TextButton(
+          actions: <Widget>[
+            TextButton(
               style: TextButton.styleFrom(
                 textStyle: Theme.of(context).textTheme.labelLarge,
               ),
               child: Text(
-                'Yes',
+                'No',
                 style: GoogleFonts.inter(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF000000)),
               ),
               onPressed: () {
-                Navigator.popAndPushNamed(context, addFareScreenRoute,arguments: null);
-              }),
-        ],
-      );
-    },
-  );
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+                style: TextButton.styleFrom(
+                  textStyle: Theme.of(context).textTheme.labelLarge,
+                ),
+                child: Text(
+                  'Yes',
+                  style: GoogleFonts.inter(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: Color(0xFF000000)),
+                ),
+                onPressed: () {
+                  Navigator.pushNamed(context, addFareScreenRoute,arguments: null);
+                }),
+          ],
+        );
+      },
+    );
+  }
+
+
 }
+

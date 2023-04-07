@@ -25,13 +25,15 @@ class ApiEndPoint {
   static String createFare='api/v1/fare/create-fare';
   static String getFare='api/v1/fare/get-fare-by-id';
 
+  static String getProfile='api/v1/user/get-user-by-id';
   static String updateProfile='api/v1/user/update-user-details';
 
   static String createComplaint='api/v1/complaint/add-complaint';
   static String getComplaint='api/v1/complaint/get-complaint';
 
-  static String getTriphistory='api/v1/trip/trip-history';
+  static String getTripHistory='api/v1/trip/trip-history';
   static String tripComplete='api/v1/trip/trip-complete';
+  static String updateFare='api/v1/fare/update-fare';
 
 }
 

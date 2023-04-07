@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-class FareNameTextFormField extends StatelessWidget {
+class FareNameTextFormField extends StatefulWidget {
   final controller;
   final typeInput;
   final String hintText;
@@ -14,10 +14,15 @@ class FareNameTextFormField extends StatelessWidget {
   });
 
   @override
+  State<FareNameTextFormField> createState() => _FareNameTextFormFieldState();
+}
+
+class _FareNameTextFormFieldState extends State<FareNameTextFormField> {
+  @override
   Widget build(BuildContext context) {
     return TextFormField(
-      keyboardType: typeInput,
-      controller: controller,
+      keyboardType: widget.typeInput,
+      controller: widget.controller,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderSide: BorderSide(
@@ -33,7 +38,7 @@ class FareNameTextFormField extends StatelessWidget {
         ),
         fillColor: Colors.white,
         filled: true,
-        hintText: hintText,
+        hintText: widget.hintText,
       ),
       minLines: 1,
     );

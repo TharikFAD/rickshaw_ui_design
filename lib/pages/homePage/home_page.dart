@@ -6,6 +6,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
+import 'package:meter_app/pages/homePage/widgets/chat_head.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/routes/route_name.dart';
 
@@ -17,6 +18,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Offset _offset = Offset.zero;
   var _isStarted = false;
   late GoogleMapController mapController;
   final LatLng _center = const LatLng(10.9641042, 76.9562562);
@@ -68,6 +70,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   final bool _mapStarted = false;
+  final GlobalKey _parentKey = GlobalKey();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -97,7 +100,7 @@ class _HomePageState extends State<HomePage> {
           ),
 
           //Button thingy New Start
-          Container(
+          SizedBox(
             height: size.height,
             width: size.width,
             child: Column(
@@ -128,6 +131,40 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
               ],
+            ),
+          ),
+
+          //chat_head.dart
+          //I've used Visiblity for showing the icon on the system home screen
+          // we should apply the system alert window's property as the parameter
+          Visibility(
+            visible: false,
+            child: SizedBox(
+              width: size.width,
+              height: size.height,
+              child: Stack(
+                key: _parentKey,
+                children: [
+                  Container(color: Colors.transparent),
+                  DraggableFloatingActionButton(
+                    child: Container(
+                      width: 60,
+                      height: 60,
+                      decoration: BoxDecoration(
+                          shape: BoxShape.circle, color: Colors.transparent),
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(90),
+                          child: Image.asset(
+                            "assets/ic_launcher.png",
+                            fit: BoxFit.fill,
+                          )),
+                    ),
+                    initialOffset: const Offset(120, 70),
+                    parentKey: _parentKey,
+                    onPressed: () {},
+                  )
+                ],
+              ),
             ),
           ),
         ],

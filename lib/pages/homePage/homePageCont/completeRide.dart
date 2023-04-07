@@ -9,10 +9,13 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/api/trip_api.dart';
-import 'package:meter_app/model/trip_complete.dart';
+import 'package:meter_app/model/trip/trip_complete_request.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
 import 'package:meter_app/routes/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import '../../../model/trip/trip_complete_response.dart';
 
 class CompleteRidePage extends StatefulWidget {
   const CompleteRidePage({super.key});
@@ -52,22 +55,17 @@ Future<void> onStart(ServiceInstance serviceInstance) async {
     debugPrint("MANI KM  ISOLATE $dataToSend");
   });
 
-  //receivedata to isolate
+  //receive data to isolate
   serviceInstance.on("stop").listen((event) {
-    double distance = 0;
-    for (int i = 0; i < _positionHistory.length - 1; i++) {
-      distance += Geolocator.distanceBetween(
-          _positionHistory[i].latitude,
-          _positionHistory[i].longitude,
-          _positionHistory[i + 1].latitude,
-          _positionHistory[i + 1].longitude);
-    }
+   String message='Service Stopped';
+   serviceInstance.stopSelf();
+   debugPrint("MANI DATA TO STOP RECEIVED");
 
-    if (event!['action'] == 'stopservice') {
-      //senddata from isolate to main
-      Map<String, dynamic> dataToSend = {'count': distance};
-      serviceInstance.invoke('data', dataToSend);
-      print("MANI data to Send $dataToSend");
+    if (event!['action'] == 'stopService') {
+      //send-data from isolate to main
+      Map<String, dynamic> dataToSend = {'message': message};
+      serviceInstance.invoke('afterStop', dataToSend);
+      debugPrint("MANI DATA TO STOP $dataToSend");
     }
   });
 }
@@ -414,9 +412,6 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               children: [
                 SizedBox(
                   height: size.height * 0.77,
-
-                 
-
                 ),
                 Center(
                   child: ElevatedButton(
@@ -470,7 +465,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                 //   ),
                 // ),
               ],
-            )
+            ),
           ],
         ),
       ),
@@ -524,8 +519,12 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                     color: Color(0xFF000000)),
               ),
               onPressed: () async{
+                SharedPreferences pref=await SharedPreferences.getInstance();
+                var driverId=pref.getString('identification_key');
+                var surgeValue=pref.getDouble('surgePrice');
+                surgeValue ??= 1;
                 TripCompleteRequestBody tripCompleteRequestBody=TripCompleteRequestBody(
-                  identificationKey: 'azep0001',
+                  identificationKey: driverId,
                   fareId: 1,
                   startTime: startTime.toString(),
                   endTime: endTime.toString(),
@@ -538,20 +537,30 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                       longitude: "76.961304",
                   ),
                   readings: TripCompleteRequestBodyReadings(
-                    kmTravelled: travelledKm,
+                    kmTravelled: (travelledKm*1000),
                     waitingTime: difference?.inSeconds,
-                    surgeValue: 1
+                    surgeValue: surgeValue,
                   )
                 );
 
                 debugPrint('COMPLETE ${tripCompleteRequestBody}');
 
+                Map<String, dynamic> dataToSend = {};
+                dataToSend['action'] = 'stopService';
+                FlutterBackgroundService().invoke('stop',dataToSend);
+                FlutterBackgroundService().on('afterStop').listen((event) {
+                  if(event!['message']!=null){
+                    Fluttertoast.showToast(msg: event!['message'].toString());
+                  }
+                });
+
                 completeTripAPI.tripComplete(tripCompleteRequestBody).then((value) {
 
                    tripCompleteResponse=TripCompleteResponse.fromJson(value);
-                  Fluttertoast.showToast(msg: tripCompleteResponse.message!);
+                  //Fluttertoast.showToast(msg: tripCompleteResponse.message!);
                    Navigator.popAndPushNamed(context, riderInfoScreenRoute,arguments:tripCompleteResponse );
                 });
+
 
 
               },

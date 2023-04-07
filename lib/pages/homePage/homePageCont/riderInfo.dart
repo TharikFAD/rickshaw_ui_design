@@ -2,12 +2,13 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/calculate_change.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/rideInfoNavContainer.dart';
+import 'package:meter_app/routes/route_name.dart';
 
-import '../../../model/trip_complete.dart';
+import '../../../model/trip/trip_complete_request.dart';
+import '../../../model/trip/trip_complete_response.dart';
 import '../../../routes/route_name.dart';
 
 class RiderInfoPage extends StatefulWidget {
@@ -20,171 +21,231 @@ class RiderInfoPage extends StatefulWidget {
 class _RiderInfoPageState extends State<RiderInfoPage> {
   @override
   Widget build(BuildContext context) {
-    TripCompleteResponse? tripCompleteResponse=ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
+    TripCompleteResponse? tripCompleteResponse =
+        ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
     var totalController = TextEditingController();
+    var balanceController = TextEditingController();
 
 
     var result = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
+    double _myTestFareResult = double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
     var size = MediaQuery.of(context).size;
+
+    void dispose() {
+      super.dispose();
+      totalController.dispose();
+    }
+
+    totalController.addListener(() {
+      double balanceAmount = 0.0;
+      double cashReceived = double.tryParse(totalController.text) ?? 0.0;
+      balanceAmount = cashReceived - _myTestFareResult;
+      setState(() {
+        balanceController.text = balanceAmount.toString();
+      }); // update the UI with the new balance amount
+    });
+
     return Scaffold(
+      //AppBar
+      appBar: AppBar(
+        title: Text(
+          "Ride Complete",
+          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
+        ), //appbar title
+        backgroundColor: Color(0xFF4885ED), //appbar background color
+
+        actions: [
+          InkWell(
+            onTap: () {
+              Navigator.popAndPushNamed(context, homeScreenRoute);
+            },
+            child: Icon(
+              Icons.home,
+              size: 32,
+            ),
+          ),
+          SizedBox(
+            width: size.width * 0.05,
+          )
+        ],
+      ),
       //Drawer
       drawer: MyDrawerWidget(),
       //body
       body: Stack(
-        //Appbar
         children: [
-          Column(
-            children: [
-              CustomAppBar(),
-            ],
-          ),
           Center(
             child: Column(
               children: [
-                SizedBox(
-                  height: size.height * 0.15,
-                ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     InkWell(
                       onTap: () {
-                        showDialog(
+                        showGeneralDialog(
+                          barrierLabel: "showMenuPopUp",
+                          barrierDismissible: true,
+                          barrierColor: Colors.black.withOpacity(0.7),
+                          transitionDuration: const Duration(milliseconds: 200),
                           context: context,
-                          builder: (context) {
-                            return Dialog(
-                              child: Container(
-                                decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(30)),
-                                height: size.height * 0.48,
-                                child: Column(
-                                  children: [
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    Text(
-                                      'Calculate Change',
-                                      style: GoogleFonts.inter(
-                                          fontSize: 20,
-                                          fontWeight: FontWeight.w700,
-                                          color: Colors.black),
-                                    ),
-
-                                    //Total Amount
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                        left: 16.0,
-                                        right: 16.0,
-                                        top: 18.0,
-                                      ),
-                                      child: Row(
-                                        children: [
-                                          Text('Total Amount'),
-                                        ],
-                                      ),
-                                    ),
-
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18.0, right: 18.0, top: 8.0),
+                          pageBuilder: (dialogContext, anim1, anim2) {
+                            return Material(
+                              color: Colors.transparent,
+                              child: StatefulBuilder(
+                                builder: (BuildContext dialogContext,
+                                    void Function(void Function())
+                                        setDialogState) {
+                                  return Align(
+                                    alignment: Alignment.center,
+                                    child: Center(
                                       child: Container(
-                                        height: size.height * 0.08,
-                                        width: size.width,
                                         decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(18),
-                                          //color: Colors.grey,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '₹ ${result}',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18.0, right: 18.0, top: 16.0),
-                                      child: CalculateChangeWidget(
-                                          controller: totalController,
-                                          hintText: "Recieved",
-                                          typeInput: TextInputType.number),
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 18.0, right: 18.0, top: 16.0),
-                                      child: Container(
-                                        height: size.height * 0.08,
-                                        width: size.width,
-                                        decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(18),
-                                          //color: Colors.grey,
-                                          border:
-                                              Border.all(color: Colors.black),
-                                        ),
-                                        child: Center(
-                                          child: Text(
-                                            '₹ ${result}',
-                                            style: GoogleFonts.inter(
-                                              fontSize: 24,
-                                              fontWeight: FontWeight.w700,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                    SizedBox(
-                                      height: size.height * 0.02,
-                                    ),
-                                    Row(
-                                      mainAxisAlignment: MainAxisAlignment.end,
-                                      children: [
-                                        Container(
-                                          decoration: BoxDecoration(
                                             border: Border.all(
                                               color: Colors.grey,
                                             ),
-                                            //color: Color(0xFF4885ED),
+                                            color: Colors.white,
                                             borderRadius:
-                                                BorderRadius.circular(12),
-                                          ),
-                                          child: TextButton(
-                                            style: TextButton.styleFrom(
-                                              textStyle: Theme.of(context)
-                                                  .textTheme
-                                                  .labelLarge,
+                                                BorderRadius.circular(30)),
+                                        height: size.height * 0.51,
+                                        child: Column(
+                                          children: [
+                                            SizedBox(
+                                              height: size.height * 0.02,
                                             ),
-                                            child: Text(
-                                              'OK',
+                                            Text(
+                                              'Calculate Change',
                                               style: GoogleFonts.inter(
-                                                  fontSize: 15,
+                                                  fontSize: 20,
                                                   fontWeight: FontWeight.w700,
-                                                  color: Color(0xFF000000)),
+                                                  color: Colors.black),
                                             ),
-                                            onPressed: () {
-                                              Navigator.of(context).pop();
-                                            },
-                                          ),
+
+                                            //somethin'
+                                            //Total Amount
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                left: 16.0,
+                                                right: 16.0,
+                                                top: 18.0,
+                                              ),
+                                              child: Row(
+                                                children: [
+                                                  Text('Total Amount'),
+                                                ],
+                                              ),
+                                            ),
+
+                                            //somethin' else
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0,
+                                                  right: 18.0,
+                                                  top: 8.0),
+                                              child: Container(
+                                                height: size.height * 0.08,
+                                                width: size.width,
+                                                decoration: BoxDecoration(
+                                                  borderRadius:
+                                                      BorderRadius.circular(18),
+                                                  //color: Colors.grey,
+                                                  border: Border.all(
+                                                      color: Colors.black),
+                                                ),
+                                                child: Center(
+                                                  child: Text(
+                                                    '₹ ${_myTestFareResult}',
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 24,
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0,
+                                                  right: 18.0,
+                                                  top: 16.0),
+                                              child: CalculateChangeWidget(
+                                                  controller: totalController,
+                                                  hintText: "Recieved",
+                                                  typeInput:
+                                                      TextInputType.number),
+                                            ),
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 18.0,
+                                                  right: 18.0,
+                                                  top: 16.0),
+                                              child: CalculateChangeWidget(
+                                                  controller: balanceController,
+                                                  hintText: "Balance",
+                                                  typeInput:
+                                                      TextInputType.number),
+                                            ),
+                                            SizedBox(
+                                              height: size.height * 0.02,
+                                            ),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.end,
+                                              children: [
+                                                Container(
+                                                  decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: Colors.grey,
+                                                    ),
+                                                    //color: Color(0xFF4885ED),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            12),
+                                                  ),
+                                                  child: TextButton(
+                                                    style: TextButton.styleFrom(
+                                                      textStyle:
+                                                          Theme.of(context)
+                                                              .textTheme
+                                                              .labelLarge,
+                                                    ),
+                                                    child: Text(
+                                                      'OK',
+                                                      style: GoogleFonts.inter(
+                                                          fontSize: 15,
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          color: Color(
+                                                              0xFF000000)),
+                                                    ),
+                                                    onPressed: () {
+                                                      Navigator.of(context)
+                                                          .pop();
+                                                    },
+                                                  ),
+                                                ),
+                                                SizedBox(
+                                                  width: size.width * 0.04,
+                                                ),
+                                              ],
+                                            ),
+                                            //Your Pop up design
+                                          ],
                                         ),
-                                        SizedBox(
-                                          width: size.width * 0.02,
-                                        ),
-                                      ],
+                                      ),
                                     ),
-                                  ],
-                                ),
+                                  );
+                                },
                               ),
                             );
                           },
+                          transitionBuilder: (context, anim1, anim2, child) {
+                            return ScaleTransition(scale: anim1, child: child);
+                          },
                         );
                       },
+
+                      //Image
                       child: SizedBox(
                         height: size.height * 0.07,
                         width: size.width * 0.1,
@@ -255,7 +316,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        'Fri, Dec 2, 2022 09:57:30',
+                        '${tripCompleteResponse.result?.startTime}',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -284,7 +345,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        'Fri, Dec 2, 2022 12:00:30',
+                        '${tripCompleteResponse.result?.endTime}',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -313,7 +374,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse?.result?.tripDuration?.duration}',
+                        '${tripCompleteResponse?.result?.tripDuration?.duration} s',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -352,7 +413,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse?.result?.reading?.kmTravelled} KM',
+                        '${tripCompleteResponse?.result?.reading?.kmTravelled} Meters',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -381,7 +442,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse?.result?.reading?.waitingTime}',
+                        '${tripCompleteResponse?.result?.reading?.waitingTime} s',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -507,7 +568,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '₹ ${tripCompleteResponse?.result?.fare?.surgePrice}',
+                        '${tripCompleteResponse?.result?.fare?.surgePrice} x',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
