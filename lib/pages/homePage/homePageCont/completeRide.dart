@@ -97,16 +97,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   int? totalMinutes;
   int? remainingSeconds;
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    _positionStream = Geolocator.getPositionStream().listen((event) {
-      setState(() {
-        mapController.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(event.longitude, event.longitude), zoom: 17)));
-      });
-    });
-  }
+
 
   @override
   void initState() {
@@ -177,8 +168,14 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               zoomControlsEnabled: false,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(target:  LatLng(10.9641042, 76.9562562), zoom: 17.0),
+              initialCameraPosition: CameraPosition(target:  LatLng(0,0), zoom: 17.0),
+              onMapCreated: (GoogleMapController controller) {
+                setState(() {
+                  mapController = controller;
+                });
+                _onMapCreated();
+              },
+
 
             ),
             //On swipe Panel
@@ -245,8 +242,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                             ),
                                             shape: MaterialStateProperty.all(
                                                 RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
+                                                    borderRadius: BorderRadius.circular(
                                                             12))),
                                           ),
                                           onPressed: () {
@@ -345,9 +341,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                             });
                       },
                       child: Container(
-
-                        height: size.height * 0.140,
-
+                        height: size.height * 0.170,
                         width: size.width,
                         decoration: BoxDecoration(
                           color: // Colors.white,
@@ -411,13 +405,13 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.77,
+                  height: size.height * 0.80,
                 ),
                 Center(
                   child: ElevatedButton(
                     style: ButtonStyle(
                       fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.8, size.height * 0.07),
+                        Size(size.width * 0.8,size.height*.01),
                       ),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
@@ -441,7 +435,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.2,
+                  height: size.height * 0.5,
                 ),
                 //this one is required for future use to show fare
                 // Center(
@@ -476,6 +470,18 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   void dispose() {
     super.dispose();
     _positionStream.cancel();
+  }
+
+  void _onMapCreated() {
+    _positionStream = Geolocator.getPositionStream().listen((event) {
+      setState(() {
+        mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(
+                target: LatLng(event.longitude, event.longitude), zoom: 17)));
+
+      });
+
+    });
   }
 
   //Complete Ride Dialog Box-------------------------------------------------------->

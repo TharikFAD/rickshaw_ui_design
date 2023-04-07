@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
 import 'package:meter_app/pages/homePage/widgets/calculate_change.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/rideInfoNavContainer.dart';
@@ -19,22 +20,20 @@ class RiderInfoPage extends StatefulWidget {
 }
 
 class _RiderInfoPageState extends State<RiderInfoPage> {
+  var totalController = TextEditingController();
+  var balanceController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
-    TripCompleteResponse? tripCompleteResponse =
-        ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
-    var totalController = TextEditingController();
-    var balanceController = TextEditingController();
-
-
-    var result = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
+    TripCompleteResponse? tripCompleteResponse = ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
+    var TotalFare = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
     double _myTestFareResult = double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
     var size = MediaQuery.of(context).size;
-
-    void dispose() {
-      super.dispose();
-      totalController.dispose();
-    }
+    DateTime now=DateTime.parse(tripCompleteResponse!.result!.startTime!) ;
+    String startTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
+    DateTime now1=DateTime.parse(tripCompleteResponse!.result!.endTime!) ;
+    String endTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now1);
+    var surgeValue=(tripCompleteResponse?.result?.fare?.surgePrice=='1')?'NA':tripCompleteResponse?.result?.fare?.surgePrice;
 
     totalController.addListener(() {
       double balanceAmount = 0.0;
@@ -80,6 +79,8 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
+                    Text('Trip Id:${tripCompleteResponse.result?.tripId}',style: TextStyle(fontSize:16,fontWeight:FontWeight.w800 ),),
+                    SizedBox(width: size.width*.5,),
                     InkWell(
                       onTap: () {
                         showGeneralDialog(
@@ -153,7 +154,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                                                 ),
                                                 child: Center(
                                                   child: Text(
-                                                    '₹ ${_myTestFareResult}',
+                                                    '₹ ${_myTestFareResult.toStringAsFixed(3)}',
                                                     style: GoogleFonts.inter(
                                                       fontSize: 24,
                                                       fontWeight:
@@ -271,11 +272,11 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                       fontWeight: FontWeight.w700, fontSize: 25),
                 ),
                 SizedBox(
-                  height: size.height * 0.03,
+                  height: size.height * 0.00,
                 ),
                 //fare
                 Text(
-                  result,
+                  _myTestFareResult.toStringAsFixed(2),
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700, fontSize: 25 * 2),
                 ),
@@ -316,7 +317,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse.result?.startTime}',
+                        startTime,
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -345,7 +346,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse.result?.endTime}',
+                        endTime,
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -568,7 +569,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                         ),
                       ),
                       Text(
-                        '${tripCompleteResponse?.result?.fare?.surgePrice} x',
+                        '$surgeValue ',
                         style: GoogleFonts.inter(
                           color: Colors.white,
                           fontSize: 15,
@@ -643,5 +644,11 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
         ),
       ),
     );
+  }
+
+  void dispose() {
+    super.dispose();
+    totalController.dispose();
+    balanceController.dispose();
   }
 }
