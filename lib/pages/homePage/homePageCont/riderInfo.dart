@@ -26,7 +26,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
   @override
   Widget build(BuildContext context) {
     TripCompleteResponse? tripCompleteResponse = ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
-    var TotalFare = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
+
     double _myTestFareResult = double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
     var size = MediaQuery.of(context).size;
     DateTime now=DateTime.parse(tripCompleteResponse!.result!.startTime!) ;
