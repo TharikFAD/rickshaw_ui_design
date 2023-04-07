@@ -26,7 +26,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
   @override
   Widget build(BuildContext context) {
     TripCompleteResponse? tripCompleteResponse = ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
-    var result = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
+    var TotalFare = "₹${tripCompleteResponse?.result?.fare?.totalFare!}";
     double _myTestFareResult = double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
     var size = MediaQuery.of(context).size;
     DateTime now=DateTime.parse(tripCompleteResponse!.result!.startTime!) ;
@@ -154,7 +154,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                                                 ),
                                                 child: Center(
                                                   child: Text(
-                                                    '₹ ${_myTestFareResult}',
+                                                    '₹ ${_myTestFareResult.toStringAsFixed(3)}',
                                                     style: GoogleFonts.inter(
                                                       fontSize: 24,
                                                       fontWeight:
@@ -276,7 +276,7 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                 ),
                 //fare
                 Text(
-                  result,
+                  _myTestFareResult.toStringAsFixed(2),
                   style: GoogleFonts.inter(
                       fontWeight: FontWeight.w700, fontSize: 25 * 2),
                 ),
