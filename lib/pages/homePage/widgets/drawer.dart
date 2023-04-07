@@ -232,7 +232,7 @@ class MyDrawerWidget extends StatelessWidget {
               color: Colors.white,
             ),
             title: Text(
-              'SUPPORT',
+              'COMPLAINTS',
               style: GoogleFonts.inter(
                   fontSize: 15,
                   fontWeight: FontWeight.w700,
