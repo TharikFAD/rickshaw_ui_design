@@ -168,9 +168,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                                         color: Colors.white),
                                                   ),
                                                   Text(
-                                                    res.result!.data![index]!
-                                                        .minKm
-                                                        .toString(),
+                                                    res.result!.data![index]!.minKm!.toStringAsFixed(2),
                                                     style: GoogleFonts.inter(
                                                         fontSize: 13,
                                                         fontWeight:
@@ -187,8 +185,7 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                                   left: 12.0, right: 12.0),
                                               child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                    MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
                                                     'Base fare',
@@ -221,13 +218,10 @@ class _FareSettingsPageState extends State<FareSettingsPage> {
                                                   left: 12.0, right: 12.0),
                                               child: Row(
                                                 mainAxisAlignment:
-                                                    MainAxisAlignment
-                                                        .spaceBetween,
+                                                    MainAxisAlignment.spaceBetween,
                                                 children: [
                                                   Text(
-                                                    res.result!.data![index]!
-                                                        .costPerMinute
-                                                        .toString(),
+                                                    res.result!.data![index]!.costPerMinute!.toStringAsFixed(2),
                                                     style: GoogleFonts.inter(
                                                         fontSize: 13,
                                                         fontWeight:

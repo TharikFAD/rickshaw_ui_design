@@ -68,11 +68,10 @@ class _ComplaintPageState extends State<ComplaintPage> {
                 itemCount: response.result!.length,
                 itemBuilder: (context,i){
                   return Padding(
-
-                    padding: EdgeInsets.only(bottom: 15,left: 20,right: 20),
+                    padding: EdgeInsets.only(bottom: 15,left: 20,right: 20,top: 12),
                     child: Container(
                       height: size.height * 0.1,
-                      width: size.width,
+                      width: size.width* 0.01,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(12),
@@ -120,7 +119,7 @@ class _ComplaintPageState extends State<ComplaintPage> {
                           Row(
                             children: [
                               SizedBox(
-                                width: size.width * 0.02,
+                                width: size.width * 0.005,
                               ),
                               Text(
                                 'SUBJECT: ${response.result![i]!.complaints}',
