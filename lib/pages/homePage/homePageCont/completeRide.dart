@@ -35,7 +35,7 @@ Future<void> onStart(ServiceInstance serviceInstance) async {
   _positionHistory = [];
   _positionStream = Geolocator.getPositionStream(
           locationSettings: const LocationSettings(
-              accuracy: LocationAccuracy.high, distanceFilter: 1))
+              accuracy: LocationAccuracy.high, distanceFilter: 10))
       .listen((Position position) {
     _positionHistory.add(position);
     double travelled_km = 0;
@@ -50,7 +50,7 @@ Future<void> onStart(ServiceInstance serviceInstance) async {
     //send data to isolate
 
     Map<String, dynamic> dataToSend = {};
-    dataToSend['travelled_km'] = '$travelled_km,$startTime';
+    dataToSend['travelled_km'] = '$travelled_km,$startTime,$position';
     serviceInstance.invoke('km', dataToSend);
     debugPrint("MANI KM  ISOLATE $dataToSend");
   });
@@ -85,6 +85,12 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   late Position _currentPosition;
   late StreamSubscription<Position> _positionStream;
   late GoogleMapController mapController;
+  bool isCameraMoving = false;
+  LatLng _currentLatLng = LatLng(11.015509774402489,76.94085591088329);
+
+  double latitude=11.015509774402489;
+  double longitude= 76.94085591088329;
+
 
   var  completeTripAPI=TripAPI();
   var tripCompleteResponse=TripCompleteResponse();
@@ -108,56 +114,39 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
     endTime = DateTime.now();
-
     debugPrint("MANI ENDTIME MAIN:$endTime");
+
     FlutterBackgroundService().on('km').listen((event) {
       if (event!['travelled_km'] != null) {
         var value = event!['travelled_km'].toString().split(',');
 
         travelledKm=double.parse(value[0]);
         startTime=DateTime.parse(value[1]);
+        String latitudeString = value[2].split(':')[1].trim();
+         latitude = double.parse(latitudeString);
+        String longitudeString = value[3].split(':')[1].trim();
+         longitude = double.parse(longitudeString);
+
+
          difference = endTime!.difference(startTime!);
          totalMinutes = difference!.inMinutes;
          remainingSeconds = (difference?.inSeconds)! % 60;
 
 
-        debugPrint("MANI KM MAIN1:${travelledKm},$value");
+        debugPrint("MANI KM MAIN1:$travelledKm,lat:$latitude,lon:$longitude");
       }
 
       setState(() {
+        mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude, longitude),zoom:17.0)));
         travelledKm = (travelledKm == 0) ? 0 : (travelledKm / 1000);
         travelledKm = double.parse(travelledKm.toStringAsFixed(2));
       });
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'AUTO KAARAN',
-          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
-        ), //appbar title
-        backgroundColor: Color(0xFF4885ED), //appbar background color
-
-        actions: [
-          InkWell(
-            onTap: () {
-              Navigator.popAndPushNamed(context, homeScreenRoute);
-            },
-            child: Icon(
-              Icons.home,
-              size: 32,
-            ),
-          ),
-          SizedBox(
-            width: size.width * 0.05,
-          )
-        ],
-      ),
       //drawer
       drawer: MyDrawerWidget(),
-
       //body
       body: Container(
         child: Stack(
@@ -168,12 +157,9 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               zoomControlsEnabled: false,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
-              initialCameraPosition: CameraPosition(target:  LatLng(0,0), zoom: 17.0),
+              initialCameraPosition: CameraPosition(target:  LatLng(latitude,longitude), zoom: 17.0),
               onMapCreated: (GoogleMapController controller) {
-                setState(() {
                   mapController = controller;
-                });
-                _onMapCreated();
               },
 
 
@@ -238,7 +224,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                             fixedSize:
                                                 MaterialStateProperty.all(
                                               Size(size.width * 0.8,
-                                                  size.height * 0.07),
+                                                  size.height * 0.09),
                                             ),
                                             shape: MaterialStateProperty.all(
                                                 RoundedRectangleBorder(
@@ -385,7 +371,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                 ),
                                 Icon(Icons.keyboard_arrow_up),
                                 Text(
-                                  '${totalMinutes}:${remainingSeconds}',
+                                  '${(totalMinutes==null)?0:totalMinutes}:${(remainingSeconds==null)?0:remainingSeconds} m:s',
                                   style: GoogleFonts.inter(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700),
@@ -405,7 +391,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.80,
+                  height: size.height * 0.9,
                 ),
                 Center(
                   child: ElevatedButton(
@@ -431,7 +417,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               ],
             ),
 
-            //OnRide Fare Meter
+            //OnRide Fare Meter and Complete Button
             Column(
               children: [
                 SizedBox(
@@ -472,16 +458,22 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
     _positionStream.cancel();
   }
 
-  void _onMapCreated() {
-    _positionStream = Geolocator.getPositionStream().listen((event) {
-      setState(() {
-        mapController.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(event.longitude, event.longitude), zoom: 17)));
-
-      });
+  void _onMapCreated() async{
+    _positionStream=Geolocator.getPositionStream().listen((event) {
+      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(event.longitude,event.longitude), zoom: 17)));
 
     });
+
+
+    // _positionStream = Geolocator.getPositionStream().listen((event) {
+    //   setState(() {
+    //     mapController.animateCamera(CameraUpdate.newCameraPosition(
+    //         CameraPosition(
+    //             target: LatLng(longitude!,longitude!), zoom: 17)));
+    //
+    //   });
+    //
+    // });
   }
 
   //Complete Ride Dialog Box-------------------------------------------------------->

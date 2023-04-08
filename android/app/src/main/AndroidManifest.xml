@@ -17,7 +17,7 @@
 
 
     <application
-        android:label="meter_app"
+        android:label="Auto Kaaran"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:exported="true">
