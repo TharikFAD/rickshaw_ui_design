@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, prefer_const_declarations, unnecessary_new
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, prefer_const_declarations, unnecessary_new, unnecessary_null_comparison
 
 import 'dart:async';
 
@@ -57,9 +57,9 @@ Future<void> onStart(ServiceInstance serviceInstance) async {
 
   //receive data to isolate
   serviceInstance.on("stop").listen((event) {
-   String message='Service Stopped';
-   serviceInstance.stopSelf();
-   debugPrint("MANI DATA TO STOP RECEIVED");
+    String message = 'Service Stopped';
+    serviceInstance.stopSelf();
+    debugPrint("MANI DATA TO STOP RECEIVED");
 
     if (event!['action'] == 'stopService') {
       //send-data from isolate to main
@@ -86,15 +86,13 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   late StreamSubscription<Position> _positionStream;
   late GoogleMapController mapController;
   bool isCameraMoving = false;
-  LatLng _currentLatLng = LatLng(11.015509774402489,76.94085591088329);
+  LatLng _currentLatLng = LatLng(11.015509774402489, 76.94085591088329);
 
-  double latitude=11.015509774402489;
-  double longitude= 76.94085591088329;
+  double latitude = 11.015509774402489;
+  double longitude = 76.94085591088329;
 
-
-  var  completeTripAPI=TripAPI();
-  var tripCompleteResponse=TripCompleteResponse();
-
+  var completeTripAPI = TripAPI();
+  var tripCompleteResponse = TripCompleteResponse();
 
   double travelledKm = 0;
   DateTime? startTime;
@@ -102,8 +100,6 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   Duration? difference;
   int? totalMinutes;
   int? remainingSeconds;
-
-
 
   @override
   void initState() {
@@ -121,24 +117,23 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
       if (event!['travelled_km'] != null) {
         var value = event!['travelled_km'].toString().split(',');
 
-        travelledKm=double.parse(value[0]);
-        startTime=DateTime.parse(value[1]);
+        travelledKm = double.parse(value[0]);
+        startTime = DateTime.parse(value[1]);
         String latitudeString = value[2].split(':')[1].trim();
-         latitude = double.parse(latitudeString);
+        latitude = double.parse(latitudeString);
         String longitudeString = value[3].split(':')[1].trim();
-         longitude = double.parse(longitudeString);
+        longitude = double.parse(longitudeString);
 
-
-         difference = endTime!.difference(startTime!);
-         totalMinutes = difference!.inMinutes;
-         remainingSeconds = (difference?.inSeconds)! % 60;
-
+        difference = endTime!.difference(startTime!);
+        totalMinutes = difference!.inMinutes;
+        remainingSeconds = (difference?.inSeconds)! % 60;
 
         debugPrint("MANI KM MAIN1:$travelledKm,lat:$latitude,lon:$longitude");
       }
 
       setState(() {
-        mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(latitude, longitude),zoom:17.0)));
+        mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(latitude, longitude), zoom: 17.0)));
         travelledKm = (travelledKm == 0) ? 0 : (travelledKm / 1000);
         travelledKm = double.parse(travelledKm.toStringAsFixed(2));
       });
@@ -157,12 +152,11 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               zoomControlsEnabled: false,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
-              initialCameraPosition: CameraPosition(target:  LatLng(latitude,longitude), zoom: 17.0),
+              initialCameraPosition: CameraPosition(
+                  target: LatLng(latitude, longitude), zoom: 17.0),
               onMapCreated: (GoogleMapController controller) {
-                  mapController = controller;
+                mapController = controller;
               },
-
-
             ),
             //On swipe Panel
             Column(
@@ -228,7 +222,8 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                             ),
                                             shape: MaterialStateProperty.all(
                                                 RoundedRectangleBorder(
-                                                    borderRadius: BorderRadius.circular(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
                                                             12))),
                                           ),
                                           onPressed: () {
@@ -371,7 +366,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                 ),
                                 Icon(Icons.keyboard_arrow_up),
                                 Text(
-                                  '${(totalMinutes==null)?0:totalMinutes}:${(remainingSeconds==null)?0:remainingSeconds} m:s',
+                                  '${(totalMinutes == null) ? 0 : totalMinutes}:${(remainingSeconds == null) ? 0 : remainingSeconds} m:s',
                                   style: GoogleFonts.inter(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700),
@@ -397,7 +392,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                   child: ElevatedButton(
                     style: ButtonStyle(
                       fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.8,size.height*.01),
+                        Size(size.width * 0.8, size.height * .01),
                       ),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
@@ -458,12 +453,11 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
     _positionStream.cancel();
   }
 
-  void _onMapCreated() async{
-    _positionStream=Geolocator.getPositionStream().listen((event) {
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(target: LatLng(event.longitude,event.longitude), zoom: 17)));
-
+  void _onMapCreated() async {
+    _positionStream = Geolocator.getPositionStream().listen((event) {
+      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(event.longitude, event.longitude), zoom: 17)));
     });
-
 
     // _positionStream = Geolocator.getPositionStream().listen((event) {
     //   setState(() {
@@ -516,51 +510,56 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF000000)),
               ),
-              onPressed: () async{
-                SharedPreferences pref=await SharedPreferences.getInstance();
-                var driverId=pref.getString('identification_key');
-                var surgeValue=pref.getDouble('surgePrice');
+              onPressed: () async {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                var driverId = pref.getString('identification_key');
+                var surgeValue = pref.getDouble('surgePrice');
                 surgeValue ??= 1;
-                TripCompleteRequestBody tripCompleteRequestBody=TripCompleteRequestBody(
-                  identificationKey: driverId,
-                  fareId: 1,
-                  startTime: startTime.toString(),
-                  endTime: endTime.toString(),
-                  origin: TripCompleteRequestBodyOrigin(
-                    latitude: "10.970125",
-                    longitude: "76.951640",
-                  ),
-                  destination: TripCompleteRequestBodyDestination(
-                    latitude: "10.978840",
-                      longitude: "76.961304",
-                  ),
-                  readings: TripCompleteRequestBodyReadings(
-                    kmTravelled: (travelledKm*1000),
-                    waitingTime: difference?.inSeconds,
-                    surgeValue: surgeValue,
-                  )
-                );
+                TripCompleteRequestBody tripCompleteRequestBody =
+                    TripCompleteRequestBody(
+                        identificationKey: driverId,
+                        fareId: 1,
+                        startTime: startTime.toString(),
+                        endTime: endTime.toString(),
+                        origin: TripCompleteRequestBodyOrigin(
+                          latitude: "10.970125",
+                          longitude: "76.951640",
+                        ),
+                        destination: TripCompleteRequestBodyDestination(
+                          latitude: "10.978840",
+                          longitude: "76.961304",
+                        ),
+                        readings: TripCompleteRequestBodyReadings(
+                          kmTravelled: (travelledKm * 1000),
+                          waitingTime: difference?.inSeconds,
+                          surgeValue: surgeValue,
+                        ));
 
                 debugPrint('COMPLETE ${tripCompleteRequestBody}');
 
                 Map<String, dynamic> dataToSend = {};
                 dataToSend['action'] = 'stopService';
-                FlutterBackgroundService().invoke('stop',dataToSend);
+                FlutterBackgroundService().invoke('stop', dataToSend);
                 FlutterBackgroundService().on('afterStop').listen((event) {
-                  if(event!['message']!=null){
+                  if (event!['message'] != null) {
                     Fluttertoast.showToast(msg: event!['message'].toString());
                   }
                 });
 
-                completeTripAPI.tripComplete(tripCompleteRequestBody).then((value) {
+                completeTripAPI
+                    .tripComplete(tripCompleteRequestBody)
+                    .then((value) {
+                  tripCompleteResponse = TripCompleteResponse.fromJson(value);
 
-                   tripCompleteResponse=TripCompleteResponse.fromJson(value);
+                  if (tripCompleteResponse.status == "Success") {
+                    Navigator.popAndPushNamed(context, riderInfoScreenRoute,
+                        arguments: tripCompleteResponse);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "${tripCompleteResponse.message}");
+                  }
                   //Fluttertoast.showToast(msg: tripCompleteResponse.message!);
-                   Navigator.popAndPushNamed(context, riderInfoScreenRoute,arguments:tripCompleteResponse );
                 });
-
-
-
               },
             ),
           ],
