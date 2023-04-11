@@ -377,6 +377,12 @@ class _SettingspageState extends State<Settingspage> {
   }
 
   void getUserData() async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    String? driverName=pref.getString('userName');
+    if(driverName != null){
+      DriverIdController.text=driverName;
+    }
+
     userAPI.getProfile().then((value) {
       var res=GetUserResponse.fromJson(value);
       UserNameController.text=res.result!.data!.name!;

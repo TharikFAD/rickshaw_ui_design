@@ -3,6 +3,7 @@
 import 'dart:ffi';
 
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/buttons.dart';
 import 'package:meter_app/Pages/LoginPage/Widgets/index_containers.dart';
@@ -64,6 +65,11 @@ class _LoginPageState extends State<LoginPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: IntlPhoneField(
+                    validator: (value){
+                      if(value!.number.isEmpty){
+                        Fluttertoast.showToast(msg: 'Phone Number is Empty',toastLength: Toast.LENGTH_SHORT);
+                      }
+                    },
                     controller:phoneNoController ,
                     decoration: InputDecoration(
                       labelText: 'Phone Number',
