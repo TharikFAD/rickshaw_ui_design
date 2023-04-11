@@ -111,14 +111,11 @@ flutter:
     - family: Bungee
       fonts:
         - asset: fonts/Bungee/Bungee-Regular.ttf
-        - weight: 700
 
     - family: Inter
       fonts:
         - asset: fonts/Inter/Inter-VariableFont_slnt,wght.ttf
-        - weight: 700
 
     - family: Mina
       fonts:
         - asset: fonts/Mina/Mina-Regular.ttf
-        - weight: 700
