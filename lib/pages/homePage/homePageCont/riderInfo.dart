@@ -5,12 +5,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:meter_app/pages/homePage/widgets/calculate_change.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
-import 'package:meter_app/pages/homePage/widgets/rideInfoNavContainer.dart';
 import 'package:meter_app/routes/route_name.dart';
 
-import '../../../model/trip/trip_complete_request.dart';
 import '../../../model/trip/trip_complete_response.dart';
-import '../../../routes/route_name.dart';
 
 class RiderInfoPage extends StatefulWidget {
   const RiderInfoPage({super.key});
@@ -25,15 +22,19 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
 
   @override
   Widget build(BuildContext context) {
-    TripCompleteResponse? tripCompleteResponse = ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
+    TripCompleteResponse? tripCompleteResponse =
+        ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
 
-    double _myTestFareResult = double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
+    double _myTestFareResult =
+        double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
     var size = MediaQuery.of(context).size;
-    DateTime now=DateTime.parse(tripCompleteResponse!.result!.startTime!) ;
+    DateTime now = DateTime.parse(tripCompleteResponse!.result!.startTime!);
     String startTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-    DateTime now1=DateTime.parse(tripCompleteResponse!.result!.endTime!) ;
+    DateTime now1 = DateTime.parse(tripCompleteResponse!.result!.endTime!);
     String endTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now1);
-    var surgeValue=(tripCompleteResponse?.result?.fare?.surgePrice=='1')?'NA':tripCompleteResponse?.result?.fare?.surgePrice;
+    var surgeValue = (tripCompleteResponse?.result?.fare?.surgePrice == '1')
+        ? 'NA'
+        : tripCompleteResponse?.result?.fare?.surgePrice;
 
     totalController.addListener(() {
       double balanceAmount = 0.0;
@@ -79,8 +80,14 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text('Trip Id:${tripCompleteResponse.result?.tripId}',style: TextStyle(fontSize:16,fontWeight:FontWeight.w800 ),),
-                    SizedBox(width: size.width*.5,),
+                    Text(
+                      'Trip Id:${tripCompleteResponse.result?.tripId}',
+                      style:
+                          TextStyle(fontSize: 16, fontWeight: FontWeight.w800),
+                    ),
+                    SizedBox(
+                      width: size.width * .5,
+                    ),
                     InkWell(
                       onTap: () {
                         showGeneralDialog(
