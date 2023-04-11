@@ -72,7 +72,7 @@ class _OtpPageState extends State<OtpPage> {
                 Padding(
                   padding: const EdgeInsets.only(left: 48.0, right: 48.0),
                   child: OTPTextField(
-                    length: 6,
+                    length: 4,
                     width: MediaQuery.of(context).size.width,
                     fieldWidth: 30,
                     style: GoogleFonts.inter(
