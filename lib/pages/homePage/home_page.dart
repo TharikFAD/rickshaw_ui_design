@@ -30,7 +30,7 @@ class _HomePageState extends State<HomePage> {
     getCurrentLocation();
   }
 
-  void getCurrentLocation() async {
+  Future<Object?> getCurrentLocation() async {
     try {
       bool serviceEnabled;
       LocationPermission permission;
@@ -55,18 +55,31 @@ class _HomePageState extends State<HomePage> {
       }
 
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
+        desiredAccuracy: LocationAccuracy.high,
       );
       debugPrint(" pos: $position");
       _currentPosition = position;
+      return _currentPosition;
+
     } on PlatformException catch (e) {
       debugPrint("$e");
       getCurrentLocation();
     }
+
   }
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+    getCurrentLocation().then((value) {
+      mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+            zoom: 17.0,
+          ),
+        ),
+      );
+    });
   }
 
   final bool _mapStarted = false;

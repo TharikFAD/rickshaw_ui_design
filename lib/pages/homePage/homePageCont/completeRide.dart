@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, prefer_const_declarations, unnecessary_new, unnecessary_null_comparison
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,12 +8,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/api/trip_api.dart';
+import 'package:meter_app/core/isolate_service.dart';
 import 'package:meter_app/model/trip/trip_complete_request.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../model/trip/trip_complete_response.dart';
 
 class CompleteRidePage extends StatefulWidget {
@@ -22,63 +21,6 @@ class CompleteRidePage extends StatefulWidget {
 
   @override
   State<CompleteRidePage> createState() => _CompleteRidePageState();
-}
-
-const notificationChannelId = 'my_foreground';
-const notificationId = 888;
-
-Future<void> onStart(ServiceInstance serviceInstance) async {
-  late StreamSubscription<Position> _positionStream;
-  late List<Position> _positionHistory;
-  DateTime startTime = DateTime.now();
-
-  _positionHistory = [];
-  _positionStream = Geolocator.getPositionStream(
-          locationSettings: const LocationSettings(
-              accuracy: LocationAccuracy.high, distanceFilter: 10))
-      .listen((Position position) {
-    _positionHistory.add(position);
-    double travelled_km = 0;
-    for (int i = 0; i < _positionHistory.length - 1; i++) {
-      travelled_km += Geolocator.distanceBetween(
-          _positionHistory[i].latitude,
-          _positionHistory[i].longitude,
-          _positionHistory[i + 1].latitude,
-          _positionHistory[i + 1].longitude);
-    }
-
-    //send data to isolate
-
-    Map<String, dynamic> dataToSend = {};
-    dataToSend['travelled_km'] = '$travelled_km,$startTime,$position';
-    serviceInstance.invoke('km', dataToSend);
-    debugPrint("MANI KM  ISOLATE $dataToSend");
-  });
-
-  //receive data to isolate
-  serviceInstance.on("stop").listen((event) {
-    String message = 'Service Stopped';
-    serviceInstance.stopSelf();
-    debugPrint("MANI DATA TO STOP RECEIVED");
-
-    if (event!['action'] == 'stopService') {
-      //send-data from isolate to main
-      Map<String, dynamic> dataToSend = {'message': message};
-      serviceInstance.invoke('afterStop', dataToSend);
-      debugPrint("MANI DATA TO STOP $dataToSend");
-    }
-  });
-}
-
-Future<void> initializeService() async {
-  final service = FlutterBackgroundService();
-  await service.configure(
-      androidConfiguration: AndroidConfiguration(
-        onStart: onStart,
-        autoStart: true,
-        isForegroundMode: true,
-      ),
-      iosConfiguration: IosConfiguration());
 }
 
 class _CompleteRidePageState extends State<CompleteRidePage> {
@@ -104,7 +46,8 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   @override
   void initState() {
     super.initState();
-    initializeService();
+    debugPrint('INSIDE COMPLETE RIDE PAGE INIT');
+    IsolateService().initializeService();
   }
 
   @override

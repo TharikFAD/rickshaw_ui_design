@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:meter_app/api/api_helper.dart';
 import 'package:meter_app/routes/route_name.dart';
 
 class MyDrawerWidget extends StatelessWidget {
@@ -11,7 +12,7 @@ class MyDrawerWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     var controller = TextEditingController();
-    String version = 'v1.0.1 Beta';
+    String version = BuildVersion.buildName;
     return Drawer(
       elevation: 0,
       backgroundColor: Color(0xFF4885ED),
