@@ -168,7 +168,7 @@ class _HistoryPageState extends State<HistoryPage> {
                               children: [
 
                                 Text(
-                                  '${res.result![index]?.duration}',
+                                  '${res.result![index]?.duration} s',
                                   style: GoogleFonts.inter(
                                       fontSize: 22, fontWeight: FontWeight.w700),
                                 ),
