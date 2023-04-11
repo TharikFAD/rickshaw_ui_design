@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
       }
 
       Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.low,
+        desiredAccuracy: LocationAccuracy.high,
       );
       debugPrint(" pos: $position");
       _currentPosition = position;
