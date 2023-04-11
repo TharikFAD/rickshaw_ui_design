@@ -1,4 +1,4 @@
-package com.example.meter_app
+package com.azep.meter
 
 import io.flutter.embedding.android.FlutterActivity
 

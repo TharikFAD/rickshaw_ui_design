@@ -1,6 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.meter_app">
+    package="com.azep.meter">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -17,7 +17,7 @@
 
 
     <application
-        android:label="meter_app"
+        android:label="Auto Kaaran"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher"
         android:exported="true">

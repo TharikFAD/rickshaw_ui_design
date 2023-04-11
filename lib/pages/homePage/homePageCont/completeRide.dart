@@ -1,7 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, prefer_const_declarations, unnecessary_new
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sort_child_properties_last, unused_field, prefer_const_declarations, unnecessary_new, unnecessary_null_comparison
 
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
@@ -9,12 +8,12 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:meter_app/api/trip_api.dart';
+import 'package:meter_app/core/isolate_service.dart';
 import 'package:meter_app/model/trip/trip_complete_request.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/pages/homePage/widgets/inc_dec_button.dart';
 import 'package:meter_app/routes/route_name.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../model/trip/trip_complete_response.dart';
 
 class CompleteRidePage extends StatefulWidget {
@@ -24,71 +23,18 @@ class CompleteRidePage extends StatefulWidget {
   State<CompleteRidePage> createState() => _CompleteRidePageState();
 }
 
-const notificationChannelId = 'my_foreground';
-const notificationId = 888;
-
-Future<void> onStart(ServiceInstance serviceInstance) async {
-  late StreamSubscription<Position> _positionStream;
-  late List<Position> _positionHistory;
-  DateTime startTime = DateTime.now();
-
-  _positionHistory = [];
-  _positionStream = Geolocator.getPositionStream(
-          locationSettings: const LocationSettings(
-              accuracy: LocationAccuracy.high, distanceFilter: 1))
-      .listen((Position position) {
-    _positionHistory.add(position);
-    double travelled_km = 0;
-    for (int i = 0; i < _positionHistory.length - 1; i++) {
-      travelled_km += Geolocator.distanceBetween(
-          _positionHistory[i].latitude,
-          _positionHistory[i].longitude,
-          _positionHistory[i + 1].latitude,
-          _positionHistory[i + 1].longitude);
-    }
-
-    //send data to isolate
-
-    Map<String, dynamic> dataToSend = {};
-    dataToSend['travelled_km'] = '$travelled_km,$startTime';
-    serviceInstance.invoke('km', dataToSend);
-    debugPrint("MANI KM  ISOLATE $dataToSend");
-  });
-
-  //receive data to isolate
-  serviceInstance.on("stop").listen((event) {
-   String message='Service Stopped';
-   serviceInstance.stopSelf();
-   debugPrint("MANI DATA TO STOP RECEIVED");
-
-    if (event!['action'] == 'stopService') {
-      //send-data from isolate to main
-      Map<String, dynamic> dataToSend = {'message': message};
-      serviceInstance.invoke('afterStop', dataToSend);
-      debugPrint("MANI DATA TO STOP $dataToSend");
-    }
-  });
-}
-
-Future<void> initializeService() async {
-  final service = FlutterBackgroundService();
-  await service.configure(
-      androidConfiguration: AndroidConfiguration(
-        onStart: onStart,
-        autoStart: true,
-        isForegroundMode: true,
-      ),
-      iosConfiguration: IosConfiguration());
-}
-
 class _CompleteRidePageState extends State<CompleteRidePage> {
   late Position _currentPosition;
   late StreamSubscription<Position> _positionStream;
   late GoogleMapController mapController;
+  bool isCameraMoving = false;
+  LatLng _currentLatLng = LatLng(11.015509774402489, 76.94085591088329);
 
-  var  completeTripAPI=TripAPI();
-  var tripCompleteResponse=TripCompleteResponse();
+  double latitude = 11.015509774402489;
+  double longitude = 76.94085591088329;
 
+  var completeTripAPI = TripAPI();
+  var tripCompleteResponse = TripCompleteResponse();
 
   double travelledKm = 0;
   DateTime? startTime;
@@ -97,76 +43,48 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   int? totalMinutes;
   int? remainingSeconds;
 
-  void _onMapCreated(GoogleMapController controller) {
-    mapController = controller;
-    _positionStream = Geolocator.getPositionStream().listen((event) {
-      setState(() {
-        mapController.animateCamera(CameraUpdate.newCameraPosition(
-            CameraPosition(
-                target: LatLng(event.longitude, event.longitude), zoom: 17)));
-      });
-    });
-  }
-
   @override
   void initState() {
     super.initState();
-    initializeService();
+    debugPrint('INSIDE COMPLETE RIDE PAGE INIT');
+    IsolateService().initializeService();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
     endTime = DateTime.now();
-
     debugPrint("MANI ENDTIME MAIN:$endTime");
+
     FlutterBackgroundService().on('km').listen((event) {
       if (event!['travelled_km'] != null) {
         var value = event!['travelled_km'].toString().split(',');
 
-        travelledKm=double.parse(value[0]);
-        startTime=DateTime.parse(value[1]);
-         difference = endTime!.difference(startTime!);
-         totalMinutes = difference!.inMinutes;
-         remainingSeconds = (difference?.inSeconds)! % 60;
+        travelledKm = double.parse(value[0]);
+        startTime = DateTime.parse(value[1]);
+        String latitudeString = value[2].split(':')[1].trim();
+        latitude = double.parse(latitudeString);
+        String longitudeString = value[3].split(':')[1].trim();
+        longitude = double.parse(longitudeString);
 
+        difference = endTime!.difference(startTime!);
+        totalMinutes = difference!.inMinutes;
+        remainingSeconds = (difference?.inSeconds)! % 60;
 
-        debugPrint("MANI KM MAIN1:${travelledKm},$value");
+        debugPrint("MANI KM MAIN1:$travelledKm,lat:$latitude,lon:$longitude");
       }
 
       setState(() {
+        mapController.animateCamera(CameraUpdate.newCameraPosition(
+            CameraPosition(target: LatLng(latitude, longitude), zoom: 17.0)));
         travelledKm = (travelledKm == 0) ? 0 : (travelledKm / 1000);
         travelledKm = double.parse(travelledKm.toStringAsFixed(2));
       });
     });
 
     return Scaffold(
-      appBar: AppBar(
-        title: Text(
-          'AUTO KAARAN',
-          style: GoogleFonts.bungee(fontSize: 22, fontWeight: FontWeight.w400),
-        ), //appbar title
-        backgroundColor: Color(0xFF4885ED), //appbar background color
-
-        actions: [
-          InkWell(
-            onTap: () {
-              Navigator.popAndPushNamed(context, homeScreenRoute);
-            },
-            child: Icon(
-              Icons.home,
-              size: 32,
-            ),
-          ),
-          SizedBox(
-            width: size.width * 0.05,
-          )
-        ],
-      ),
       //drawer
       drawer: MyDrawerWidget(),
-
       //body
       body: Container(
         child: Stack(
@@ -177,9 +95,11 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               zoomControlsEnabled: false,
               myLocationEnabled: true,
               myLocationButtonEnabled: true,
-              onMapCreated: _onMapCreated,
-              initialCameraPosition: CameraPosition(target:  LatLng(10.9641042, 76.9562562), zoom: 17.0),
-
+              initialCameraPosition: CameraPosition(
+                  target: LatLng(latitude, longitude), zoom: 17.0),
+              onMapCreated: (GoogleMapController controller) {
+                mapController = controller;
+              },
             ),
             //On swipe Panel
             Column(
@@ -241,7 +161,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                             fixedSize:
                                                 MaterialStateProperty.all(
                                               Size(size.width * 0.8,
-                                                  size.height * 0.07),
+                                                  size.height * 0.09),
                                             ),
                                             shape: MaterialStateProperty.all(
                                                 RoundedRectangleBorder(
@@ -345,9 +265,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                             });
                       },
                       child: Container(
-
-                        height: size.height * 0.140,
-
+                        height: size.height * 0.170,
                         width: size.width,
                         decoration: BoxDecoration(
                           color: // Colors.white,
@@ -391,7 +309,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                                 ),
                                 Icon(Icons.keyboard_arrow_up),
                                 Text(
-                                  '${totalMinutes}:${remainingSeconds}',
+                                  '${(totalMinutes == null) ? 0 : totalMinutes}:${(remainingSeconds == null) ? 0 : remainingSeconds} m:s',
                                   style: GoogleFonts.inter(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700),
@@ -411,13 +329,13 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.77,
+                  height: size.height * 0.9,
                 ),
                 Center(
                   child: ElevatedButton(
                     style: ButtonStyle(
                       fixedSize: MaterialStateProperty.all(
-                        Size(size.width * 0.8, size.height * 0.07),
+                        Size(size.width * 0.8, size.height * .01),
                       ),
                       shape: MaterialStateProperty.all(RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12))),
@@ -437,11 +355,11 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               ],
             ),
 
-            //OnRide Fare Meter
+            //OnRide Fare Meter and Complete Button
             Column(
               children: [
                 SizedBox(
-                  height: size.height * 0.2,
+                  height: size.height * 0.5,
                 ),
                 //this one is required for future use to show fare
                 // Center(
@@ -476,6 +394,23 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   void dispose() {
     super.dispose();
     _positionStream.cancel();
+  }
+
+  void _onMapCreated() async {
+    _positionStream = Geolocator.getPositionStream().listen((event) {
+      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+          target: LatLng(event.longitude, event.longitude), zoom: 17)));
+    });
+
+    // _positionStream = Geolocator.getPositionStream().listen((event) {
+    //   setState(() {
+    //     mapController.animateCamera(CameraUpdate.newCameraPosition(
+    //         CameraPosition(
+    //             target: LatLng(longitude!,longitude!), zoom: 17)));
+    //
+    //   });
+    //
+    // });
   }
 
   //Complete Ride Dialog Box-------------------------------------------------------->
@@ -518,51 +453,56 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                     fontWeight: FontWeight.w700,
                     color: Color(0xFF000000)),
               ),
-              onPressed: () async{
-                SharedPreferences pref=await SharedPreferences.getInstance();
-                var driverId=pref.getString('identification_key');
-                var surgeValue=pref.getDouble('surgePrice');
+              onPressed: () async {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                var driverId = pref.getString('identification_key');
+                var surgeValue = pref.getDouble('surgePrice');
                 surgeValue ??= 1;
-                TripCompleteRequestBody tripCompleteRequestBody=TripCompleteRequestBody(
-                  identificationKey: driverId,
-                  fareId: 1,
-                  startTime: startTime.toString(),
-                  endTime: endTime.toString(),
-                  origin: TripCompleteRequestBodyOrigin(
-                    latitude: "10.970125",
-                    longitude: "76.951640",
-                  ),
-                  destination: TripCompleteRequestBodyDestination(
-                    latitude: "10.978840",
-                      longitude: "76.961304",
-                  ),
-                  readings: TripCompleteRequestBodyReadings(
-                    kmTravelled: (travelledKm*1000),
-                    waitingTime: difference?.inSeconds,
-                    surgeValue: surgeValue,
-                  )
-                );
+                TripCompleteRequestBody tripCompleteRequestBody =
+                    TripCompleteRequestBody(
+                        identificationKey: driverId,
+                        fareId: 1,
+                        startTime: startTime.toString(),
+                        endTime: endTime.toString(),
+                        origin: TripCompleteRequestBodyOrigin(
+                          latitude: "10.970125",
+                          longitude: "76.951640",
+                        ),
+                        destination: TripCompleteRequestBodyDestination(
+                          latitude: "10.978840",
+                          longitude: "76.961304",
+                        ),
+                        readings: TripCompleteRequestBodyReadings(
+                          kmTravelled: (travelledKm * 1000),
+                          waitingTime: difference?.inSeconds,
+                          surgeValue: surgeValue,
+                        ));
 
                 debugPrint('COMPLETE ${tripCompleteRequestBody}');
 
                 Map<String, dynamic> dataToSend = {};
                 dataToSend['action'] = 'stopService';
-                FlutterBackgroundService().invoke('stop',dataToSend);
+                FlutterBackgroundService().invoke('stop', dataToSend);
                 FlutterBackgroundService().on('afterStop').listen((event) {
-                  if(event!['message']!=null){
+                  if (event!['message'] != null) {
                     Fluttertoast.showToast(msg: event!['message'].toString());
                   }
                 });
 
-                completeTripAPI.tripComplete(tripCompleteRequestBody).then((value) {
+                completeTripAPI
+                    .tripComplete(tripCompleteRequestBody)
+                    .then((value) {
+                  tripCompleteResponse = TripCompleteResponse.fromJson(value);
 
-                   tripCompleteResponse=TripCompleteResponse.fromJson(value);
+                  if (tripCompleteResponse.status == "Success") {
+                    Navigator.popAndPushNamed(context, riderInfoScreenRoute,
+                        arguments: tripCompleteResponse);
+                  } else {
+                    Fluttertoast.showToast(
+                        msg: "${tripCompleteResponse.message}");
+                  }
                   //Fluttertoast.showToast(msg: tripCompleteResponse.message!);
-                   Navigator.popAndPushNamed(context, riderInfoScreenRoute,arguments:tripCompleteResponse );
                 });
-
-
-
               },
             ),
           ],

@@ -16,3 +16,6 @@ const String addFareScreenRoute = '/AddFare';
 const String bookingScreenRoute = '/Bookings';
 const String addCompaintScreenRoute = '/AddComplaint';
 const String editFareScreenRoute = '/EditFare';
+const String verifyMobileScreenRoute = "/Join";
+const String kycScreenRoute = "/Kyc";
+const String createCommunityScreenRoute = "/CreateCommunity";

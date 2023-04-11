@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../routes/route_name.dart';
@@ -60,7 +61,7 @@ class _SplashScreenState extends State<SplashScreen>
           opacity: _animation,
           child: Padding(
             padding: const EdgeInsets.all(80),
-            child: Image.asset("assets/AutoKaaran-splash.gif"),
+            child: SvgPicture.asset("assets/AutoKaaran.svg"),
           ),
         ),
       ),
