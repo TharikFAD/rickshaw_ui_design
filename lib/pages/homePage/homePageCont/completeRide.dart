@@ -35,7 +35,7 @@ Future<void> onStart(ServiceInstance serviceInstance) async {
   _positionHistory = [];
   _positionStream = Geolocator.getPositionStream(
           locationSettings: const LocationSettings(
-              accuracy: LocationAccuracy.high, distanceFilter: 10))
+              accuracy: LocationAccuracy.high, distanceFilter: 5))
       .listen((Position position) {
     _positionHistory.add(position);
     double travelled_km = 0;
