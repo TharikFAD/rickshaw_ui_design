@@ -17,21 +17,22 @@ class MyDrawerWidget extends StatelessWidget {
       elevation: 0,
       backgroundColor: Color(0xFF4885ED),
       child: ListView(
+        padding: EdgeInsets.zero,
         children: [
           //Profile and title
           SizedBox(
-            height: size.height * 0.125,
+            height: 300,
             child: DrawerHeader(
               child: Column(
                 children: [
                   Row(
                     children: [
                       IconButton(
-                        onPressed: () {
-                          Navigator.pop(context);
-                        },
-                        icon: Icon(Icons.menu, color: Colors.white),
-                      ),
+                          onPressed: () {},
+                          icon: Icon(
+                            Icons.menu,
+                            color: Colors.white,
+                          )),
                       Text(
                         'Auto Karan',
                         style: GoogleFonts.bungee(
@@ -42,24 +43,27 @@ class MyDrawerWidget extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(
+                    height: size.height * 0.028,
+                  ),
+                  InkWell(
+                    child: Container(
+                      decoration: BoxDecoration(shape: BoxShape.circle),
+                      child: Center(
+                        child: Image.asset(
+                          'assets/Profile.png',
+                          fit: BoxFit.contain,
+                        ),
+                      ),
+                    ),
+                    onTap: () {},
+                  ),
                 ],
               ),
               decoration: BoxDecoration(
                 color: Color(0xFF4885ED),
               ),
             ),
-          ),
-          InkWell(
-            child: CircleAvatar(
-              radius: 50,
-              child: Center(
-                child: Image.asset(
-                  'assets/Profile.png',
-                  fit: BoxFit.contain,
-                ),
-              ),
-            ),
-            onTap: () {},
           ),
 
           //space
@@ -241,6 +245,21 @@ class MyDrawerWidget extends StatelessWidget {
             ),
           ),
 
+          //Join Button
+          ListTile(
+            onTap: () {
+              Navigator.popAndPushNamed(context, kycScreenRoute);
+            },
+            leading: Image.asset("assets/Join.png"),
+            title: Text(
+              'JOIN AS PARTNER',
+              style: GoogleFonts.inter(
+                  fontSize: 15,
+                  fontWeight: FontWeight.w700,
+                  color: Colors.white),
+            ),
+          ),
+
           //space
           SizedBox(
             height: size.height * 0.05,
@@ -263,14 +282,16 @@ class MyDrawerWidget extends StatelessWidget {
           ),
 
           //Greetings
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: Text(
-              'Made with ❤️ AZEP METER',
-              style: GoogleFonts.mina(
-                  fontSize: 10,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white),
+          Container(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Text(
+                'Made with ❤️ AZEP METER',
+                style: GoogleFonts.mina(
+                    fontSize: 10,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white),
+              ),
             ),
           ),
         ],
