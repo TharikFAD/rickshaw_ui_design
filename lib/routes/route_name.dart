@@ -19,3 +19,4 @@ const String editFareScreenRoute = '/EditFare';
 const String verifyMobileScreenRoute = "/Join";
 const String kycScreenRoute = "/Kyc";
 const String createCommunityScreenRoute = "/CreateCommunity";
+const String addDriversScreenRoute = "/addDrivers";

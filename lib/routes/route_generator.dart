@@ -3,6 +3,7 @@ import 'package:meter_app/Pages/HomePage/home_page.dart';
 import 'package:meter_app/Pages/LoginPage/LoginPageCont/otp_page.dart';
 import 'package:meter_app/Pages/SplashScreenPage/splash_screen.dart';
 import 'package:meter_app/Pages/loginPage/LoginPageCont/username_page.dart';
+import 'package:meter_app/pages/addDriversPage/add_drivers_page.dart';
 import 'package:meter_app/pages/bookingsPage/booking_page.dart';
 import 'package:meter_app/pages/communityPage/communityPage.dart';
 import 'package:meter_app/pages/communityPage/widgets/community_members.dart';
@@ -74,6 +75,8 @@ class RouteGenerator {
             return const KycPage();
           case createCommunityScreenRoute:
             return const CreateCommunity();
+          case addDriversScreenRoute:
+            return const AddDriversPage();
 
           default:
             return LoginPage();
