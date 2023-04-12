@@ -354,7 +354,7 @@ class _SettingspageState extends State<Settingspage> {
           content: TextField(
             autofocus: true,
             keyboardType: TextInputType.number,
-            maxLength: 6,
+            maxLength: 4,
             onChanged: (value) {
               otp = value;
             },
