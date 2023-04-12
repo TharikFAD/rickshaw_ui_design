@@ -52,6 +52,7 @@ dependencies:
   intl: ^0.18.0
   lite_rolling_switch: ^1.0.1
   system_alert_window: ^1.2.1
+  share_plus: ^6.3.2
 
   
 dev_dependencies:

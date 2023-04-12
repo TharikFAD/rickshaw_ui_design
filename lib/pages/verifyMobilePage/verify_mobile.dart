@@ -45,7 +45,7 @@ class _JoinPageState extends State<JoinPage> {
       ),
 
       //Drawer
-      drawer: const MyDrawerWidget(),
+      //drawer: const MyDrawerWidget(),
 
       body: Column(children: [
         //Logo
