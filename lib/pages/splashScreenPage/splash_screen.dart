@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -32,6 +33,11 @@ class _SplashScreenState extends State<SplashScreen>
   Future<void> navigationPage() async {
     SharedPreferences pref = await SharedPreferences.getInstance();
     var userId = pref.getString("identification_key");
+    bool? tripStarted=pref.getBool('tripStarted');
+
+    if(tripStarted != null && tripStarted){
+      Navigator.of(context).pushReplacementNamed(completeRideScreenRoute);
+    }
 
     debugPrint('IN MAIN USER ID: $userId');
 

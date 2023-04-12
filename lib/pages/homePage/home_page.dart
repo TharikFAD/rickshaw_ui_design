@@ -9,6 +9,7 @@ import 'package:meter_app/pages/homePage/widgets/appBarWidget.dart';
 import 'package:meter_app/pages/homePage/widgets/chat_head.dart';
 import 'package:meter_app/pages/homePage/widgets/drawer.dart';
 import 'package:meter_app/routes/route_name.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -28,6 +29,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getCurrentLocation();
+    tripStarted();
   }
 
   Future<Object?> getCurrentLocation() async {
@@ -184,54 +186,64 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
-}
+
+  void tripStarted() async{
+    SharedPreferences pref=await SharedPreferences.getInstance();
+    pref.setBool('tripStarted', true);
+  }
+
 
 //Start Ride Dialog Box-------------------------------------------------------->
-Future<void> _dialogBuilder(BuildContext context) {
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text(
-          'Do you want to start the ride?',
-          style: GoogleFonts.inter(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              color: Color(0xFF000000)),
-        ),
-        actions: <Widget>[
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
-            ),
-            child: Text(
-              'No',
-              style: GoogleFonts.inter(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF000000)),
-            ),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+  Future<void> _dialogBuilder(BuildContext context) {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text(
+            'Do you want to start the ride?',
+            style: GoogleFonts.inter(
+                fontSize: 15,
+                fontWeight: FontWeight.w700,
+                color: Color(0xFF000000)),
           ),
-          TextButton(
-            style: TextButton.styleFrom(
-              textStyle: Theme.of(context).textTheme.labelLarge,
+          actions: <Widget>[
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: Text(
+                'No',
+                style: GoogleFonts.inter(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF000000)),
+              ),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
             ),
-            child: Text(
-              'Yes',
-              style: GoogleFonts.inter(
-                  fontSize: 15,
-                  fontWeight: FontWeight.w700,
-                  color: Color(0xFF000000)),
+            TextButton(
+              style: TextButton.styleFrom(
+                textStyle: Theme.of(context).textTheme.labelLarge,
+              ),
+              child: Text(
+                'Yes',
+                style: GoogleFonts.inter(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF000000)),
+              ),
+              onPressed: () {
+                if(_currentPosition?.longitude!=null && _currentPosition?.longitude!=null){
+
+                  Navigator.pushNamed(context, completeRideScreenRoute);
+                }
+              },
             ),
-            onPressed: () {
-              Navigator.pushNamed(context, completeRideScreenRoute);
-            },
-          ),
-        ],
-      );
-    },
-  );
+          ],
+        );
+      },
+    );
+  }
+
 }

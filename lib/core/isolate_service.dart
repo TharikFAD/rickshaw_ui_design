@@ -17,7 +17,7 @@ class IsolateService{
     _positionHistory = [];
     _positionStream = Geolocator.getPositionStream(
         locationSettings: const LocationSettings(
-            accuracy: LocationAccuracy.high, distanceFilter: 5))
+            accuracy: LocationAccuracy.high, distanceFilter: 2,timeLimit: Duration(seconds: 10)))
         .listen((Position position) {
       _positionHistory.add(position);
       double travelled_km = 0;
@@ -39,7 +39,7 @@ class IsolateService{
 
     //receive data to isolate
     serviceInstance.on("stop").listen((event) {
-      String message='Service Stopped';
+      String message='Meter Stopped';
       serviceInstance.stopSelf();
       debugPrint("MANI DATA TO STOP RECEIVED");
 

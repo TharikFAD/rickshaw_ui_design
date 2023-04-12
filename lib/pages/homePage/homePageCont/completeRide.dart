@@ -2,6 +2,7 @@
 
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_background_service/flutter_background_service.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:geolocator/geolocator.dart';
@@ -47,7 +48,49 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   void initState() {
     super.initState();
     debugPrint('INSIDE COMPLETE RIDE PAGE INIT');
+    getCurrentLocation();
     IsolateService().initializeService();
+  }
+
+  Future<Object?> getCurrentLocation() async {
+    try {
+      bool serviceEnabled;
+      LocationPermission permission;
+
+      permission = await Geolocator.checkPermission();
+      if (permission == LocationPermission.denied) {
+        permission = await Geolocator.requestPermission();
+        if (permission == LocationPermission.denied) {
+          return Future.error('Location permissions are denied');
+        }
+      }
+
+      if (permission == LocationPermission.deniedForever) {
+        return Future.error(
+            'Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+
+      serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled) {
+        Geolocator.openLocationSettings();
+        return Future.error('Location services are disabled.');
+      }
+
+
+      Position position = await Geolocator.getCurrentPosition(
+        desiredAccuracy: LocationAccuracy.high,
+      );
+      debugPrint(" pos: $position");
+      _currentPosition = position;
+      return _currentPosition;
+
+    } on PlatformException catch (e) {
+      debugPrint("$e");
+      getCurrentLocation();
+    }
+
+
   }
 
   @override
@@ -58,7 +101,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
 
     FlutterBackgroundService().on('km').listen((event) {
       if (event!['travelled_km'] != null) {
-        var value = event!['travelled_km'].toString().split(',');
+        var value = event['travelled_km'].toString().split(',');
 
         travelledKm = double.parse(value[0]);
         startTime = DateTime.parse(value[1]);
@@ -98,7 +141,10 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
               initialCameraPosition: CameraPosition(
                   target: LatLng(latitude, longitude), zoom: 17.0),
               onMapCreated: (GoogleMapController controller) {
-                mapController = controller;
+
+                  mapController = controller;
+
+
               },
             ),
             //On swipe Panel
@@ -485,7 +531,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                 FlutterBackgroundService().invoke('stop', dataToSend);
                 FlutterBackgroundService().on('afterStop').listen((event) {
                   if (event!['message'] != null) {
-                    Fluttertoast.showToast(msg: event!['message'].toString());
+                    Fluttertoast.showToast(msg: event['message'].toString());
                   }
                 });
 

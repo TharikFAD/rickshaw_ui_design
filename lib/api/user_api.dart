@@ -20,11 +20,12 @@ class UserAPI{
   Map<String,dynamic>? data;
 
   Future<dynamic> updateProfile(UpdateProfileRequestBody updateProfileRequestBody)async{
-
+      SharedPreferences pref=await SharedPreferences.getInstance();
+      String? driverId=pref.getString('identification_key');
     debugPrint('PROFILE UPDATE REQUEST ${updateProfileRequestBody.toJson()}');
 
     try{
-      final response=await http.put(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.updateProfile),
+      final response=await http.put(Uri.parse(ApiBaseUrl.baseUrl+ApiEndPoint.updateProfile).replace(queryParameters: {'IdentificationKey':driverId}),
           body: json.encode(updateProfileRequestBody.toJson()));
 
       if (response.statusCode == 200) {
