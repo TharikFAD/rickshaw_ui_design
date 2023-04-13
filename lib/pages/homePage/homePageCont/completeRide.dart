@@ -38,7 +38,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
   var tripCompleteResponse = TripCompleteResponse();
 
   double travelledKm = 0;
-  DateTime? startTime;
+  DateTime startTime=DateTime.now();
   DateTime? endTime;
   Duration? difference;
   int? totalMinutes;
@@ -91,6 +91,20 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
     }
 
 
+  }
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+    getCurrentLocation().then((value) {
+      mapController.animateCamera(
+        CameraUpdate.newCameraPosition(
+          CameraPosition(
+            target: LatLng(_currentPosition!.latitude, _currentPosition!.longitude),
+            zoom: 17.0,
+          ),
+        ),
+      );
+    });
   }
 
   @override
@@ -442,22 +456,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
     _positionStream.cancel();
   }
 
-  void _onMapCreated() async {
-    _positionStream = Geolocator.getPositionStream().listen((event) {
-      mapController.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-          target: LatLng(event.longitude, event.longitude), zoom: 17)));
-    });
 
-    // _positionStream = Geolocator.getPositionStream().listen((event) {
-    //   setState(() {
-    //     mapController.animateCamera(CameraUpdate.newCameraPosition(
-    //         CameraPosition(
-    //             target: LatLng(longitude!,longitude!), zoom: 17)));
-    //
-    //   });
-    //
-    // });
-  }
 
   //Complete Ride Dialog Box-------------------------------------------------------->
   Future<void> _dialogBuilder(BuildContext context) {
@@ -520,7 +519,7 @@ class _CompleteRidePageState extends State<CompleteRidePage> {
                         ),
                         readings: TripCompleteRequestBodyReadings(
                           kmTravelled: (travelledKm * 1000),
-                          waitingTime: difference?.inSeconds,
+                          waitingTime: (difference?.inSeconds==null)?0:difference?.inSeconds,
                           surgeValue: surgeValue,
                         ));
 
