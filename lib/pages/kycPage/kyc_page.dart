@@ -298,7 +298,9 @@ class _KycPageState extends State<KycPage> {
                           fontWeight: FontWeight.w700,
                           color: Colors.black)),
                   IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.pushNamed(context, addDriversScreenRoute);
+                      },
                       icon: const Icon(Icons.arrow_forward_ios_rounded))
                 ],
               ),

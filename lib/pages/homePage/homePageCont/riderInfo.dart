@@ -25,16 +25,14 @@ class _RiderInfoPageState extends State<RiderInfoPage> {
     TripCompleteResponse? tripCompleteResponse =
         ModalRoute.of(context)?.settings.arguments as TripCompleteResponse?;
 
-    double _myTestFareResult =
+    double _myTestFareResult =(tripCompleteResponse!.result==null)?0:
         double.parse(tripCompleteResponse!.result!.fare!.totalFare!);
     var size = MediaQuery.of(context).size;
-    DateTime now = DateTime.parse(tripCompleteResponse!.result!.startTime!);
+    DateTime now = (tripCompleteResponse!.result==null)?DateTime.now():DateTime.parse(tripCompleteResponse!.result!.startTime!);
     String startTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
-    DateTime now1 = DateTime.parse(tripCompleteResponse!.result!.endTime!);
+    DateTime now1 = (tripCompleteResponse!.result==null)?DateTime.now():DateTime.parse(tripCompleteResponse!.result!.endTime!);
     String endTime = DateFormat('yyyy-MM-dd HH:mm:ss').format(now1);
-    var surgeValue = (tripCompleteResponse?.result?.fare?.surgePrice == '1')
-        ? 'NA'
-        : tripCompleteResponse?.result?.fare?.surgePrice;
+    var surgeValue = (tripCompleteResponse?.result==null)?0:(tripCompleteResponse?.result?.fare?.surgePrice == '1') ? 'NA' : tripCompleteResponse?.result?.fare?.surgePrice;
 
     totalController.addListener(() {
       double balanceAmount = 0.0;
